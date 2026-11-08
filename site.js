@@ -281,3 +281,20 @@
   // watches the hero buttons themselves: the duplicate is hidden only while they are on screen
   new IntersectionObserver(([e]) => top.classList.toggle('past-hero', !e.isIntersecting), { rootMargin: '-72px 0px 0px 0px', threshold: 0 }).observe(hero);
 })();
+
+// Links to the previous hirdman.pro (social posts, emails) point at its section anchors; send them to the matching new page
+(() => {
+  const OLD_ANCHORS = {
+    rec1001301481: '/about',           // Introducing
+    rec1022963401: '/how-it-works',    // How Hirdman Works
+    rec1001267276: '/integrations',    // API Integration
+    rec1246570471: '/services',        // Security Intelligence
+    rec997967251: '#contact',          // Request a Free Check
+    zeropopup: '/cases', zeropopup2: '/cases', zeropopup3: '/cases'
+  };
+  const to = OLD_ANCHORS[location.hash.slice(1)];
+  if (!to) return;
+  if (to.charAt(0) !== '#') { location.replace(to); return; }
+  const el = document.querySelector(to);
+  if (el) { history.replaceState(null, '', to); el.scrollIntoView(); }
+})();
