@@ -1,0 +1,369 @@
+.hirdman /* Hirdman site design system. Dark teal brand,.hirdman one accent,.hirdman hairline surfaces. */
+/* Scoped build for Tilda: every selector lives under .hirdman */
+.hirdman{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:#eafffb;line-height:1.55;-webkit-font-smoothing:antialiased;text-align:left}
+:root{
+  --bg:#030807;
+  --bg-2:#071212;
+  --ink:#eafffb;
+  --muted:#9edbd4;
+  --muted-2:#6d8d88;
+  --teal:#17F1D7;
+  --teal-ink:#03201b;
+  --teal-line:rgba(23,241,215,.2);
+  --teal-soft:rgba(23,241,215,.08);
+  --card:rgba(5,25,24,.55);
+  --red:#ff3b5c;
+  --green:#43e39a;
+  --amber:#ffb84d;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --wrap:1180px;
+}
+.hirdman *{box-sizing:border-box}
+html{scroll-behavior:smooth}
+html,body{margin:0;background:var(--bg);color:var(--ink)}
+body{
+  font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;line-height:1.55;overflow-x:hidden;
+  background:radial-gradient(circle at 50% 0%,#071212 0%,#020606 70%);
+}
+.hirdman a{color:var(--teal);text-decoration:none}
+.hirdman button{font-family:inherit}
+.hirdman :focus-visible{outline:2px solid var(--teal);outline-offset:3px}
+.hirdman [id]{scroll-margin-top:88px}
+.skip{position:absolute;left:-999px;top:10px;z-index:100;background:var(--teal);color:var(--teal-ink);padding:10px 14px;border-radius:10px;font-weight:700}
+.skip:focus{left:16px}
+.hirdman a.ext::after{content:"\2197";font-size:.85em;margin-left:4px;opacity:.7}
+.hirdman img,.hirdman svg{max-width:100%}
+.hirdman .wrap{max-width:var(--wrap);margin:0 auto;padding:0 24px}
+.hirdman .kicker{display:inline-flex;align-items:center;gap:14px;font-size:12px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--teal)}
+.hirdman .kicker::before{content:"";width:36px;height:1px;background:var(--teal);box-shadow:0 0 8px rgba(23,241,215,.35);flex:none}
+.hirdman h1{margin:22px 0 18px;font-size:clamp(40px,6vw,78px);line-height:1.02;font-weight:800;letter-spacing:-.03em;max-width:22ch;text-wrap:balance}
+.hirdman h2{margin:18px 0 14px;font-size:clamp(30px,4vw,52px);line-height:1.06;font-weight:800;letter-spacing:-.025em;max-width:20ch;text-wrap:balance}
+.hirdman h3{margin:0 0 8px;font-size:20px;font-weight:700;letter-spacing:-.01em}
+.hirdman p{margin:0 0 14px}
+.hirdman .lead{font-size:clamp(17px,1.7vw,21px);color:var(--muted);max-width:62ch;line-height:1.55}
+.hirdman .muted{color:var(--muted)}
+.hirdman .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.hirdman .w{display:inline-block;will-change:transform,opacity}
+.hirdman section{position:relative;padding:120px 0}
+.hirdman section.tight{padding:72px 0}
+.hirdman .sec-h{max-width:720px;margin-bottom:40px}
+.hirdman .label{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-2)}
+.hirdman .center{text-align:center}
+.hirdman .center h2,.hirdman .center .lead{margin-left:auto;margin-right:auto}
+
+.hirdman /* Surfaces and buttons */
+.card{position:relative;overflow:hidden;background:var(--card);border:1px solid var(--teal-line);border-radius:16px;padding:28px 30px;transition:border-color .4s var(--ease),transform .4s var(--ease),box-shadow .4s var(--ease)}
+.hirdman .card::before{content:"";position:absolute;top:0;left:0;width:36px;height:36px;border-top:1px solid var(--teal);border-left:1px solid var(--teal);opacity:.5;border-radius:16px 0 0 0;pointer-events:none}
+.hirdman .card:hover{border-color:rgba(23,241,215,.5);box-shadow:0 20px 60px -30px rgba(23,241,215,.25)}
+.hirdman a.card{color:inherit;display:block}
+.hirdman a.card:hover{transform:translateY(-3px)}
+.hirdman .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:52px;padding:0 24px;border-radius:12px;border:0;cursor:pointer;font-size:15px;font-weight:700;color:var(--teal-ink);background:var(--teal);box-shadow:0 12px 40px -14px rgba(23,241,215,.7);transition:transform .35s var(--ease),box-shadow .35s var(--ease),background .25s;white-space:nowrap}
+.hirdman .btn:hover{background:#14d9c1;transform:translateY(-2px);box-shadow:0 18px 44px -14px rgba(23,241,215,.8)}
+.hirdman .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--teal-line);box-shadow:none}
+.hirdman .btn.ghost:hover{border-color:var(--teal);background:var(--teal-soft)}
+.hirdman .btn.sm{height:42px;padding:0 18px;font-size:14px}
+.hirdman .btn svg{width:18px;height:18px}
+.hirdman .more{display:inline-flex;align-items:center;gap:8px;font-weight:600;color:var(--teal)}
+.hirdman .more svg{width:16px;height:16px;transition:transform .3s var(--ease)}
+.hirdman .more:hover svg{transform:translateX(4px)}
+.hirdman .pills{display:flex;flex-wrap:wrap;gap:10px}
+.hirdman .pill{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:999px;border:1px solid var(--teal-line);background:rgba(255,255,255,.03);font-size:14px}
+.hirdman .pill svg{width:16px;height:16px;color:var(--teal)}
+.hirdman .tag{display:inline-block;font-size:11.5px;font-weight:700;letter-spacing:.04em;padding:4px 9px;border-radius:999px;border:1px solid var(--teal-line);color:var(--teal);white-space:nowrap}
+.hirdman .tag.red{color:#ff8fa0;border-color:rgba(255,59,92,.45)}
+.hirdman .tag.dim{color:var(--muted-2);border-color:rgba(255,255,255,.12)}
+.hirdman .ic{width:44px;height:44px;border-radius:12px;background:var(--teal-soft);border:1px solid var(--teal-line);display:grid;place-items:center;color:var(--teal);margin-bottom:18px}
+.hirdman .ic svg{width:22px;height:22px}
+
+.hirdman /* Top bar */
+.top{position:fixed;top:0;left:0;right:0;z-index:50;height:72px;display:flex;align-items:center;transition:background .4s,backdrop-filter .4s,border-color .4s;border-bottom:1px solid transparent}
+.hirdman .top.solid{background:rgba(3,8,7,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-color:rgba(23,241,215,.12)}
+.hirdman .top.has-hero .top-cta .btn:not(.ghost){opacity:0;visibility:hidden;transition:none}
+.hirdman .top.has-hero.past-hero .top-cta .btn:not(.ghost){opacity:1;visibility:visible;transition:opacity .35s var(--ease),visibility 0s}
+.hirdman .top .wrap{display:flex;align-items:center;justify-content:space-between;gap:20px;width:100%}
+.hirdman .hm-logo{height:26px;width:auto;color:var(--ink);display:block}
+.hirdman .hm-mark{height:18px;width:auto;color:var(--teal)}
+.hirdman .nav{display:flex;gap:22px;font-size:14px;font-weight:600;align-items:center;white-space:nowrap}
+.hirdman .nav a{color:var(--muted);transition:color .25s}
+.hirdman .nav a:hover,.hirdman .nav a.active{color:var(--ink)}
+.hirdman .nav a.active{color:var(--teal)}
+.hirdman .top-cta{display:flex;gap:10px;align-items:center}
+.hirdman .lang{font-size:13px;font-weight:700;letter-spacing:.08em;color:var(--muted);padding:8px 10px;border-radius:10px;border:1px solid transparent}
+.hirdman .lang:hover{color:var(--ink);border-color:var(--teal-line)}
+.hirdman .burger{display:none;width:44px;height:44px;border-radius:10px;border:1px solid var(--teal-line);background:transparent;color:var(--ink);place-items:center;cursor:pointer}
+.hirdman .burger svg{width:22px;height:22px}
+
+.hirdman /* Page hero (sub-pages) */
+.page-hero{padding:160px 0 48px;position:relative;overflow:hidden}
+.hirdman .page-hero .glow{position:absolute;width:720px;height:720px;left:50%;top:-55%;transform:translateX(-50%);border-radius:50%;background:radial-gradient(circle,rgba(23,241,215,.18),transparent 60%);filter:blur(60px);pointer-events:none}
+.hirdman .page-hero .wrap{position:relative}
+.hirdman .crumbs{font-size:13px;color:var(--muted-2);margin-bottom:18px}
+.hirdman .crumbs a{color:var(--muted)}
+.hirdman .crumbs span{margin:0 8px}
+
+.hirdman /* Home hero */
+.hero{min-height:88vh;display:flex;flex-direction:column;justify-content:flex-end;padding:140px 0 48px;overflow:hidden}
+.hirdman .hero-bg{position:absolute;inset:0;z-index:0;pointer-events:none}
+.hirdman .hero-grid{position:absolute;inset:-80px;background-image:linear-gradient(rgba(23,241,215,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(23,241,215,.06) 1px,transparent 1px);background-size:64px 64px;-webkit-mask-image:radial-gradient(ellipse at 50% 40%,#000 25%,transparent 75%);mask-image:radial-gradient(ellipse at 50% 40%,#000 25%,transparent 75%)}
+.hirdman #net{position:absolute;inset:0;width:100%;height:100%;display:block}
+.hirdman .hero .glow{position:absolute;width:720px;height:720px;left:50%;top:-40%;transform:translateX(-50%);border-radius:50%;background:radial-gradient(circle,rgba(23,241,215,.22),transparent 60%);filter:blur(60px);opacity:.9}
+.hirdman .scan{position:absolute;left:0;right:0;top:-6%;height:2px;background:linear-gradient(90deg,transparent,rgba(23,241,215,.9),transparent);box-shadow:0 0 24px rgba(23,241,215,.8);opacity:0;animation:scan 2.6s var(--ease) .4s 1}
+@keyframes scan{0%{top:-6%;opacity:0}10%{opacity:1}90%{opacity:.6}100%{top:110%;opacity:0}}
+.hirdman .hero .wrap{position:relative;z-index:1}
+.hirdman .hero-ctas{display:flex;flex-wrap:wrap;gap:14px;margin:30px 0 64px}
+.hirdman .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.hirdman .stat{padding:22px 24px}
+.hirdman .stat .v{font-size:clamp(26px,2.6vw,36px);font-weight:800;letter-spacing:-.03em;color:var(--teal);line-height:1;font-variant-numeric:tabular-nums}
+.hirdman .stat .t{margin-top:10px;font-size:14px;color:var(--muted);line-height:1.45}
+
+.hirdman /* Layouts */
+.split{display:grid;grid-template-columns:5fr 7fr;gap:48px;align-items:start}
+.hirdman .cols{display:grid;grid-template-columns:7fr 5fr;gap:40px;align-items:start}
+.hirdman .cols.rev{grid-template-columns:5fr 7fr}
+.hirdman .sticky{position:sticky;top:96px}
+.hirdman .grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.hirdman .grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.hirdman .grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.hirdman .checks{list-style:none;margin:26px 0 0;padding:0;display:grid;gap:14px}
+.hirdman .checks li{display:grid;grid-template-columns:28px 1fr;gap:14px;align-items:start;font-size:16px;line-height:1.5}
+.hirdman .checks svg{width:22px;height:22px;color:var(--teal);margin-top:2px}
+.hirdman .prose{max-width:68ch;font-size:17px;line-height:1.65;color:var(--muted)}
+.hirdman .prose h3{color:var(--ink);margin:34px 0 10px;font-size:22px}
+.hirdman .prose strong,.hirdman .prose b{color:var(--ink)}
+.hirdman .prose ul,.hirdman .prose ol{padding-left:22px}
+.hirdman .prose li{margin-bottom:8px}
+.hirdman .prose code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.92em;color:var(--ink);background:rgba(23,241,215,.08);padding:2px 6px;border-radius:6px}
+.hirdman .numbered{counter-reset:n;list-style:none;padding:0;margin:0;display:grid;gap:14px;max-width:860px}
+.hirdman .numbered li{counter-increment:n;display:grid;grid-template-columns:48px 1fr;gap:16px;align-items:start}
+.hirdman .numbered li::before{content:counter(n,decimal-leading-zero);font-size:13px;letter-spacing:.2em;color:var(--teal);font-weight:800;padding-top:6px}
+.hirdman .numbered b{display:block;margin-bottom:4px;font-size:17px}
+.hirdman .numbered span{color:var(--muted);font-size:15px;line-height:1.5}
+
+.hirdman /* Raw feed to decisions */
+.feed{padding:22px 22px 18px}
+.hirdman .feed-h{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.hirdman .feed-h b{color:var(--teal);font-variant-numeric:tabular-nums;white-space:nowrap}
+.hirdman .raw{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:10px 12px;border-radius:10px;border:1px dashed rgba(23,241,215,.16);margin-bottom:8px;font-size:13px;color:var(--muted)}
+.hirdman .raw.drop{opacity:.55}
+.hirdman .raw.drop .k{text-decoration:line-through;text-decoration-color:rgba(255,255,255,.3)}
+.hirdman .tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+.hirdman .tier{padding:14px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid var(--teal-line)}
+.hirdman .tier b{display:block;font-size:30px;font-weight:800;letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums}
+.hirdman .tier span{display:block;margin-top:6px;font-size:12.5px;color:var(--muted)}
+.hirdman .tier.t1 b{color:var(--red)} .hirdman .tier.t2 b{color:var(--amber)} .hirdman .tier.t3 b{color:var(--muted-2)}
+.hirdman .feed-out{margin:16px 0 0;font-size:14px;color:var(--ink)}
+
+.hirdman /* Reverse check: pinned graph */
+.rv-section{padding:0}
+.hirdman .rv{min-height:100vh;display:grid;grid-template-columns:4.3fr 7.7fr;gap:36px;align-items:center;padding:96px 0 48px}
+.hirdman .rv .lead{font-size:16px;margin-bottom:4px}
+.hirdman .caps{display:grid;gap:8px;margin-top:14px}
+.hirdman .cap{display:grid;grid-template-columns:34px 1fr;gap:12px;align-items:start;padding:11px 14px;border-radius:14px;border:1px solid transparent;opacity:.6;transition:opacity .35s,border-color .35s,background .35s}
+.hirdman .cap.on{opacity:1;border-color:rgba(23,241,215,.35);background:var(--teal-soft)}
+.hirdman .cap i{font-style:normal;width:28px;height:28px;border-radius:8px;background:rgba(23,241,215,.12);color:var(--teal);font-weight:800;font-size:13px;display:grid;place-items:center}
+.hirdman .cap p{margin:0;font-size:14px;line-height:1.45}
+.hirdman .rv-stage{position:relative}
+.hirdman .rv-stage svg{width:100%;height:auto;display:block;overflow:visible}
+.hirdman .e{fill:none;stroke-width:1.8;stroke-linecap:round}
+.hirdman .e.id{stroke:rgba(23,241,215,.65)} .hirdman .e.acc{stroke:rgba(255,184,77,.75)} .hirdman .e.bad{stroke:rgba(255,59,92,.9);stroke-width:2.2;filter:url(#rvglow)}
+.hirdman .nb{fill:rgba(8,18,17,.94);stroke-width:1.5}
+.hirdman .nb.src,.hirdman .nb.id{stroke:var(--teal)} .hirdman .nb.acc{stroke:var(--amber)} .hirdman .nb.bad{stroke:var(--red)}
+.hirdman .nl{font-size:17px;font-weight:700;fill:var(--ink);font-family:inherit}
+.hirdman .ns{font-size:12.5px;fill:var(--muted);font-family:inherit}
+.hirdman .cutx line{stroke:var(--red);stroke-width:2.4;stroke-linecap:round}
+.hirdman .fixchip rect{fill:var(--green)} .hirdman .fixchip text{font-size:11px;font-weight:800;fill:#03180f;font-family:inherit}
+.hirdman .comet{fill:#bffff4;filter:url(#rvglow)}
+@media (max-height:860px){ .hirdman .rv h2{font-size:clamp(26px,3.2vw,40px)} .hirdman .rv .lead{display:none} }
+
+.hirdman /* Process line */
+.proc{position:relative;margin-top:36px}
+.hirdman .proc-line{position:absolute;left:0;right:0;top:22px;height:2px;background:linear-gradient(90deg,var(--teal),rgba(23,241,215,.35));transform-origin:left;box-shadow:0 0 14px rgba(23,241,215,.45)}
+.hirdman .steps{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:14px;position:relative}
+.hirdman .step{position:relative;padding-top:58px}
+.hirdman .step .dot{position:absolute;top:12px;left:0;width:22px;height:22px;border-radius:50%;background:var(--bg);border:2px solid var(--teal);box-shadow:0 0 0 6px rgba(23,241,215,.08)}
+.hirdman .step .dot::after{content:"";position:absolute;inset:5px;border-radius:50%;background:var(--teal)}
+.hirdman .step b{display:block;font-size:15px;margin-bottom:6px}
+.hirdman .step span{display:block;font-size:13px;color:var(--muted);line-height:1.45}
+.hirdman .step .n{position:absolute;top:0;left:34px;font-size:11px;letter-spacing:.2em;color:var(--muted-2);font-weight:700}
+
+.hirdman /* Bento */
+.bento{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px;margin-top:36px}
+.hirdman .tile{padding:28px}
+.hirdman .tile.a{grid-column:span 4}
+.hirdman .tile.b,.hirdman .tile.c,.hirdman .tile.d,.hirdman .tile.e{grid-column:span 2}
+.hirdman .tile p{margin:0;font-size:15px;color:var(--muted);line-height:1.5}
+.hirdman .tile ul{margin:14px 0 0;padding:0;list-style:none;display:grid;gap:8px}
+.hirdman .tile li{font-size:14px;color:var(--ink);padding-left:16px;position:relative}
+.hirdman .tile li::before{content:"";position:absolute;left:0;top:9px;width:6px;height:6px;border-radius:50%;background:var(--teal)}
+.hirdman .tile.e{background:linear-gradient(180deg,rgba(23,241,215,.12),rgba(5,25,24,.55))}
+.hirdman .tile .more{margin-top:16px}
+
+.hirdman /* Index rows */
+.rows{margin-top:30px;border-top:1px solid var(--teal-line)}
+.hirdman .rows-h{display:grid;grid-template-columns:1.1fr 1.4fr 1.6fr;gap:24px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-2);padding-bottom:12px}
+.hirdman .rows-h .hh{color:var(--teal)}
+.hirdman .row{display:grid;grid-template-columns:1.1fr 1.4fr 1.6fr;gap:24px;padding:22px 0;border-bottom:1px solid rgba(23,241,215,.12);align-items:start}
+.hirdman .row .c{font-weight:700;font-size:16px}
+.hirdman .row .t{color:var(--muted-2);font-size:15px;line-height:1.5}
+.hirdman .row .h{color:var(--ink);font-size:15px;line-height:1.5;position:relative;padding-left:18px}
+.hirdman .row .h::before{content:"";position:absolute;left:0;top:10px;width:8px;height:8px;border-radius:50%;background:var(--teal);box-shadow:0 0 10px rgba(23,241,215,.8)}
+
+.hirdman /* Plans */
+.plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.hirdman .plan{padding:28px;display:flex;flex-direction:column}
+.hirdman .plan.featured{border-color:rgba(23,241,215,.5);background:linear-gradient(180deg,rgba(23,241,215,.10),var(--card))}
+.hirdman .plan .name{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--teal);font-weight:700}
+.hirdman .plan h3{font-size:26px;margin:10px 0 6px}
+.hirdman .plan .cad{font-size:14px;color:var(--teal);font-weight:600}
+.hirdman .plan .for{margin:12px 0 0;font-size:15px;color:var(--muted);line-height:1.5}
+.hirdman .plan ul{list-style:none;padding:0;margin:20px 0 0;display:grid;gap:10px;flex:1}
+.hirdman .plan li{padding-left:26px;position:relative;font-size:15px;line-height:1.45}
+.hirdman .plan li::before{content:"";position:absolute;left:1px;top:7px;width:13px;height:7px;border-left:2px solid var(--teal);border-bottom:2px solid var(--teal);transform:rotate(-45deg)}
+.hirdman .plan .btn{margin-top:24px;align-self:flex-start}
+
+.hirdman /* Tables */
+.tbl-wrap{overflow-x:auto;border:1px solid var(--teal-line);border-radius:16px;background:var(--card)}
+.hirdman .tbl{width:100%;border-collapse:collapse;font-size:15px;min-width:640px}
+.hirdman .tbl th,.hirdman .tbl td{padding:14px 16px;border-bottom:1px solid rgba(23,241,215,.12);text-align:left;vertical-align:top}
+.hirdman .tbl th{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-2);background:rgba(3,8,7,.5)}
+.hirdman .tbl th.hl{color:var(--teal)}
+.hirdman .tbl tr:last-child td{border-bottom:0}
+.hirdman .tbl td.yes{color:var(--ink)}
+.hirdman .tbl td.yes::before{content:"";display:inline-block;width:13px;height:7px;border-left:2px solid var(--teal);border-bottom:2px solid var(--teal);transform:rotate(-45deg);margin-right:10px;position:relative;top:-2px}
+.hirdman .tbl td.no{color:var(--muted-2)}
+
+.hirdman /* FAQ */
+.faq{border-top:1px solid var(--teal-line)}
+.hirdman .faq details{border-bottom:1px solid rgba(23,241,215,.12);padding:18px 0}
+.hirdman .faq summary{cursor:pointer;font-weight:700;font-size:17px;list-style:none;display:flex;justify-content:space-between;gap:16px;align-items:center}
+.hirdman .faq summary::-webkit-details-marker{display:none}
+.hirdman .faq summary::after{content:"+";color:var(--teal);font-size:24px;line-height:1;font-weight:400;flex:none}
+.hirdman .faq details[open] summary::after{content:"\2212"}
+.hirdman .faq details p{margin:12px 0 0;color:var(--muted);max-width:68ch;line-height:1.6}
+
+.hirdman /* Forms */
+.form{display:grid;gap:14px}
+.hirdman .form .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.hirdman .field{display:grid;gap:6px}
+.hirdman .field label{font-size:13px;color:var(--muted)}
+.hirdman .field input,.hirdman .field select,.hirdman .field textarea{height:48px;padding:0 14px;border-radius:12px;border:1px solid var(--teal-line);background:rgba(3,8,7,.6);color:var(--ink);font:inherit;font-size:15px;width:100%}
+.hirdman .field select{appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 20px) 21px,calc(100% - 15px) 21px;background-size:5px 5px;background-repeat:no-repeat}
+.hirdman .field textarea{height:auto;min-height:110px;padding:12px 14px;resize:vertical}
+.hirdman .field input:focus,.hirdman .field select:focus,.hirdman .field textarea:focus{border-color:var(--teal)}
+.hirdman .form .btn{justify-self:start}
+.hirdman .mail-cta .label{display:block;margin-bottom:14px}
+.hirdman .mail-cta .btn{font-size:16px}
+.hirdman .form .consent{font-size:12.5px;color:var(--muted-2);display:flex;gap:10px;align-items:flex-start;margin:0}
+.hirdman .form .consent input{margin:3px 0 0;accent-color:var(--teal);flex:none}
+.hirdman .form .err{display:none;padding:14px 16px;border-radius:12px;border:1px solid rgba(255,59,92,.4);background:rgba(255,59,92,.08);color:#ff8fa0}
+.hirdman .form.failed .err{display:block}
+.hirdman .form .ok{display:none;padding:14px 16px;border-radius:12px;border:1px solid rgba(67,227,154,.4);background:rgba(67,227,154,.08);color:var(--green)}
+.hirdman .form.sent .ok{display:block}
+
+.hirdman /* Cases */
+.case p.big{font-size:clamp(18px,1.9vw,22px);font-weight:600;line-height:1.4;margin:0 0 14px}
+.hirdman .bignum{display:flex;flex-direction:column;justify-content:center;gap:10px}
+.hirdman .bignum .v{font-size:clamp(56px,7vw,96px);font-weight:800;letter-spacing:-.04em;color:var(--red);line-height:1;font-variant-numeric:tabular-nums}
+.hirdman .case-card h3{margin-top:14px}
+.hirdman .case-card .kv{display:grid;gap:8px;margin-top:14px;font-size:14px}
+.hirdman .case-card .kv b{color:var(--teal);font-weight:600;display:block;font-size:12px;letter-spacing:.12em;text-transform:uppercase}
+
+.hirdman /* CTA band and footer */
+.cta{padding:48px;display:grid;grid-template-columns:1.4fr 1fr;gap:32px;align-items:center;background:linear-gradient(135deg,rgba(23,241,215,.14),rgba(5,25,24,.6) 60%)}
+.hirdman .cta h2{margin-top:10px}
+.hirdman .contacts{display:grid;gap:12px}
+.hirdman .contacts a{display:flex;align-items:center;gap:12px;font-size:17px;font-weight:600;color:var(--ink);padding:14px 16px;border-radius:12px;border:1px solid var(--teal-line);background:rgba(3,8,7,.5);transition:border-color .3s,transform .3s var(--ease)}
+.hirdman .contacts a:hover{border-color:var(--teal);transform:translateX(4px)}
+.hirdman .contacts svg{width:20px;height:20px;color:var(--teal)}
+.hirdman footer{padding:56px 0 48px;border-top:1px solid rgba(23,241,215,.12);color:var(--muted-2);font-size:13px}
+.hirdman .foot{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px;align-items:start}
+.hirdman .foot h4{margin:0 0 12px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.hirdman .foot ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.hirdman .foot a{color:var(--muted)}
+.hirdman .foot a:hover{color:var(--ink)}
+.hirdman .foot .brand p{max-width:40ch;margin-top:14px;line-height:1.55}
+.hirdman .foot-bottom{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;margin-top:36px;padding-top:20px;border-top:1px solid rgba(23,241,215,.1)}
+
+.hirdman /* Methodology page */
+.m-layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:40px;align-items:start}
+.hirdman .m-stat{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;margin-top:18px}
+.hirdman .m-stat .v{font-size:clamp(36px,4.6vw,60px);font-weight:800;letter-spacing:-.03em;color:var(--teal);line-height:1;white-space:nowrap}
+.hirdman .legend{display:flex;flex-wrap:wrap;gap:18px;font-size:14px;color:var(--muted)}
+.hirdman .legend span{display:inline-flex;align-items:center;gap:8px}
+.hirdman .legend .lg{display:grid;place-items:center;width:26px;height:26px;border-radius:8px;font-style:normal}
+.hirdman .legend .lg svg{width:16px;height:16px}
+.hirdman .legend .ok{background:var(--teal-soft);color:var(--teal)} .hirdman .legend .bad{background:rgba(255,59,92,.1);color:var(--red)}
+.hirdman .toc{padding:18px 16px;max-height:calc(100vh - 110px);overflow:auto}
+.hirdman .toc h4{margin:14px 0 6px;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--teal)}
+.hirdman .toc h4 a{color:inherit}
+.hirdman .toc ol{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+.hirdman .toc li a{display:block;padding:5px 8px;border-radius:8px;color:var(--muted);font-size:13px;line-height:1.35}
+.hirdman .toc li a:hover{color:var(--ink);background:var(--teal-soft)}
+.hirdman .group-h{margin:64px 0 10px;font-size:clamp(26px,3vw,36px)}
+.hirdman .q{margin-top:18px}
+.hirdman .q .num{font-size:12px;letter-spacing:.2em;color:var(--teal);font-weight:800}
+.hirdman .q h3{font-size:21px;margin:8px 0 16px;max-width:none;line-height:1.3}
+.hirdman .q .checks{margin-top:10px;gap:10px}
+.hirdman .q .checks li{font-size:15px}
+.hirdman .flagbox{margin-top:18px;padding:16px 18px;border-radius:14px;border:1px solid rgba(255,59,92,.4);background:rgba(255,59,92,.06);display:grid;grid-template-columns:28px 1fr;gap:12px;font-size:15px;line-height:1.5}
+.hirdman .flagbox svg{width:20px;height:20px;color:var(--red);margin-top:2px}
+.hirdman .flagbox b{color:#ff8fa0}
+.hirdman .quote{margin:18px 0 0;padding:18px 22px;border-radius:14px;background:var(--teal-soft);border:1px solid var(--teal-line);font-size:18px;font-weight:600;line-height:1.45}
+.hirdman .q .links{margin-top:14px;display:flex;flex-wrap:wrap;gap:16px}
+@media (max-width:900px){ .hirdman .m-layout{grid-template-columns:minmax(0,1fr)} .hirdman .m-layout>*{min-width:0} .hirdman .m-layout .toc{position:relative;top:auto;max-height:none;order:-1} .hirdman .toc ol{display:none} .hirdman .toc h4{margin:10px 0 0} }
+
+.hirdman /* Reveal on scroll (only when JS is on) */
+html.js [data-reveal]{opacity:0;transform:translateY(22px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+html.js [data-reveal].in{opacity:1;transform:none}
+
+@media (max-width:1000px){
+  .hirdman .steps{grid-template-columns:repeat(4,minmax(0,1fr));row-gap:28px}
+  .hirdman .proc-line{display:none}
+  .hirdman .tile.a{grid-column:span 6} .hirdman .tile.b,.hirdman .tile.c,.hirdman .tile.d,.hirdman .tile.e{grid-column:span 3}
+  .hirdman .foot{grid-template-columns:1fr 1fr}
+}
+@media (max-width:1100px){
+  .hirdman .nav{display:none}
+  .hirdman .nav.open{display:flex;flex-direction:column;align-items:flex-start;position:fixed;top:72px;left:0;right:0;padding:20px 24px 24px;gap:18px;background:#040b0a;border-bottom:1px solid var(--teal-line);font-size:16px;z-index:60;white-space:normal}
+  .hirdman .nav.open .m-cta{margin-top:6px;color:var(--teal-ink)}
+  .hirdman .burger{display:grid}
+}
+@media (max-width:900px){
+  .hirdman .nav{display:none}
+  .hirdman .nav.open{display:flex;flex-direction:column;align-items:flex-start;position:fixed;top:72px;left:0;right:0;padding:20px 24px 24px;gap:18px;background:#040b0a;border-bottom:1px solid var(--teal-line);font-size:16px;z-index:60}
+  .hirdman .nav.open .m-cta{margin-top:6px;color:var(--teal-ink)}
+  .hirdman .burger{display:grid}
+  .hirdman .split,.hirdman .rv,.hirdman .cols,.hirdman .cols.rev,.hirdman .cta,.hirdman .plans,.hirdman .grid3,.hirdman .grid4,.hirdman .form .two{grid-template-columns:1fr}
+  .hirdman .grid2{grid-template-columns:1fr}
+  .hirdman .rv{min-height:0;padding-top:110px}
+  .hirdman .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hirdman .row,.hirdman .rows-h{grid-template-columns:1fr;gap:6px}
+  .hirdman .rows-h .th{display:none}
+  .hirdman .row .t::before{content:"Typical: ";color:var(--muted-2);font-weight:600}
+  .hirdman .row .h{padding-left:0}
+  .hirdman .row .h::before{content:"Hirdman: ";position:static;width:auto;height:auto;border-radius:0;background:none;box-shadow:none;color:var(--teal);font-weight:600;margin-right:4px}
+  .hirdman section{padding:88px 0}
+  .hirdman .page-hero{padding-top:120px}
+  .hirdman h1{max-width:none}
+  .hirdman .sticky{position:static}
+}
+@media (max-width:640px){
+  .hirdman .top{height:64px}
+  .hirdman .top-cta .btn.ghost{display:none}
+  .hirdman .top-cta .btn{height:38px;padding:0 14px;font-size:13px}
+  .hirdman .nav.open{top:64px}
+  .hirdman .hm-logo{height:22px}
+  .hirdman .steps{grid-template-columns:1fr;row-gap:18px}
+  .hirdman .tile.b,.hirdman .tile.c,.hirdman .tile.d,.hirdman .tile.e{grid-column:span 6}
+  .hirdman .cta{padding:28px}
+  .hirdman .hero{padding-top:110px}
+  .hirdman .foot{grid-template-columns:1fr}
+  .hirdman .card{padding:22px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .hirdman .scan{animation:none}
+  html.js [data-reveal]{transition:none}
+  .hirdman *{transition-duration:.01ms !important}
+}

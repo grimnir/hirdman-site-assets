@@ -1,0 +1,760 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hirdman: Data Leak Intelligence</title>
+<meta name="description" content="Breach monitoring, reverse checks, attack-surface reconnaissance and brand protection, carried out end to end by Hirdman analysts.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#030807;
+  --bg-2:#071212;
+  --ink:#eafffb;
+  --muted:#9edbd4;
+  --muted-2:#6d8d88;
+  --teal:#17F1D7;
+  --teal-ink:#03201b;
+  --teal-line:rgba(23,241,215,.2);
+  --teal-soft:rgba(23,241,215,.08);
+  --card:rgba(5,25,24,.55);
+  --red:#ff3b5c;
+  --green:#43e39a;
+  --amber:#ffb84d;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --wrap:1180px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+html,body{margin:0;background:var(--bg);color:var(--ink)}
+body{
+  font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;line-height:1.55;overflow-x:hidden;
+  background:radial-gradient(circle at 50% 0%,#071212 0%,#020606 70%);
+}
+a{color:var(--teal);text-decoration:none}
+button{font-family:inherit}
+:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 24px}
+.kicker{
+  display:inline-flex;align-items:center;gap:14px;font-size:12px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--teal);
+}
+.kicker::before{content:"";width:36px;height:1px;background:var(--teal);box-shadow:0 0 8px rgba(23,241,215,.35);flex:none}
+h1{margin:22px 0 18px;font-size:clamp(40px,6vw,78px);line-height:1.02;font-weight:800;letter-spacing:-.03em;max-width:22ch;text-wrap:balance}
+h2{margin:18px 0 14px;font-size:clamp(30px,4vw,52px);line-height:1.06;font-weight:800;letter-spacing:-.025em;max-width:20ch;text-wrap:balance}
+h3{margin:0 0 8px;font-size:20px;font-weight:700;letter-spacing:-.01em}
+p{margin:0 0 14px}
+.lead{font-size:clamp(17px,1.7vw,21px);color:var(--muted);max-width:62ch;line-height:1.55}
+.muted{color:var(--muted)}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.w{display:inline-block;will-change:transform,opacity}
+section{position:relative;padding:120px 0}
+.sec-h{max-width:720px;margin-bottom:40px}
+
+/* Brand surfaces */
+.card{
+  position:relative;overflow:hidden;background:var(--card);border:1px solid var(--teal-line);border-radius:16px;padding:28px 30px;
+  transition:border-color .4s var(--ease),transform .4s var(--ease),box-shadow .4s var(--ease);
+}
+.card::before{content:"";position:absolute;top:0;left:0;width:36px;height:36px;border-top:1px solid var(--teal);border-left:1px solid var(--teal);opacity:.5;border-radius:16px 0 0 0;pointer-events:none}
+.card:hover{border-color:rgba(23,241,215,.5);box-shadow:0 20px 60px -30px rgba(23,241,215,.25)}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;height:52px;padding:0 24px;border-radius:12px;border:0;cursor:pointer;
+  font-size:15px;font-weight:700;color:var(--teal-ink);background:var(--teal);
+  box-shadow:0 12px 40px -14px rgba(23,241,215,.7);transition:transform .35s var(--ease),box-shadow .35s var(--ease),background .25s;
+}
+.btn:hover{background:#14d9c1;transform:translateY(-2px);box-shadow:0 18px 44px -14px rgba(23,241,215,.8)}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--teal-line);box-shadow:none}
+.btn.ghost:hover{border-color:var(--teal);background:var(--teal-soft)}
+.btn svg{width:18px;height:18px}
+
+/* Top bar */
+.top{
+  position:fixed;top:0;left:0;right:0;z-index:50;height:72px;display:flex;align-items:center;
+  transition:background .4s,backdrop-filter .4s,border-color .4s;border-bottom:1px solid transparent;
+}
+.top.solid{background:rgba(3,8,7,.78);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-color:rgba(23,241,215,.12)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:20px;width:100%}
+.hm-logo{height:26px;width:auto;color:var(--ink);display:block}
+.hm-mark{height:18px;width:auto;color:var(--teal)}
+.nav{display:flex;gap:28px;font-size:14px;font-weight:600}
+.nav a{color:var(--muted);transition:color .25s}
+.nav a:hover{color:var(--ink)}
+.top .btn{height:42px;padding:0 18px;font-size:14px;white-space:nowrap}
+
+/* Hero */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:140px 0 48px;overflow:hidden}
+.hero-bg{position:absolute;inset:0;z-index:0;pointer-events:none}
+.hero-grid{
+  position:absolute;inset:-80px;
+  background-image:linear-gradient(rgba(23,241,215,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(23,241,215,.06) 1px,transparent 1px);
+  background-size:64px 64px;
+  -webkit-mask-image:radial-gradient(ellipse at 50% 40%,#000 25%,transparent 75%);mask-image:radial-gradient(ellipse at 50% 40%,#000 25%,transparent 75%);
+}
+#net{position:absolute;inset:0;width:100%;height:100%;display:block}
+.glow{position:absolute;width:720px;height:720px;left:50%;top:-40%;transform:translateX(-50%);border-radius:50%;background:radial-gradient(circle,rgba(23,241,215,.22),transparent 60%);filter:blur(60px);opacity:.9}
+.scan{position:absolute;left:0;right:0;top:-6%;height:2px;background:linear-gradient(90deg,transparent,rgba(23,241,215,.9),transparent);box-shadow:0 0 24px rgba(23,241,215,.8);opacity:0;animation:scan 2.6s var(--ease) .4s 1}
+@keyframes scan{0%{top:-6%;opacity:0}10%{opacity:1}90%{opacity:.6}100%{top:110%;opacity:0}}
+.hero .wrap{position:relative;z-index:1}
+.hero-ctas{display:flex;flex-wrap:wrap;gap:14px;margin:30px 0 64px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.stat{padding:22px 24px}
+.stat .v{font-size:clamp(26px,2.6vw,36px);font-weight:800;letter-spacing:-.03em;color:var(--teal);line-height:1;font-variant-numeric:tabular-nums}
+.stat .t{margin-top:10px;font-size:14px;color:var(--muted);line-height:1.45}
+
+/* Receive: asymmetric split */
+.split{display:grid;grid-template-columns:5fr 7fr;gap:48px;align-items:start}
+.checks{list-style:none;margin:26px 0 0;padding:0;display:grid;gap:14px}
+.checks li{display:grid;grid-template-columns:28px 1fr;gap:14px;align-items:start;font-size:16px;line-height:1.5}
+.checks svg{width:22px;height:22px;color:var(--teal);margin-top:2px}
+.feed{padding:22px 22px 18px}
+.feed-h{display:flex;justify-content:space-between;align-items:center;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.feed-h b{color:var(--teal);font-variant-numeric:tabular-nums}
+.raw{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:10px 12px;border-radius:10px;border:1px dashed rgba(23,241,215,.16);margin-bottom:8px;font-size:13px;color:var(--muted)}
+.raw .tag{font-size:11.5px;font-weight:700;letter-spacing:.04em;padding:4px 9px;border-radius:999px;border:1px solid var(--teal-line);color:var(--teal);white-space:nowrap}
+.raw .tag.t1{color:#ff8fa0;border-color:rgba(255,59,92,.45)}
+.raw .tag.drop{color:var(--muted-2);border-color:rgba(255,255,255,.12)}
+.raw.drop{opacity:.55}
+.raw.drop .k{text-decoration:line-through;text-decoration-color:rgba(255,255,255,.3)}
+.tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+.tier{padding:14px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid var(--teal-line)}
+.tier b{display:block;font-size:30px;font-weight:800;letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums}
+.tier span{display:block;margin-top:6px;font-size:12.5px;color:var(--muted)}
+.tier.t1 b{color:var(--red)} .tier.t2 b{color:var(--amber)} .tier.t3 b{color:var(--muted-2)}
+.feed-out{margin:16px 0 0;font-size:14px;color:var(--ink)}
+
+/* Reverse check: pinned */
+#reverse{padding:0}
+.rv{min-height:100vh;display:grid;grid-template-columns:4.3fr 7.7fr;gap:36px;align-items:center;padding:96px 0 48px}
+.rv .lead{font-size:16px;margin-bottom:4px}
+.caps{display:grid;gap:8px;margin-top:14px}
+.cap{display:grid;grid-template-columns:34px 1fr;gap:12px;align-items:start;padding:11px 14px;border-radius:14px;border:1px solid transparent;opacity:.38;transition:opacity .35s,border-color .35s,background .35s}
+.cap.on{opacity:1;border-color:rgba(23,241,215,.35);background:var(--teal-soft)}
+.cap i{font-style:normal;width:28px;height:28px;border-radius:8px;background:rgba(23,241,215,.12);color:var(--teal);font-weight:800;font-size:13px;display:grid;place-items:center}
+.cap p{margin:0;font-size:14px;line-height:1.45}
+@media (max-height:860px){ .rv h2{font-size:clamp(26px,3.2vw,40px)} .rv .lead{display:none} }
+.rv-stage{position:relative}
+.rv-stage svg{width:100%;height:auto;display:block;overflow:visible}
+.e{fill:none;stroke-width:1.8;stroke-linecap:round}
+.e.id{stroke:rgba(23,241,215,.65)} .e.acc{stroke:rgba(255,184,77,.75)} .e.bad{stroke:rgba(255,59,92,.9);stroke-width:2.2;filter:url(#rvglow)}
+.e.cut{stroke:rgba(255,255,255,.14)}
+.nb{fill:rgba(8,18,17,.94);stroke-width:1.5}
+.nb.src,.nb.id{stroke:var(--teal)} .nb.acc{stroke:var(--amber)} .nb.bad{stroke:var(--red)} .nb.fixed{stroke:var(--green)}
+.nl{font-size:17px;font-weight:700;fill:var(--ink);font-family:inherit}
+.ns{font-size:12.5px;fill:var(--muted);font-family:inherit}
+.cutx line{stroke:var(--red);stroke-width:2.4;stroke-linecap:round}
+.fixchip rect{fill:var(--green)} .fixchip text{font-size:11px;font-weight:800;fill:#03180f;font-family:inherit}
+.comet{fill:#bffff4;filter:url(#rvglow)}
+
+/* Full cycle */
+.proc{position:relative;margin-top:36px}
+.proc-line{position:absolute;left:0;right:0;top:22px;height:2px;background:linear-gradient(90deg,var(--teal),rgba(23,241,215,.35));transform-origin:left;transform:scaleX(1);box-shadow:0 0 14px rgba(23,241,215,.45)}
+.steps{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:14px;position:relative}
+.step{position:relative;padding-top:58px}
+.step .dot{position:absolute;top:12px;left:0;width:22px;height:22px;border-radius:50%;background:var(--bg);border:2px solid var(--teal);box-shadow:0 0 0 6px rgba(23,241,215,.08)}
+.step .dot::after{content:"";position:absolute;inset:5px;border-radius:50%;background:var(--teal)}
+.step b{display:block;font-size:15px;margin-bottom:6px}
+.step span{display:block;font-size:13px;color:var(--muted);line-height:1.45}
+.step .n{position:absolute;top:0;left:34px;font-size:11px;letter-spacing:.2em;color:var(--muted-2);font-weight:700}
+
+/* Services bento */
+.bento{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px;margin-top:36px}
+.tile{padding:28px}
+.tile.a{grid-column:span 4}
+.tile.b,.tile.c,.tile.d,.tile.e{grid-column:span 2}
+.tile .ic{width:44px;height:44px;border-radius:12px;background:var(--teal-soft);border:1px solid var(--teal-line);display:grid;place-items:center;color:var(--teal);margin-bottom:18px}
+.tile .ic svg{width:22px;height:22px}
+.tile p{margin:0;font-size:15px;color:var(--muted);line-height:1.5}
+.tile ul{margin:14px 0 0;padding:0;list-style:none;display:grid;gap:8px}
+.tile li{font-size:14px;color:var(--ink);padding-left:16px;position:relative}
+.tile li::before{content:"";position:absolute;left:0;top:9px;width:6px;height:6px;border-radius:50%;background:var(--teal)}
+.tile.e{background:linear-gradient(180deg,rgba(23,241,215,.12),rgba(5,25,24,.55))}
+
+/* What changes: index list */
+.rows{margin-top:30px;border-top:1px solid var(--teal-line)}
+.row{display:grid;grid-template-columns:1.1fr 1.4fr 1.6fr;gap:24px;padding:22px 0;border-bottom:1px solid rgba(23,241,215,.12);align-items:start}
+.row .c{font-weight:700;font-size:16px}
+.row .t{color:var(--muted-2);font-size:15px;line-height:1.5}
+.row .h{color:var(--ink);font-size:15px;line-height:1.5;position:relative;padding-left:18px}
+.row .h::before{content:"";position:absolute;left:0;top:10px;width:8px;height:8px;border-radius:50%;background:var(--teal);box-shadow:0 0 10px rgba(23,241,215,.8)}
+.rows-h{display:grid;grid-template-columns:1.1fr 1.4fr 1.6fr;gap:24px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-2);padding-bottom:12px}
+.rows-h .hh{color:var(--teal)}
+
+/* Proof */
+.proof{display:grid;grid-template-columns:7fr 5fr;gap:18px;align-items:stretch}
+.case p.big{font-size:clamp(18px,1.9vw,22px);font-weight:600;line-height:1.4;margin:0 0 14px}
+.bignum{display:flex;flex-direction:column;justify-content:center;gap:10px}
+.bignum .v{font-size:clamp(56px,7vw,96px);font-weight:800;letter-spacing:-.04em;color:var(--red);line-height:1;font-variant-numeric:tabular-nums}
+.pills{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:999px;border:1px solid var(--teal-line);background:rgba(255,255,255,.03);font-size:14px}
+.pill svg{width:16px;height:16px;color:var(--teal)}
+
+/* CTA */
+.cta{padding:48px;display:grid;grid-template-columns:1.4fr 1fr;gap:32px;align-items:center;background:linear-gradient(135deg,rgba(23,241,215,.14),rgba(5,25,24,.6) 60%)}
+.cta h2{margin-top:10px}
+.contacts{display:grid;gap:12px}
+.contacts a{display:flex;align-items:center;gap:12px;font-size:17px;font-weight:600;color:var(--ink);padding:14px 16px;border-radius:12px;border:1px solid var(--teal-line);background:rgba(3,8,7,.5);transition:border-color .3s,transform .3s var(--ease)}
+.contacts a:hover{border-color:var(--teal);transform:translateX(4px)}
+.contacts svg{width:20px;height:20px;color:var(--teal)}
+footer{padding:40px 0 48px;border-top:1px solid rgba(23,241,215,.12);color:var(--muted-2);font-size:13px}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;align-items:center}
+
+@media (max-width:1000px){
+  .steps{grid-template-columns:repeat(4,minmax(0,1fr));row-gap:28px}
+  .proc-line{display:none}
+  .tile.a{grid-column:span 6} .tile.b,.tile.c,.tile.d,.tile.e{grid-column:span 3}
+}
+@media (max-width:900px){
+  .nav{display:none}
+  .split,.rv,.proof,.cta{grid-template-columns:1fr}
+  .rv{min-height:0;padding-top:110px}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .row,.rows-h{grid-template-columns:1fr;gap:6px}
+  .rows-h .th{display:none}
+  .row .t::before{content:"Typical: ";color:var(--muted-2);font-weight:600}
+  section{padding:88px 0}
+  h1{max-width:none}
+}
+@media (max-width:640px){
+  .top{height:64px}
+  .top .btn{display:none}
+  .hm-logo{height:22px}
+  .feed-h{flex-wrap:wrap;gap:6px}
+  .feed-h b{white-space:nowrap}
+  .steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tile.b,.tile.c,.tile.d,.tile.e{grid-column:span 6}
+  .cta{padding:28px}
+  .hero{padding-top:110px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .scan{animation:none}
+  *{transition-duration:.01ms !important}
+}
+</style>
+</head>
+<body>
+<a href="/" style="position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:999;display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 14px;border-radius:999px;background:rgba(3,8,7,.85);border:1px solid rgba(23,241,215,.35);color:#eafffb;font:600 13px/1 Inter,-apple-system,Segoe UI,Roboto,Arial,sans-serif;text-decoration:none;backdrop-filter:blur(10px)">&larr; Back to Hirdman</a>
+
+<header class="top" id="top">
+  <div class="wrap">
+    <a href="#" aria-label="Hirdman">
+      <svg class="hm-logo" viewBox="0 0 942 181" aria-hidden="true"><g fill="currentColor"><path d="M175.949 0C175.949 0 173.222 15.7292 158.195 15.9271H127.757V71.8853L88.2347 85.3914L48.7128 71.8853V15.9271H18.2748C3.24728 15.7292 0.520576 0 0.520576 0C0.520576 0 -1.9304 14.7395 3.81407 28.1999C8.57814 39.3611 14.1081 43.5789 16.8349 45.3299V168.666L48.6975 181V82.7115L53.9671 104.273L88.2194 117.565L122.456 104.288L127.741 82.7115V102.247V180.086L159.604 167.905V45.3452C162.331 43.6093 167.861 39.3763 172.64 28.2151C178.384 14.7547 175.933 0.0152267 175.933 0.0152267L175.949 0Z"/><path d="M442.722 102.156C450.581 96.172 455.682 87.5536 455.682 77.9913C455.682 59.8106 437.621 44.9645 415.486 44.9645H369.469V134.711H398.16V110.896H415.93L432.826 134.711H465.884L442.722 102.156ZM415.915 90.5381H398.145V67.5153L392.339 64.8049H415.915C424.646 64.8049 431.647 70.5454 431.647 77.7324C431.647 84.9194 424.662 90.5381 415.915 90.5381Z"/><path d="M519.805 44.9493H479.318V134.696H519.805C549.952 134.696 574.416 114.596 574.416 89.8224C574.416 65.0485 549.952 44.9493 519.805 44.9493ZM519.959 111.49H507.872V71.7026L502.097 69.0075H519.959C534.235 69.0075 545.878 78.5851 545.878 90.1879C545.878 101.791 534.22 111.49 519.959 111.49Z"/><path d="M650.703 78.2197L606.141 44.9493H593.166V134.696H622.011V91.4517L616.42 84.5997L622.011 88.7413V88.7565L623.619 89.9442L650.703 110.043L677.694 89.792L679.011 88.8022L679.088 88.7413L679.241 88.6347L684.664 84.5997L679.241 91.2537V134.696H708.086V44.9493H695.126L650.703 78.2197Z"/><path d="M346.568 44.9493H317.876V134.696H346.568V44.9493Z"/><path d="M266.023 76.8949L248.238 81.9807L231.357 76.8949V44.9493H202.665V134.696H231.357V100.481L248.238 105.552L266.023 100.481V134.696H294.714V44.9493H266.023V76.8949Z"/><path d="M772.393 44.9493L721.413 134.696H750.105L756.661 122.971H801.376L808.07 134.696H836.762L785.353 44.9493H772.393ZM765.776 106.8L767.89 103.07L779.087 83.3511L790.163 103.1H770.616L765.791 106.8H765.776Z"/><path d="M913.309 44.9493V84.5997L917.261 90.5533L913.309 87.2948V87.31L861.609 44.9493H849.951V134.696H878.643V92.213L930.205 134.696H942V44.9493H913.309Z"/></g></svg>
+    </a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#receive">What you receive</a>
+      <a href="#reverse">Reverse check</a>
+      <a href="#cycle">Full cycle</a>
+      <a href="#services">Services</a>
+    </nav>
+    <a class="btn" href="#contact">Compare us on your data</a>
+  </div>
+</header>
+
+<main>
+
+<!-- 01 Hero -->
+<section class="hero" id="hero">
+  <div class="hero-bg" aria-hidden="true">
+    <div class="glow"></div>
+    <div class="hero-grid" id="heroGrid"></div>
+    <canvas id="net"></canvas>
+    <div class="scan"></div>
+  </div>
+  <div class="wrap">
+    <span class="kicker">Hirdman · Data Leak Intelligence</span>
+    <h1 id="h1">One leaked record. The whole attack path, closed.</h1>
+    <p class="lead" id="lead">Breach monitoring, reverse checks, attack-surface reconnaissance and brand protection, carried out end to end by Hirdman analysts. You receive verified findings and a plan that is ready to act on.</p>
+    <div class="hero-ctas">
+      <a class="btn" href="#contact">Compare us on your data
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+      </a>
+      <a class="btn ghost" href="#reverse">See a reverse check</a>
+    </div>
+    <div class="stats" id="stats">
+      <div class="card stat"><div class="v"><span class="num" data-count="2" data-prefix="1 to ">1 to 2</span> days</div><div class="t">to the first results after kickoff, often before the paperwork</div></div>
+      <div class="card stat"><div class="v">Every hour</div><div class="t">VIP accounts are checked: executives, administrators, engineers</div></div>
+      <div class="card stat"><div class="v"><span class="num" data-count="106" data-suffix="+ bn">106+ bn</span></div><div class="t">records in the breach corpus, every source validated before it reaches you</div></div>
+      <div class="card stat"><div class="v"><span class="num" data-count="500" data-prefix="300 to ">300 to 500</span></div><div class="t">new data points from one account in a reverse check, by our practice</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 What you receive -->
+<section id="receive">
+  <div class="wrap split">
+    <div>
+      <span class="kicker">What you receive</span>
+      <h2>We take the work on ourselves.</h2>
+      <p class="lead">Give us a domain. We search closed sources, verify every record, follow the links, rank the risk and tell you what to fix first. Nothing to configure and nothing to sort out on your side.</p>
+      <ul class="checks">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Every record verified: age, origin, and whether it is a repackaged old set or a generated one.</span></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Every finding with a decision: fix now, fix this week, or safe to defer.</span></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Confirmed risks reported at once through the channel you choose. The full report follows.</span></li>
+      </ul>
+    </div>
+    <div class="card feed" id="feed">
+      <div class="feed-h"><span>Raw feed, as vendors deliver it</span><b id="feedCount">6 records</b></div>
+      <div class="raw" data-verdict="t2"><span class="k mono">john.d@aceme.example : ********</span><span class="tag">Tier 2 · corporate</span></div>
+      <div class="raw" data-verdict="drop"><span class="k mono">john.d@aceme.example : ********  (second dump)</span><span class="tag drop">duplicate</span></div>
+      <div class="raw" data-verdict="drop"><span class="k mono">combo list, compilation of 2014</span><span class="tag drop">10+ years old</span></div>
+      <div class="raw" data-verdict="t1"><span class="k mono">infostealer log: session cookie, VPN config</span><span class="tag t1">Tier 1 · now</span></div>
+      <div class="raw" data-verdict="t1"><span class="k mono">admin : ********  (no e-mail)</span><span class="tag t1">Tier 1 · now</span></div>
+      <div class="raw" data-verdict="drop"><span class="k mono">"fresh 2025 breach", generated set</span><span class="tag drop">generated, dropped</span></div>
+      <div class="tiers">
+        <div class="tier t1"><b class="num" data-count="2">2</b><span>Tier 1: fix now</span></div>
+        <div class="tier t2"><b class="num" data-count="1">1</b><span>Tier 2: this week</span></div>
+        <div class="tier t3"><b class="num" data-count="3">3</b><span>Noise removed</span></div>
+      </div>
+      <p class="feed-out" id="feedOut">Six lines in, three decisions out. Each decision comes with the fix and the evidence.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 Reverse check (pinned on desktop) -->
+<section id="reverse">
+  <div class="wrap rv">
+    <div>
+      <span class="kicker">Reverse check</span>
+      <h2>From one record to every door it opens</h2>
+      <p class="lead">Scroll to follow one breached login through the rounds our analysts run.</p>
+      <div class="caps" id="caps">
+        <div class="cap on"><i>1</i><p>A breach lists one corporate login. The password was changed and the ticket closed. We take the identifiers out of the record: login, mailbox name, password pattern, unique domain.</p></div>
+        <div class="cap"><i>2</i><p>Round one: the same mailbox name turns up on a personal address and at a previous employer.</p></div>
+        <div class="cap"><i>3</i><p>Round two: a username that mutates by the same rule, and a shop registered with the work e-mail and the same password.</p></div>
+        <div class="cap"><i>4</i><p>Round three: the shop's password opens the corporate portal, and an admin login without e-mail appears. This is the path a monitoring feed never shows.</p></div>
+        <div class="cap"><i>5</i><p>Every link gets a fix and a priority: unique passwords, passkeys and a second factor on the portal, the admin account closed.</p></div>
+      </div>
+    </div>
+    <div class="rv-stage">
+      <svg id="rvSvg" viewBox="0 0 920 560" role="img" aria-label="Reverse check graph: from one corporate account to linked accounts and the corporate portal">
+        <defs>
+          <filter id="rvglow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <g id="rvEdges"></g>
+        <g id="rvNodes"></g>
+        <g id="rvMarks"></g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- 04 Full cycle -->
+<section id="cycle">
+  <div class="wrap">
+    <div class="sec-h">
+      <span class="kicker">Full cycle</span>
+      <h2>Every stage is ours.</h2>
+      <p class="lead">Monitoring and penetration testing cover two different doors. We watch both, and we stay on a case until the fix is confirmed.</p>
+    </div>
+    <div class="proc">
+      <div class="proc-line" id="procLine"></div>
+      <div class="steps" id="steps">
+        <div class="step"><span class="n">01</span><span class="dot"></span><b>Collect</b><span>Closed forums, infostealer logs and private sources, early in the data lifecycle.</span></div>
+        <div class="step"><span class="n">02</span><span class="dot"></span><b>Verify</b><span>Age, origin, duplicates. Generated and repackaged sets are filtered out.</span></div>
+        <div class="step"><span class="n">03</span><span class="dot"></span><b>Reverse check</b><span>Links across services, people and password patterns.</span></div>
+        <div class="step"><span class="n">04</span><span class="dot"></span><b>Reconnaissance</b><span>Domains, subdomains, open services, shadow IT, mobile apps.</span></div>
+        <div class="step"><span class="n">05</span><span class="dot"></span><b>Prioritize</b><span>Risk tiers weighted by account type, infostealer trace and password strength.</span></div>
+        <div class="step"><span class="n">06</span><span class="dot"></span><b>Notify</b><span>Confirmed risks reported at once. VIP accounts checked every hour.</span></div>
+        <div class="step"><span class="n">07</span><span class="dot"></span><b>Remediate and re-check</b><span>Fixes verified. Nothing is left on your desk.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 Services -->
+<section id="services">
+  <div class="wrap">
+    <div class="sec-h">
+      <span class="kicker">Services</span>
+      <h2>Four practices, one team.</h2>
+      <p class="lead">Offensive experience on every engagement: we look at your company the way an attacker does on day one, then close what we find.</p>
+    </div>
+    <div class="bento" id="bento">
+      <div class="card tile a">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19.07 4.93A10 10 0 0 0 6.99 3.34"/><path d="M4 6h.01"/><path d="M2.29 9.62A10 10 0 1 0 21.31 8.35"/><path d="M16.24 7.76A6 6 0 1 0 8.23 16.67"/><path d="M12 18h.01"/><path d="M17.99 11.66A6 6 0 0 1 15.77 16.67"/><circle cx="12" cy="12" r="2"/><path d="m13.41 10.59 5.66-5.66"/></svg></div>
+        <h3>Breach monitoring and brand protection</h3>
+        <p>The full cycle from the previous section, as a service. Closed sources, verified records, reverse checks, risk tiers and immediate notification.</p>
+        <ul>
+          <li>Lookalike domains and phishing sites, checked by evidence, not by spelling alone.</li>
+          <li>Fake mobile apps in third-party stores, taken apart to see what they change and where data goes.</li>
+          <li>Brand mentions in open and closed sources, including posts by former staff.</li>
+          <li>Takedown packages for registrars, app stores and lawyers: originals, hashes, timestamps, action log.</li>
+        </ul>
+      </div>
+      <div class="card tile b">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></div>
+        <h3>Penetration testing</h3>
+        <p>External perimeter, internal network, web and API, mobile. A report with real attack paths, proof of each, and a fix list in priority order. Banks, oil and gas, public sector.</p>
+      </div>
+      <div class="card tile c">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 18 6-6-6-6"/><path d="m8 6-6 6 6 6"/><path d="m14 4-4 16"/></svg></div>
+        <h3>Code analysis and reverse engineering</h3>
+        <p>Source review with commercial scanners and manual verification, binary and mobile-app internals, third-party software checked before rollout. Our engineers run reverse-engineering communities and work at machine-code level daily.</p>
+      </div>
+      <div class="card tile d">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <h3>People Risk Management</h3>
+        <p>Candidate screening within legal limits, insider-risk signals during employment, and monitoring after departure, when a former employee may still hold access or a grudge.</p>
+      </div>
+      <div class="card tile e">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><path d="M6 6h.01"/><path d="M6 18h.01"/></svg></div>
+        <h3>Your data stays with us</h3>
+        <p>Own servers and own models. Client data never passes through public AI services or third-party clouds. The database is reachable from nowhere public.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 What changes -->
+<section id="changes">
+  <div class="wrap">
+    <div class="sec-h">
+      <span class="kicker">What changes</span>
+      <h2>Decisions instead of a dump.</h2>
+      <p class="lead">We became clients of the services on the market and ran them on real data. This is where the outcome differs.</p>
+    </div>
+    <div class="rows-h"><span class="th">Criterion</span><span class="th">Typical outcome</span><span class="hh">With Hirdman</span></div>
+    <div class="rows" id="rows">
+      <div class="row"><div class="c">Data quality</div><div class="t">Unverified sets, often generated or repackaged.</div><div class="h">Every source validated by analysts. Noise never reaches your cabinet.</div></div>
+      <div class="row"><div class="c">Date of the breach</div><div class="t">The upload date is shown as the breach date.</div><div class="h">Source date and breach date kept apart, with a confidence level stated.</div></div>
+      <div class="row"><div class="c">Prioritization</div><div class="t">A list of records, sorted by the client.</div><div class="h">Risk tiers with a decision for each finding: now, this week, can wait.</div></div>
+      <div class="row"><div class="c">Notification</div><div class="t">Weekly batches, then weeks of back-and-forth.</div><div class="h">A confirmed risk is reported at once. VIP accounts are checked every hour.</div></div>
+      <div class="row"><div class="c">Dark web</div><div class="t">Public onion pages presented as closed sources.</div><div class="h">Closed forums and private sources. Data taken early, before it is repackaged.</div></div>
+      <div class="row"><div class="c">Scope and pricing</div><div class="t">Per-asset licences, export limits, paid modules.</div><div class="h">Scope agreed up front. No limits on the cabinet, exports or checks.</div></div>
+      <div class="row"><div class="c">Who does the work</div><div class="t">The client's team, from an alert.</div><div class="h">Hirdman analysts, from the domain to the confirmed fix.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 Proof -->
+<section id="proof">
+  <div class="wrap">
+    <div class="sec-h">
+      <span class="kicker">From a recent engagement</span>
+      <h2>No leaked password on the domain. Keys to production in a public file.</h2>
+    </div>
+    <div class="proof">
+      <div class="card case">
+        <p class="big">During attack-surface reconnaissance we found a UI development tool on two of the client's subdomains. Its version compiled the environment file into the public bundle: tokens for repositories, cloud roles, databases and storage.</p>
+        <p class="muted">The domain had no leaked e-mails or passwords, so a monitoring feed would have shown nothing. The vulnerability is rated low by CVSS (3.1), yet the file held live keys. One token confirmed repository access. The client was notified at once and rotation of every secret started right after.</p>
+        <div class="pills">
+          <span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Published with the client's permission</span>
+          <span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Company and domains anonymised</span>
+        </div>
+      </div>
+      <div class="card bignum">
+        <div class="v"><span class="num" data-count="120" data-suffix="+">120+</span></div>
+        <div class="muted">environment variables in one public file, over 700 across all bundles. Readable by anyone who opened the page.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 08 CTA -->
+<section id="contact">
+  <div class="wrap">
+    <div class="card cta">
+      <div>
+        <span class="kicker">Next step</span>
+        <h2>Compare us on your own data.</h2>
+        <p class="lead">Already using a monitoring service? With your permission we run your data through our process and show the difference side by side. Free, with no obligation. If we show nothing new, you have had an independent check of your current vendor.</p>
+      </div>
+      <div class="contacts">
+        <a href="mailto:info@hirdman.pro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>info@hirdman.pro</a>
+        <a href="https://hirdman.pro" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>hirdman.pro</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <svg class="hm-mark" viewBox="0 0 114 119" aria-hidden="true"><path fill="currentColor" d="M113.452 0.829651C113.452 0.829651 111.692 11.0704 102.038 11.201H82.4527V47.6498L57.0306 56.4448L31.6086 47.6498V11.201H12.0325C2.37881 11.0704 0.618539 0.829651 0.618539 0.829651C0.618539 0.829651 -0.95644 10.4362 2.74013 19.2033C5.80671 26.4688 9.36432 29.2202 11.1153 30.358V110.689L31.6086 118.719V54.7101L34.9994 68.7561L57.0214 77.4113L79.034 68.7561L82.4249 54.7007V67.4224V118.132L102.918 110.195V30.358C104.669 29.2202 108.227 26.4688 111.303 19.2033C114.999 10.4362 113.424 0.829651 113.424 0.829651H113.452Z"/></svg>
+    <span>Hirdman · Data Leak Intelligence. Names, logins and domains on this page are fictional examples.</span>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.1/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.1/ScrollTrigger.min.js"></script>
+<script>
+(() => {
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const hasGsap = typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined';
+  const $ = s => document.querySelector(s);
+  const $$ = s => [...document.querySelectorAll(s)];
+
+  /* ---------- Top bar ---------- */
+  const top = $('#top');
+  const onScroll = () => top.classList.toggle('solid', window.scrollY > 40);
+  onScroll();
+  addEventListener('scroll', onScroll, { passive: true });
+
+  /* ---------- Hero network (canvas) ---------- */
+  const canvas = $('#net'), ctx = canvas.getContext('2d');
+  const hero = $('#hero');
+  let W = 0, H = 0, dpr = 1, pts = [], mouse = { x: -1e4, y: -1e4 }, running = true, last = 0;
+  function resize() {
+    dpr = Math.min(2, devicePixelRatio || 1);
+    W = hero.clientWidth; H = hero.clientHeight;
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const n = Math.max(40, Math.min(120, Math.round(W * H / 13000)));
+    pts = Array.from({ length: n }, (_, i) => ({
+      x: Math.random() * W, y: Math.random() * H,
+      vx: (Math.random() - .5) * 14, vy: (Math.random() - .5) * 14,
+      r: 1.2 + Math.random() * 1.6, red: i % 23 === 0,
+    }));
+  }
+  function frame(now) {
+    if (!running) return;
+    const dt = Math.min(.05, (now - last) / 1000 || 0); last = now;
+    ctx.clearRect(0, 0, W, H);
+    const L = 130;
+    for (const p of pts) {
+      if (!reduced) {
+        const dx = mouse.x - p.x, dy = mouse.y - p.y, d2 = dx * dx + dy * dy;
+        if (d2 < 220 * 220) { p.vx += dx / 2200; p.vy += dy / 2200; }
+        p.x += p.vx * dt; p.y += p.vy * dt;
+        p.vx *= .995; p.vy *= .995;
+        if (p.x < -10) p.x = W + 10; if (p.x > W + 10) p.x = -10;
+        if (p.y < -10) p.y = H + 10; if (p.y > H + 10) p.y = -10;
+      }
+    }
+    for (let i = 0; i < pts.length; i++) {
+      const a = pts[i];
+      for (let j = i + 1; j < pts.length; j++) {
+        const b = pts[j], dx = a.x - b.x, dy = a.y - b.y, d = Math.hypot(dx, dy);
+        if (d < L) {
+          const al = (1 - d / L) * .32;
+          ctx.strokeStyle = (a.red || b.red) ? `rgba(255,59,92,${al})` : `rgba(23,241,215,${al})`;
+          ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+        }
+      }
+    }
+    for (const p of pts) {
+      ctx.fillStyle = p.red ? 'rgba(255,59,92,.9)' : 'rgba(23,241,215,.85)';
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill();
+    }
+    if (!reduced) requestAnimationFrame(frame);
+  }
+  resize();
+  addEventListener('resize', () => { resize(); if (reduced) frame(0); });
+  hero.addEventListener('pointermove', e => { const r = hero.getBoundingClientRect(); mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top; });
+  hero.addEventListener('pointerleave', () => { mouse.x = -1e4; mouse.y = -1e4; });
+  new IntersectionObserver(es => {
+    const vis = es[0].isIntersecting;
+    if (vis && !running) { running = true; last = performance.now(); requestAnimationFrame(frame); }
+    if (!vis) running = false;
+  }).observe(hero);
+  requestAnimationFrame(frame);
+
+  /* ---------- Word split for display type ---------- */
+  function splitWords(el) {
+    const words = el.textContent.trim().split(/\s+/);
+    el.textContent = '';
+    words.forEach((w, i) => {
+      const s = document.createElement('span'); s.className = 'w'; s.textContent = w;
+      el.append(s);
+      if (i < words.length - 1) el.append(' ');
+    });
+    return [...el.querySelectorAll('.w')];
+  }
+
+  /* ---------- Count-up ---------- */
+  function countUp(el, dur = 1.2) {
+    const to = +el.dataset.count, pre = el.dataset.prefix || '', suf = el.dataset.suffix || '';
+    if (!hasGsap || reduced) { el.textContent = pre + to + suf; return; }
+    const o = { v: 0 };
+    gsap.to(o, { v: to, duration: dur, ease: 'power2.out', onUpdate: () => { el.textContent = pre + Math.round(o.v) + suf; } });
+  }
+
+  /* ---------- Reverse check graph (data-driven SVG) ---------- */
+  const NS = 'http://www.w3.org/2000/svg';
+  const svgEl = (tag, attrs, parent) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.append(e); return e; };
+  const RV = {
+    src:    { x: 126, y: 290, w: 226, h: 84, k: 'src', l: 'Corporate account', s: 'login, password, sign-in site' },
+    login:  { x: 392, y: 110, w: 244, h: 56, k: 'id', l: 'John.D', s: 'login from the breach' },
+    mailp:  { x: 392, y: 220, w: 244, h: 56, k: 'id', l: 'john.d@', s: 'mailbox name before @' },
+    pass:   { x: 392, y: 330, w: 244, h: 56, k: 'id', l: 'SecretJohn1986!', s: 'password: name + year + symbol' },
+    dom:    { x: 392, y: 440, w: 244, h: 56, k: 'id', l: 'secretadminpanel.example', s: 'unique domain' },
+    mail:   { x: 775, y: 60,  w: 236, h: 52, k: 'acc', l: 'john.d@mail.example', s: 'personal mailbox' },
+    old:    { x: 775, y: 140, w: 236, h: 52, k: 'acc', l: 'john.d@old-aceme.example', s: 'previous employer' },
+    nick:   { x: 775, y: 220, w: 236, h: 52, k: 'acc', l: 'john_d87', s: 'username, same rule' },
+    shop:   { x: 775, y: 300, w: 236, h: 52, k: 'acc', l: 'shop-partner.example', s: 'same password, work e-mail' },
+    admin:  { x: 775, y: 380, w: 236, h: 52, k: 'bad', l: 'admin.aceme.example', s: 'admin login without e-mail' },
+    portal: { x: 560, y: 510, w: 236, h: 52, k: 'bad', l: 'portal.aceme.example', s: 'corporate portal' },
+  };
+  const STEPS = [
+    { nodes: ['src', 'login', 'mailp', 'pass', 'dom'], edges: [['src', 'login', 'id'], ['src', 'mailp', 'id'], ['src', 'pass', 'id'], ['src', 'dom', 'id']] },
+    { nodes: ['mail', 'old'], edges: [['mailp', 'mail', 'acc'], ['mailp', 'old', 'acc']] },
+    { nodes: ['nick', 'shop'], edges: [['login', 'nick', 'acc'], ['pass', 'shop', 'acc']] },
+    { nodes: ['admin', 'portal'], edges: [['dom', 'admin', 'bad'], { from: 'shop', to: 'portal', k: 'bad', d: 'M775 326 Q758 460 678 510' }] },
+    { nodes: [], edges: [], fix: ['shop', 'admin', 'portal'], cut: [['pass', 'shop']] },
+  ];
+  const gE = $('#rvEdges'), gN = $('#rvNodes'), gM = $('#rvMarks');
+  const ends = (a, b) => b.x > a.x ? [[a.x + a.w / 2, a.y], [b.x - b.w / 2, b.y]] : [[a.x - a.w / 2, a.y], [b.x + b.w / 2, b.y]];
+  const edgeEls = [], nodeEls = {}, stepEls = [];
+  STEPS.forEach((st, i) => {
+    const se = { edges: [], nodes: [], comets: [] };
+    st.edges.forEach(e => {
+      const from = Array.isArray(e) ? e[0] : e.from, to = Array.isArray(e) ? e[1] : e.to, k = Array.isArray(e) ? e[2] : e.k;
+      let d = e.d;
+      if (!d) { const [[x1, y1], [x2, y2]] = ends(RV[from], RV[to]); const mx = (x1 + x2) / 2; d = `M${x1} ${y1} C${mx} ${y1} ${mx} ${y2} ${x2} ${y2}`; }
+      const p = svgEl('path', { d, class: 'e ' + k, 'data-edge': from + '-' + to }, gE);
+      se.edges.push(p);
+      se.comets.push(svgEl('circle', { class: 'comet', r: 3.4, opacity: 0 }, gM));
+      edgeEls.push(p);
+    });
+    st.nodes.forEach(id => {
+      const n = RV[id];
+      const g = svgEl('g', { class: 'node', 'data-id': id }, gN);
+      svgEl('rect', { class: 'nb ' + n.k, x: n.x - n.w / 2, y: n.y - n.h / 2, width: n.w, height: n.h, rx: 14 }, g);
+      svgEl('text', { class: 'nl', x: n.x, y: n.y - 3, 'text-anchor': 'middle' }, g).textContent = n.l;
+      svgEl('text', { class: 'ns', x: n.x, y: n.y + 16, 'text-anchor': 'middle' }, g).textContent = n.s;
+      nodeEls[id] = g; se.nodes.push(g);
+    });
+    stepEls.push(se);
+  });
+  // Fix marks for the last step: cross on the reused-password edge, chips on fixed nodes
+  const fixMarks = [];
+  STEPS[4].cut.forEach(([a, b]) => {
+    const p = gE.querySelector(`[data-edge="${a}-${b}"]`);
+    const len = p.getTotalLength(), pt = p.getPointAtLength(len * .5);
+    const g = svgEl('g', { class: 'cutx', transform: `translate(${pt.x} ${pt.y})`, opacity: 0 }, gM);
+    svgEl('line', { x1: -7, y1: -7, x2: 7, y2: 7 }, g); svgEl('line', { x1: 7, y1: -7, x2: -7, y2: 7 }, g);
+    fixMarks.push({ el: g, edge: p });
+  });
+  const chips = STEPS[4].fix.map(id => {
+    const n = RV[id];
+    const g = svgEl('g', { class: 'fixchip', transform: `translate(${n.x + n.w / 2 - 10} ${n.y - n.h / 2 - 6})`, opacity: 0 }, gM);
+    svgEl('rect', { x: -58, y: -10, width: 60, height: 20, rx: 10 }, g);
+    svgEl('text', { x: -28, y: 4, 'text-anchor': 'middle' }, g).textContent = id === 'portal' ? '2FA on' : 'fixed';
+    return { el: g, node: nodeEls[id] };
+  });
+  const caps = $$('#caps .cap');
+
+  if (!hasGsap) {
+    // Library unavailable (offline attachment): the page shows its final states.
+    caps.forEach(c => c.classList.add('on'));
+    $$('.num').forEach(el => countUp(el));
+    return;
+  }
+
+  gsap.registerPlugin(ScrollTrigger);
+  const mm = gsap.matchMedia();
+
+  /* ---------- Hero entrance ---------- */
+  const h1w = splitWords($('#h1'));
+  if (!reduced) {
+    gsap.set('.hero .kicker, #lead, .hero-ctas, .stat', { autoAlpha: 0 });
+    const intro = gsap.timeline({ defaults: { ease: 'power3.out' } });
+    intro.to('.hero .kicker', { autoAlpha: 1, y: 0, duration: .6 }, .2)
+      .from(h1w, { y: 48, autoAlpha: 0, filter: 'blur(10px)', stagger: .07, duration: 1 }, .3)
+      .to('#lead', { autoAlpha: 1, y: 0, duration: .8 }, '-=.5')
+      .to('.hero-ctas', { autoAlpha: 1, duration: .6 }, '-=.5')
+      .to('.stat', { autoAlpha: 1, y: 0, stagger: .1, duration: .7, onStart: () => $$('#stats .num').forEach(el => countUp(el, 1.6)) }, '-=.3');
+    // Pointer parallax on the hero layers
+    const qx = gsap.quickTo('#heroGrid', 'x', { duration: .8, ease: 'power3' }), qy = gsap.quickTo('#heroGrid', 'y', { duration: .8, ease: 'power3' });
+    const gx = gsap.quickTo('.glow', 'x', { duration: 1.2, ease: 'power3' });
+    hero.addEventListener('pointermove', e => {
+      const r = hero.getBoundingClientRect(), nx = (e.clientX - r.left) / r.width - .5, ny = (e.clientY - r.top) / r.height - .5;
+      qx(nx * 18); qy(ny * 12); gx(nx * 40);
+    });
+  } else {
+    $$('#stats .num').forEach(el => countUp(el));
+  }
+
+  /* ---------- Section headings: word reveal on enter ---------- */
+  $$('section:not(.hero) h2').forEach(h => {
+    const words = splitWords(h);
+    if (reduced) return;
+    gsap.from(words, { y: 26, autoAlpha: 0, filter: 'blur(8px)', stagger: .045, duration: .8, ease: 'power3.out',
+      scrollTrigger: { trigger: h, start: 'top 85%', once: true } });
+  });
+
+  /* ---------- Raw feed becomes decisions ---------- */
+  {
+    const rows = $$('#feed .raw'), tags = $$('#feed .tag'), tiers = $$('#feed .tier');
+    if (reduced) {
+      rows.forEach(r => r.classList.toggle('drop', r.dataset.verdict === 'drop'));
+      $$('#feed .num').forEach(el => countUp(el));
+    } else {
+      gsap.set(tags, { autoAlpha: 0, scale: .6, transformOrigin: 'right center' });
+      gsap.set(tiers, { autoAlpha: 0, y: 12 });
+      gsap.set('#feedOut', { autoAlpha: 0 });
+      const tl = gsap.timeline({ scrollTrigger: { trigger: '#feed', start: 'top 70%', once: true }, defaults: { ease: 'power3.out' } });
+      tl.from(rows, { x: -26, autoAlpha: 0, stagger: .12, duration: .5 })
+        .to(tags, { autoAlpha: 1, scale: 1, stagger: .14, duration: .45, ease: 'back.out(1.8)' }, '+=.3')
+        .call(() => rows.forEach(r => { if (r.dataset.verdict === 'drop') r.classList.add('drop'); }), null, '-=.2')
+        .to(tiers, { autoAlpha: 1, y: 0, stagger: .1, duration: .5, onStart: () => $$('#feed .num').forEach(el => countUp(el, 1)) })
+        .to('#feedOut', { autoAlpha: 1, duration: .6 });
+    }
+  }
+
+  /* ---------- Reverse check: scroll-driven rounds ---------- */
+  edgeEls.forEach(p => { const L = p.getTotalLength(); p.style.strokeDasharray = L; p.style.strokeDashoffset = L; p.dataset.len = L; });
+  function buildReverse(pin) {
+    gsap.set(Object.values(nodeEls), { autoAlpha: 0, scale: .6, transformOrigin: '50% 50%' });
+    const tl = gsap.timeline({
+      defaults: { ease: 'none' },
+      scrollTrigger: pin
+        ? { trigger: '#reverse', start: 'top top', end: '+=2800', pin: true, scrub: 1, anticipatePin: 1 }
+        : { trigger: '.rv-stage', start: 'top 75%', end: 'bottom 45%', scrub: 1 },
+    });
+    stepEls.forEach((se, i) => {
+      tl.addLabel('s' + i);
+      tl.call(() => caps.forEach((c, k) => c.classList.toggle('on', k === i)));
+      se.edges.forEach((p, k) => {
+        const L = +p.dataset.len, comet = se.comets[k];
+        const pos = tl.duration();
+        tl.to(p, { strokeDashoffset: 0, duration: 1 }, pos + k * .35);
+        // comet rides the edge while it draws, then fades
+        const o = { t: 0 };
+        tl.to(o, { t: 1, duration: 1, onUpdate() { const pt = p.getPointAtLength(L * o.t); comet.setAttribute('cx', pt.x); comet.setAttribute('cy', pt.y); comet.setAttribute('opacity', o.t > 0 && o.t < 1 ? 1 : 0); } }, pos + k * .35);
+      });
+      if (se.nodes.length) tl.to(se.nodes, { autoAlpha: 1, scale: 1, duration: .6, stagger: .25, ease: 'back.out(1.7)' }, '<0.45');
+      if (STEPS[i].fix) {
+        fixMarks.forEach(m => { tl.to(m.edge, { opacity: .25, duration: .4 }); tl.to(m.el, { opacity: 1, duration: .3 }, '<'); });
+        chips.forEach(c => {
+          tl.to(c.node.querySelector('rect'), { stroke: '#43e39a', duration: .4 }, '<');
+          tl.to(c.el, { opacity: 1, duration: .3 }, '<0.1');
+        });
+      }
+      tl.to({}, { duration: .6 });
+    });
+    return tl;
+  }
+  mm.add({ desktop: '(min-width: 900px) and (prefers-reduced-motion: no-preference)', mobile: '(max-width: 899px) and (prefers-reduced-motion: no-preference)' }, ctx => {
+    buildReverse(ctx.conditions.desktop);
+  });
+  mm.add('(prefers-reduced-motion: reduce)', () => {
+    edgeEls.forEach(p => p.style.strokeDashoffset = 0);
+    gsap.set(Object.values(nodeEls), { autoAlpha: 1, scale: 1 });
+    caps.forEach(c => c.classList.add('on'));
+    fixMarks.forEach(m => { m.el.setAttribute('opacity', 1); m.edge.style.opacity = .25; });
+    chips.forEach(c => { c.el.setAttribute('opacity', 1); c.node.querySelector('rect').setAttribute('stroke', '#43e39a'); });
+  });
+
+  /* ---------- Full cycle line + steps ---------- */
+  if (!reduced) {
+    gsap.fromTo('#procLine', { scaleX: 0 }, { scaleX: 1, ease: 'none', scrollTrigger: { trigger: '#steps', start: 'top 70%', end: 'bottom 55%', scrub: 1 } });
+    gsap.from('#steps .step', { autoAlpha: .18, y: 14, stagger: .12, ease: 'none', scrollTrigger: { trigger: '#steps', start: 'top 72%', end: 'bottom 52%', scrub: 1 } });
+    gsap.from('#bento .tile', { y: 34, autoAlpha: 0, stagger: .09, duration: .8, ease: 'power3.out', scrollTrigger: { trigger: '#bento', start: 'top 78%', once: true } });
+    gsap.from('#rows .row', { x: -22, autoAlpha: 0, stagger: .08, duration: .6, ease: 'power3.out', scrollTrigger: { trigger: '#rows', start: 'top 80%', once: true } });
+    gsap.from('#proof .card', { y: 30, autoAlpha: 0, stagger: .12, duration: .8, ease: 'power3.out', scrollTrigger: { trigger: '#proof', start: 'top 75%', once: true } });
+    gsap.from('.cta', { y: 30, autoAlpha: 0, duration: .9, ease: 'power3.out', scrollTrigger: { trigger: '#contact', start: 'top 80%', once: true } });
+    ScrollTrigger.create({ trigger: '#proof', start: 'top 70%', once: true, onEnter: () => $$('#proof .num').forEach(el => countUp(el, 1.4)) });
+  } else {
+    $$('#proof .num').forEach(el => countUp(el));
+  }
+
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => ScrollTrigger.refresh());
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,920 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hirdman: Reverse Check Interactive Demo</title>
+<style>
+:root{
+  --bg:#050812;
+  --glass:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.015));
+  --stroke:rgba(255,255,255,.09);
+  --text:#eef2fa;
+  --muted:#8b97b3;
+  --teal:#17f1d7;
+  --violet:#8b7bff;
+  --amber:#ffb84d;
+  --red:#ff5c7a;
+  --green:#43e39a;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text)}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;min-height:100vh;
+}
+.wrap{max-width:1120px;margin:0 auto;padding:28px 16px 36px}
+
+/* ---------- stage ---------- */
+.stage{
+  position:relative;height:800px;overflow:hidden;border-radius:28px;
+  border:1px solid var(--stroke);
+  background:#060a16;
+  box-shadow:0 40px 120px -40px rgba(62,242,212,.18),0 0 0 1px rgba(255,255,255,.02) inset,inset 0 0 120px rgba(23,241,215,.06);
+  isolation:isolate;
+}
+.aurora{position:absolute;border-radius:50%;filter:blur(90px);opacity:.55;pointer-events:none;z-index:0}
+.aurora.a{width:520px;height:520px;background:radial-gradient(circle,#2a6df5,transparent 65%);left:-120px;top:-140px}
+.aurora.b{width:460px;height:460px;background:radial-gradient(circle,#8b7bff,transparent 65%);right:-120px;top:120px;opacity:.35}
+.aurora.c{width:420px;height:420px;background:radial-gradient(circle,#18c9ad,transparent 65%);left:30%;bottom:-200px;opacity:.28}
+.grid{
+  position:absolute;inset:-60px;z-index:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(23,241,215,.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(23,241,215,.05) 1px,transparent 1px);
+  background-size:44px 44px;
+  -webkit-mask-image:radial-gradient(ellipse at 50% 45%,#000 20%,transparent 75%);
+          mask-image:radial-gradient(ellipse at 50% 45%,#000 20%,transparent 75%);
+}
+.depth{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
+.vignette{
+  position:absolute;inset:0;z-index:4;pointer-events:none;opacity:0;
+  background:radial-gradient(ellipse at 50% 50%,rgba(255,59,92,0) 45%,rgba(255,59,92,.35) 100%);
+}
+.hm-logo{position:absolute;top:18px;left:18px;height:22px;width:auto;z-index:6;color:#eafffb;pointer-events:none}
+.veil{position:absolute;inset:0;background:var(--bg);pointer-events:none;z-index:20}
+
+/* ---------- captions ---------- */
+.cap{position:absolute;top:0;left:0;right:0;padding:34px 28px 0;text-align:center;z-index:5}
+.kicker{
+  display:inline-flex;align-items:center;gap:14px;
+  font-size:12px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--teal);
+}
+.kicker::before,.kicker::after{content:"";width:28px;height:1px;background:var(--teal);}
+.kicker i{font-style:normal;opacity:.7}
+h2{
+  margin:16px 0 0;font-size:clamp(24px,3.4vw,40px);font-weight:700;
+  letter-spacing:-.025em;line-height:1.12;
+  background:linear-gradient(180deg,#ffffff 30%,#aab6d3);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.cap p{margin:14px auto 0;max-width:760px;color:var(--muted);font-size:clamp(14px,1.5vw,17px);line-height:1.55;min-height:3.1em}
+/* Word spans: each word fades and rises on its own; the heading gradient moves onto the words so it fades with them */
+.cap .w{display:inline-block}
+.cap h2 .w{background:linear-gradient(180deg,#ffffff 30%,#aab6d3);-webkit-background-clip:text;background-clip:text}
+
+/* ---------- scene 1 ---------- */
+#s1{position:absolute;inset:0;z-index:5}
+.corner{position:relative}
+.corner::before{
+  content:"";position:absolute;top:0;left:0;width:36px;height:36px;pointer-events:none;
+  border-top:1px solid var(--teal);border-left:1px solid var(--teal);opacity:.5;
+  border-radius:22px 0 0 0;
+}
+.leak{
+  position:absolute;left:50%;top:54%;transform:translate(-50%,-46%);
+  width:min(470px,88%);padding:24px 24px 22px;border-radius:22px;
+  background:var(--glass);border:1px solid var(--stroke);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  box-shadow:0 1px 0 rgba(255,255,255,.07) inset,0 40px 80px -30px rgba(0,0,0,.8);
+}
+.tag{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.row{display:flex;justify-content:space-between;gap:12px;padding:13px 0;border-bottom:1px solid var(--stroke);font-size:15px}
+.row span{color:var(--muted)}
+.row code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:14px;color:var(--text)}
+.btn{
+  margin-top:20px;width:100%;height:48px;border-radius:14px;border:0;
+  font-family:inherit;font-size:15px;font-weight:600;color:#03201b;
+  background:linear-gradient(180deg,#17f1d7,#0fb8a3);
+  box-shadow:0 10px 30px -10px rgba(23,241,215,.6);pointer-events:none;
+  transition:transform .3s cubic-bezier(.16,1,.3,1),background .5s cubic-bezier(.16,1,.3,1),color .5s cubic-bezier(.16,1,.3,1);
+}
+.btn.pressed{transform:scale(.96)}
+.btn.done{background:linear-gradient(180deg,#1d3b35,#17302b);color:var(--green);box-shadow:none}
+.badge{
+  margin-top:14px;height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;gap:8px;
+  font-weight:600;color:var(--green);opacity:0;
+  background:rgba(67,227,154,.08);border:1px solid rgba(67,227,154,.3);
+}
+.def{
+  margin:14px auto 0;max-width:620px;font-size:clamp(14px,1.5vw,16px);line-height:1.5;color:var(--muted);
+}
+.compare{
+  position:absolute;left:18px;right:18px;bottom:40px;z-index:6;opacity:0;
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;
+}
+.cmp{padding:16px 18px;border-radius:16px;background:linear-gradient(180deg,rgba(22,30,54,.86),rgba(11,16,31,.82));border:1px solid var(--stroke)}
+.cmp-t{font-size:13px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.cmp-d{margin-top:8px;font-size:clamp(15px,1.8vw,18px);font-weight:500;line-height:1.4;color:var(--text)}
+.cmp-new{border-color:rgba(23,241,215,.45);}
+.cmp-new .cmp-t{color:var(--teal)}
+.cursor{position:absolute;left:0;top:0;width:24px;height:28px;transform-origin:0 0;opacity:0;z-index:12;pointer-events:none;filter:drop-shadow(0 4px 8px rgba(0,0,0,.6))}
+
+/* ---------- graph ---------- */
+.graph{position:absolute;left:0;right:0;top:206px;height:440px;z-index:3;transform-origin:50% 0;perspective:1200px}
+.stage-pause{
+  position:absolute;top:18px;right:18px;z-index:30;height:36px;padding:0 16px;border-radius:999px;
+  display:flex;align-items:center;gap:8px;cursor:pointer;
+  font:inherit;font-size:13px;font-weight:600;color:var(--text);
+  background:rgba(10,16,30,.7);border:1px solid var(--stroke);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+}
+.stage-pause:hover{border-color:rgba(23,241,215,.45)}
+.stage-pause:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.stage-pause i{font-style:normal;letter-spacing:-.1em;color:var(--teal)}
+#graph{width:100%;height:100%;display:block;overflow:visible;transform-origin:50% 50%}
+.edge{fill:none;stroke-width:1.6;stroke-linecap:round}
+.edge.base{stroke:rgba(139,151,179,.38)}
+.edge.warn{stroke:rgba(255,184,77,.65)}
+.edge.cut{stroke:rgba(139,151,179,.22)}
+.edge.path{stroke:var(--red);stroke-width:2.6;filter:url(#glow)}
+.flow{filter:url(#glow)}
+.elabel{font-size:12px;fill:#aab5cf;paint-order:stroke;stroke:#060a16;stroke-width:6px;stroke-linejoin:round;letter-spacing:.01em}
+.cutx line{stroke:var(--red);stroke-width:2.4;stroke-linecap:round}
+.burst{fill:none;stroke:var(--red);stroke-width:1.4}
+.nburst{fill:none;stroke:var(--teal);stroke-width:1.2}
+.comet{fill:var(--teal);filter:url(#glow)}
+.fixck circle{fill:rgba(12,17,32,.95);stroke:#43e39a;stroke-width:1.2}
+.fixck path{fill:none;stroke:#43e39a;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.ring{fill:none;stroke:var(--teal);stroke-width:1}
+.pulse{fill:#ffd0da;filter:url(#glow)}
+.halo{fill:var(--red);opacity:.25;filter:blur(6px)}
+.nbox{fill:rgba(12,17,32,.88);stroke-width:1.4}
+.s-hub{stroke:var(--teal)} .s-corp{stroke:#b8c6e4} .s-risk{stroke:var(--amber)}
+.s-priv{stroke:var(--red)} .s-danger{stroke:var(--red)} .s-safe{stroke:var(--green)}
+.ndot{stroke:none}
+.d-corp{fill:#b8c6e4}.d-risk{fill:var(--amber)}.d-priv{fill:var(--red)}.d-danger{fill:var(--red)}.d-safe{fill:var(--green)}
+.nlabel{font-size:14.5px;font-weight:600;fill:var(--text)}
+.nsub{font-size:11.5px;fill:var(--muted)}
+.hublabel{font-size:15px;font-weight:700;fill:var(--text)}
+.hubsub{font-size:11.5px;fill:var(--muted)}
+.mfabg{fill:var(--green)} .mfatx{font-size:11px;font-weight:700;fill:#03180f}
+.counter{
+  position:absolute;left:28px;bottom:24px;z-index:6;font-size:14px;color:var(--muted);opacity:0;
+  display:flex;align-items:center;gap:10px;
+}
+.cycle{stroke:var(--red);stroke-width:1.8;stroke-dasharray:6 8;stroke-linecap:round;opacity:.9}
+.cycle-lbl{font-size:12px;font-weight:600;fill:#ff8fa0;paint-order:stroke;stroke:#060a16;stroke-width:6px;stroke-linejoin:round}
+.counter b{
+  display:inline-grid;place-items:center;min-width:34px;height:28px;padding:0 8px;border-radius:9px;
+  color:var(--teal);font-weight:700;background:rgba(62,242,212,.09);border:1px solid rgba(62,242,212,.25);
+  font-variant-numeric:tabular-nums;
+}
+
+/* ---------- scene 4 ---------- */
+.cards{position:absolute;left:18px;right:18px;bottom:64px;z-index:8;display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.card{
+  padding:16px 18px 18px;border-radius:18px;opacity:0;
+  transition:border-color .4s cubic-bezier(.16,1,.3,1);
+  background:linear-gradient(180deg,rgba(22,30,54,.86),rgba(11,16,31,.82));border:1px solid var(--stroke);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  box-shadow:0 1px 0 rgba(255,255,255,.06) inset,0 30px 60px -30px rgba(0,0,0,.8);
+}
+.num{
+  width:28px;height:28px;border-radius:9px;display:grid;place-items:center;
+  font-size:13px;font-weight:700;color:#03201b;background:linear-gradient(180deg,#6ff7df,#2fd9bd);
+}
+.card h3{margin:12px 0 6px;font-size:16.5px;font-weight:650;letter-spacing:-.01em}
+.card p{margin:0;font-size:13.5px;color:var(--muted);line-height:1.5}
+.values{
+  position:absolute;left:18px;right:18px;bottom:16px;z-index:8;opacity:0;
+  display:flex;flex-wrap:wrap;gap:8px;justify-content:center;
+}
+.pill{font-size:13px;padding:8px 14px;border-radius:999px;color:var(--text);background:rgba(255,255,255,.05);border:1px solid var(--stroke)}
+.pill b{color:var(--teal);font-weight:600}
+
+/* ---------- controls ---------- */
+.controls{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:16px}
+.ctl{
+  height:38px;padding:0 16px;border-radius:12px;border:1px solid var(--stroke);
+  background:rgba(255,255,255,.04);color:var(--text);font:inherit;font-size:14px;cursor:pointer;
+}
+.ctl:hover{background:rgba(255,255,255,.08)}
+#scrub{flex:1;min-width:160px;accent-color:var(--teal)}
+#time{font-variant-numeric:tabular-nums;font-size:14px;color:var(--muted)}
+.jumps{display:flex;gap:8px;flex-wrap:wrap}
+.jumps .ctl{height:34px;font-size:13px}
+.transcript{margin-top:28px;padding:0 4px}
+.transcript h2{font-size:20px;margin:0 0 12px;color:var(--text);background:none;-webkit-text-fill-color:initial}
+.transcript ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.transcript h3{margin:0 0 6px;font-size:15px;color:var(--teal);font-weight:600}
+.transcript p{margin:0;font-size:14px;line-height:1.6;color:var(--muted)}
+.note{margin:14px 0 0;font-size:12.5px;color:var(--muted);line-height:1.5}
+
+@media (max-width:720px){
+  .stage{height:1340px}
+  .graph{top:320px;height:380px}
+  .hm-logo{height:16px;top:12px}
+  .cards{grid-template-columns:1fr;gap:10px;bottom:175px}
+  .card{padding:12px 16px}
+  .card p{font-size:13px}
+  .values{bottom:16px}
+  .counter{top:288px;bottom:auto;left:18px}
+  .transcript ol{grid-template-columns:1fr}
+  .compare{grid-template-columns:1fr;bottom:16px}
+}
+@media (prefers-reduced-motion:reduce){ .aurora{filter:none} }
+.presenter{
+  margin-top:18px;position:sticky;bottom:10px;z-index:40;padding:6px 0 0;
+  background:linear-gradient(180deg,rgba(5,8,18,0),var(--bg) 14px);
+}
+.callout{
+  padding:14px 20px;min-height:96px;border-radius:18px;
+  background:linear-gradient(180deg,rgba(22,30,54,.86),rgba(11,16,31,.82));
+  border:1px solid rgba(23,241,215,.35);
+}
+.co-top{display:flex;align-items:baseline;flex-wrap:wrap;gap:12px}
+.co-n{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.co-mark{height:18px;width:auto;flex:none;align-self:center;color:var(--teal)}
+.co-t{font-size:18px;font-weight:700;color:var(--teal)}
+.co-x{margin:8px 0 0;font-size:clamp(14px,1.6vw,16px);line-height:1.55;color:var(--text)}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:14px}
+.chapters{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.chap{
+  height:36px;padding:0 14px;border-radius:12px;cursor:pointer;
+  font:inherit;font-size:13px;font-weight:600;color:var(--text);
+  background:rgba(255,255,255,.04);border:1px solid var(--stroke);
+}
+.chap:hover{background:rgba(255,255,255,.08)}
+.chap.on{color:var(--teal);border-color:rgba(23,241,215,.6);background:rgba(23,241,215,.08)}
+.btn-next{
+  height:40px;padding:0 22px;border-radius:12px;border:0;cursor:pointer;
+  font:inherit;font-size:15px;font-weight:600;color:#03201b;
+  background:linear-gradient(180deg,#17f1d7,#0fb8a3);
+}
+#prev:disabled{opacity:.4;cursor:default}
+@media (max-width:720px){ .nav{flex-wrap:wrap} .chapters{order:3;width:100%} }
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:18px;align-items:start}
+.main{min-width:0}
+.intel{
+  position:sticky;top:16px;padding:18px;border-radius:20px;
+  background:linear-gradient(180deg,rgba(22,30,54,.86),rgba(11,16,31,.82));
+  border:1px solid var(--stroke);
+  max-height:calc(100vh - 32px);overflow:auto;
+}
+.intel-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.intel-h span,.intel-s span{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.intel-h b{font-size:34px;line-height:1;color:var(--teal);font-variant-numeric:tabular-nums}
+.intel-s{display:flex;align-items:baseline;justify-content:space-between;margin-top:10px;padding-bottom:10px;border-bottom:1px solid var(--stroke)}
+.intel-s b{font-size:18px;color:var(--text);font-variant-numeric:tabular-nums}
+.intel-note{margin-top:10px;font-size:12px;line-height:1.5;color:var(--muted)}
+.feed{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:8px}
+.feed-i{padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.035);border:1px solid var(--stroke)}
+.feed-i.pat{border-color:rgba(255,184,77,.35)}
+.feed-i .w{float:right;font-size:13px;font-weight:700;color:var(--teal);font-variant-numeric:tabular-nums}
+.feed-i.pat .w{color:var(--amber)}
+.feed-i .t{font-size:13.5px;font-weight:600;color:var(--text)}
+.feed-i .s{margin-top:3px;font-size:12px;line-height:1.4;color:var(--muted);overflow-wrap:anywhere}
+@media (max-width:980px){
+  .layout{grid-template-columns:1fr}
+  .intel{position:static;max-height:none}
+}
+.counter{display:none}
+/* Keyboard focus is always visible; motion respects the system setting */
+:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;scroll-behavior:auto !important}
+}
+</style>
+
+</head>
+<body>
+<a href="/" style="position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:999;display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 14px;border-radius:999px;background:rgba(3,8,7,.85);border:1px solid rgba(23,241,215,.35);color:#eafffb;font:600 13px/1 Inter,-apple-system,Segoe UI,Roboto,Arial,sans-serif;text-decoration:none;backdrop-filter:blur(10px)">&larr; Back to Hirdman</a>
+<div class="wrap">
+  <div class="layout">
+  <div class="main">
+  <div class="stage" id="stage">
+    <div class="aurora a" id="auA"></div>
+    <div class="aurora b" id="auB"></div>
+    <div class="aurora c" id="auC"></div>
+    <div class="grid" id="grid"></div>
+    <canvas class="depth" id="depth" aria-hidden="true"></canvas>
+
+    <section id="s1">
+      <div class="cap">
+        <span class="kicker"><i>01</i> Hirdman · Leak</span>
+        <h2>The compromised password was changed. Is the risk closed?</h2>
+        <p class="def">A reverse check is a search for all accounts linked to one breach, by address, login, nickname or password.</p>
+      </div>
+      <div class="leak corner">
+        <div class="tag">Record from a breach</div>
+        <div class="row"><span>Login</span><code>john.d@aceme.example</code></div>
+        <div class="row"><span>Password</span><code id="pwd">••••••••••••</code></div>
+        <div class="row"><span>Source</span><code>third-party storage</code></div>
+        <button class="btn" id="btn" type="button" tabindex="-1">Change password</button>
+        <div class="badge" id="badge"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Risk closed</div>
+      </div>
+      <div class="compare" id="compare">
+        <div class="cmp cmp-old">
+          <div class="cmp-t">Standard check</div>
+          <div class="cmp-d">One password compromised → it was replaced → "risk closed"</div>
+        </div>
+        <div class="cmp cmp-new">
+          <div class="cmp-t">Reverse check</div>
+          <div class="cmp-d">One password compromised → it reveals all linked accounts → a path to the company portal</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="cap" id="cap2" style="opacity:0">
+      <span class="kicker"><i>02</i> Links</span>
+      <h2>Reverse check: from one record to its links</h2>
+      <p id="sub2"></p>
+    </div>
+    <div class="cap" id="cap3" style="opacity:0">
+      <span class="kicker"><i>03</i> Hidden route</span>
+      <h2>A route that a standard check does not show</h2>
+      <p>An employee moved on from a previous job and signed up at a shop with their work email and the same password. The shop was breached: the password worked on the portal.</p>
+    </div>
+    <div class="cap" id="cap4" style="opacity:0">
+      <span class="kicker"><i>04</i> Defence</span>
+      <h2>What to fix first and whom to protect</h2>
+      <p>The passwords were changed and the incident was closed. But breached databases end up on forums, and new attackers run the reverse check again and come back into the company.</p>
+    </div>
+
+    <div class="graph">
+      <svg id="graph" viewBox="0 0 1000 480" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Graph of linked accounts">
+        <defs>
+          <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur stdDeviation="3.2" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <radialGradient id="orb" cx="40%" cy="35%" r="70%">
+            <stop offset="0" stop-color="#b8fff4"/>
+            <stop offset=".55" stop-color="#17f1d7"/>
+            <stop offset="1" stop-color="#0f5f58"/>
+          </radialGradient>
+        </defs>
+        <g id="cam">
+          <g id="edges"></g>
+          <circle class="ring" id="ring" cx="500" cy="240" r="0" opacity="0"></circle>
+          <circle class="pulse" id="pulse" r="5" cx="0" cy="0" opacity="0"></circle>
+          <path class="cycle" id="cycle" d="M800 470 Q650 560 515 272" fill="none" opacity="0"></path>
+          <text class="cycle-lbl" id="cycleLabel" x="650" y="552" text-anchor="middle" opacity="0">return to the company: new round</text>
+          <g id="bursts"></g>
+          <g id="nodes"></g>
+        </g>
+      </svg>
+    </div>
+
+    <div class="vignette" id="vignette" aria-hidden="true"></div>
+    <svg class="hm-logo" viewBox="0 0 942 181" role="img" aria-label="Hirdman"><g fill="currentColor"><path d="M175.949 0C175.949 0 173.222 15.7292 158.195 15.9271H127.757V71.8853L88.2347 85.3914L48.7128 71.8853V15.9271H18.2748C3.24728 15.7292 0.520576 0 0.520576 0C0.520576 0 -1.9304 14.7395 3.81407 28.1999C8.57814 39.3611 14.1081 43.5789 16.8349 45.3299V168.666L48.6975 181V82.7115L53.9671 104.273L88.2194 117.565L122.456 104.288L127.741 82.7115V102.247V180.086L159.604 167.905V45.3452C162.331 43.6093 167.861 39.3763 172.64 28.2151C178.384 14.7547 175.933 0.0152267 175.933 0.0152267L175.949 0Z"/><path d="M442.722 102.156C450.581 96.172 455.682 87.5536 455.682 77.9913C455.682 59.8106 437.621 44.9645 415.486 44.9645H369.469V134.711H398.16V110.896H415.93L432.826 134.711H465.884L442.722 102.156ZM415.915 90.5381H398.145V67.5153L392.339 64.8049H415.915C424.646 64.8049 431.647 70.5454 431.647 77.7324C431.647 84.9194 424.662 90.5381 415.915 90.5381Z"/><path d="M519.805 44.9493H479.318V134.696H519.805C549.952 134.696 574.416 114.596 574.416 89.8224C574.416 65.0485 549.952 44.9493 519.805 44.9493ZM519.959 111.49H507.872V71.7026L502.097 69.0075H519.959C534.235 69.0075 545.878 78.5851 545.878 90.1879C545.878 101.791 534.22 111.49 519.959 111.49Z"/><path d="M650.703 78.2197L606.141 44.9493H593.166V134.696H622.011V91.4517L616.42 84.5997L622.011 88.7413V88.7565L623.619 89.9442L650.703 110.043L677.694 89.792L679.011 88.8022L679.088 88.7413L679.241 88.6347L684.664 84.5997L679.241 91.2537V134.696H708.086V44.9493H695.126L650.703 78.2197Z"/><path d="M346.568 44.9493H317.876V134.696H346.568V44.9493Z"/><path d="M266.023 76.8949L248.238 81.9807L231.357 76.8949V44.9493H202.665V134.696H231.357V100.481L248.238 105.552L266.023 100.481V134.696H294.714V44.9493H266.023V76.8949Z"/><path d="M772.393 44.9493L721.413 134.696H750.105L756.661 122.971H801.376L808.07 134.696H836.762L785.353 44.9493H772.393ZM765.776 106.8L767.89 103.07L779.087 83.3511L790.163 103.1H770.616L765.791 106.8H765.776Z"/><path d="M913.309 44.9493V84.5997L917.261 90.5533L913.309 87.2948V87.31L861.609 44.9493H849.951V134.696H878.643V92.213L930.205 134.696H942V44.9493H913.309Z"/></g></svg>
+
+    <div class="counter" id="counter" aria-live="polite"><span>Accounts</span><b id="count">0</b><span>new data ≈</span><b id="data">0</b></div>
+
+    <div class="cards">
+      <div class="card corner" data-at="40"><div class="num">1</div><h3>Stop password reuse</h3><p>Changing it is not enough: use a unique password for every service. A variant of the old pattern will end up in a dictionary again.</p></div>
+      <div class="card corner" data-at="41.5"><div class="num">2</div><h3>Second factor and passkeys</h3><p>Passkeys and a second factor on the portal and admin logins. A matching password will not open the login, and session theft is limited by short session lifetimes and device binding.</p></div>
+      <div class="card corner" data-at="43"><div class="num">3</div><h3>Close the account</h3><p>The admin and test accounts, and accounts from the previous job: disable them or bring them under control before the next round.</p></div>
+    </div>
+    <div class="values" id="values">
+      <span class="pill"><b>Attribution</b>: we link one person's accounts</span>
+      <span class="pill"><b>Smaller blast radius</b>: the path breaks off sooner</span>
+      <span class="pill"><b>Priority</b>: what to fix first</span>
+    </div>
+
+    <svg class="cursor" id="cursor" viewBox="0 0 24 28" aria-hidden="true">
+      <path d="M2 2 L2 21 L7 16.4 L10.4 24.6 L13.6 23.2 L10.2 15.2 L17.6 15.2 Z" fill="#ffffff" stroke="#050812" stroke-width="1.5" stroke-linejoin="round"/>
+    </svg>
+
+    <div class="veil" id="veil"></div>
+  </div>
+
+
+  <section class="presenter" aria-label="Demo steps">
+    <div class="callout" aria-live="polite">
+      <div class="co-top"><svg class="hm-mark co-mark" viewBox="0 0 114 119" aria-hidden="true"><path fill="currentColor" d="M113.452 0.829651C113.452 0.829651 111.692 11.0704 102.038 11.201H82.4527V47.6498L57.0306 56.4448L31.6086 47.6498V11.201H12.0325C2.37881 11.0704 0.618539 0.829651 0.618539 0.829651C0.618539 0.829651 -0.95644 10.4362 2.74013 19.2033C5.80671 26.4688 9.36432 29.2202 11.1153 30.358V110.689L31.6086 118.719V54.7101L34.9994 68.7561L57.0214 77.4113L79.034 68.7561L82.4249 54.7007V67.4224V118.132L102.918 110.195V30.358C104.669 29.2202 108.227 26.4688 111.303 19.2033C114.999 10.4362 113.424 0.829651 113.424 0.829651H113.452Z"/></svg><span class="co-n" id="coN"></span><span class="co-t" id="coT"></span></div>
+      <p class="co-x" id="coX"></p>
+    </div>
+    <div class="nav">
+      <button class="ctl" id="prev" type="button">Back</button>
+      <div class="chapters" id="chapters"></div>
+      <button class="btn-next" id="next" type="button">Next</button>
+    </div>
+  </section>
+  </div>
+  <aside class="intel" aria-label="Data collected">
+    <div class="intel-h"><span>Data collected</span><b id="dataSum">0</b></div>
+    <div class="intel-s"><span>Accounts found</span><b id="dataAcc">0</b></div>
+    <p class="intel-note">Illustrative units. Practical benchmark: 300 to 500 new data points from one account.</p>
+    <ul class="feed" id="feed"></ul>
+  </aside>
+  </div>
+
+
+  <section class="transcript" aria-labelledby="tr-title">
+    <h2 id="tr-title">Text version</h2>
+    <ol>
+      <li>
+        <h3>01. Leak</h3>
+        <p>The breach contains a record with the login john.d@aceme.example and a password that the attacker now knows. The password was changed, and the incident is marked closed. But only one address was checked, and the password is known to more than the company.</p>
+      </li>
+      <li>
+        <h3>02. Links</h3>
+        <p>From one identifier (an address, a login or a nickname), a reverse check opens new accounts: a previous workplace, a personal mailbox, forum accounts. The nickname mutates along the same pattern: john_d, john_d87, johndoe_2025. One account yields 300 to 500 new data points. If the computer has an infostealer, sessions and site assets are taken from the account, and the reverse check reveals even more links.</p>
+        <p>The age of a password does not matter. A password a person has used for years, or a predictable variant such as "2025!", is cracked quickly by rule-based brute-force tools. We see this scenario from incident to incident.</p>
+      </li>
+      <li>
+        <h3>03. Hidden route</h3>
+        <p>An employee moved on from a previous job and signed up at an online shop with their work email and the same password. The shop was breached, and the password worked on the corporate portal. A standard breach check will not show this route. The same happens with vendors: an account on a service created for a company task, for example to buy cloud hosting, is linked to the company even without the company's email in the registration. The compromise happens at the vendor, not on the main domain.</p>
+      </li>
+      <li>
+        <h3>04. Defence</h3>
+        <p>The passwords were changed and the incident was closed. But breached databases end up on forums, and new attackers run the reverse check again and come back into the company. A company usually closes what it knows about: corporate email and known access. Personal notes that mention the company stay open, and an attacker returns through them.</p>
+        <p>A one-time code does not help if the attacker is already working with an issued session. Phishing-resistant sign-in methods (passkeys), short session lifetimes and device binding protect against this.</p>
+        <p>What to do: a unique password for every service; passkeys and a second factor on the portal and admin logins; disable or bring under control the forgotten admin and test accounts and accounts from the previous job.</p>
+      </li>
+    </ol>
+  </section>
+
+  <p class="note">Illustration. Domains, logins and passwords are fictional (aceme example). "300 to 500 new data points from one account" is a practical benchmark from investigations, not a measurement of a specific service.</p>
+</div>
+
+<script>
+(() => {
+  const T_END = 52;
+  const NS = 'http://www.w3.org/2000/svg';
+  const $ = s => document.querySelector(s);
+
+  const stage = $('#stage'), cam = $('#cam'), edgesG = $('#edges'), nodesG = $('#nodes');
+  const ring = $('#ring'), pulse = $('#pulse'), cursor = $('#cursor'), btn = $('#btn');
+  const badge = $('#badge'), pwd = $('#pwd'), question = $('#compare'), s1 = $('#s1');
+  const cap2 = $('#cap2'), sub2 = $('#sub2'), cap3 = $('#cap3'), cap4 = $('#cap4');
+  const graphBox = $('.graph');
+  const counter = $('#counter'), countEl = $('#count'), dataEl = $('#data'), values = $('#values'), veil = $('#veil'), grid = $('#grid');
+  const cyc = $('#cycle'), cycLbl = $('#cycleLabel');
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const motion = reduced ? 0 : 1;
+  const auA = $('#auA'), auB = $('#auB'), auC = $('#auC');
+  const cards = [...document.querySelectorAll('.card')];
+  const graphSvg = $('#graph'), burstsG = $('#bursts'), vignette = $('#vignette');
+
+  const clamp01 = x => Math.min(1, Math.max(0, x));
+  const prog = (t, a, d) => clamp01((t - a) / d);
+  const ss = x => x * x * (3 - 2 * x);
+  const lerp = (a, b, k) => a + (b - a) * k;
+  const fade = (t, a, b, fi = 0.5, fo = 0.5) => clamp01((t - a) / fi) * clamp01((b - t) / fo);
+  const easeOut = x => 1 - Math.pow(1 - x, 3);
+  const easeBack = x => { const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); };
+  function track(t, keys) {
+    if (t <= keys[0][0]) return keys[0][1];
+    for (let i = 0; i < keys.length - 1; i++) {
+      const [t0, v0] = keys[i], [t1, v1] = keys[i + 1];
+      if (t <= t1) return lerp(v0, v1, ss((t - t0) / (t1 - t0)));
+    }
+    return keys[keys.length - 1][1];
+  }
+  const setText = (node, s) => { if (node.textContent !== s) node.textContent = s; };
+  function el(tag, attrs, parent) {
+    const e = document.createElementNS(NS, tag);
+    for (const k in attrs) e.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+  const clampAbs = (x, m) => Math.max(-m, Math.min(m, x));
+
+  // Caption words: headings and paragraphs are split into word spans so the text can arrive with a stagger.
+  function splitWords(node, text = node.textContent) {
+    node.textContent = '';
+    node._w = text.trim().split(/\s+/).filter(Boolean).map((word, i) => {
+      if (i) node.appendChild(document.createTextNode(' '));
+      const w = document.createElement('span');
+      w.className = 'w';
+      w.textContent = word;
+      node.appendChild(w);
+      return w;
+    });
+    node._text = text;
+    node._st = -1;
+    if (node.tagName === 'H2') node.style.background = 'none'; // the gradient now lives on the words (see .cap h2 .w)
+    return node;
+  }
+  const setWords = (node, s) => { if (node._text !== s) splitWords(node, s); };
+  const SUB2_AT = 15.6;
+  const CAPS = [
+    { el: $('#s1 .cap'), start: 0 },
+    { el: cap2, start: 9.8 },
+    { el: cap3, start: 27.4 },
+    { el: cap4, start: 38.4 },
+  ].map(c => ({ ...c, parts: [...c.el.querySelectorAll('h2, p')].map(n => splitWords(n)) }));
+
+  // Depth: two particle layers on one canvas. Seeded positions replay identically; drift and parallax read off t.
+  const depth = $('#depth'), dctx = depth.getContext('2d');
+  const seeded = seed => () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; };
+  const particles = (count, seed) => {
+    const rnd = seeded(seed);
+    return Array.from({ length: count }, () => ({ x: rnd() * 1.1 - 0.05, y: rnd() * 1.1 - 0.05, red: rnd() < 0.04 }));
+  };
+  const FAR = particles(60, 7), NEAR = particles(30, 23);
+  let dw = 0, dh = 0;
+  function sizeDepth() {
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    dw = stage.clientWidth; dh = stage.clientHeight;
+    depth.width = Math.round(dw * dpr); depth.height = Math.round(dh * dpr);
+    dctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  function drawLayer(layer, t, ox, oy, r, alpha) {
+    [false, true].forEach(red => {
+      dctx.beginPath();
+      layer.forEach((p, i) => {
+        if (p.red !== red) return;
+        const x = p.x * dw + ox + motion * Math.sin(t * 0.07 + i * 1.7) * 12;
+        const y = p.y * dh + oy + motion * Math.cos(t * 0.05 + i * 2.3) * 9;
+        dctx.moveTo(x + r, y);
+        dctx.arc(x, y, r, 0, Math.PI * 2);
+      });
+      dctx.fillStyle = red ? `rgba(255,59,92,${alpha})` : `rgba(23,241,215,${alpha})`;
+      dctx.fill();
+    });
+  }
+  function drawDepth(t, cx, cy) {
+    dctx.clearRect(0, 0, dw, dh);
+    drawLayer(FAR, t, -(cx - 500) * 0.12 * motion, -(cy - 240) * 0.12 * motion, 1, 0.25);
+    drawLayer(NEAR, t, -(cx - 500) * 0.32 * motion, -(cy - 240) * 0.32 * motion, 1.6, 0.45);
+  }
+
+  // Graph: the hub is the shared identifier; every other node is an account the reverse check found.
+  const NODES = [
+    { id: 'hub',    x: 500, y: 240, kind: 'hub',    t: 10.2, label: 'john.d', sub: 'shared identifier' },
+    { id: 'corp',   x: 250, y: 230, kind: 'corp',   t: 10.9, label: 'john.d@aceme.example', sub: 'record from a breach' },
+    { id: 'shop',   x: 760, y: 90,  kind: 'risk',   t: 12.5, label: 'pc-shop.example', sub: 'sign-up with work email', fixAt: 40.2, fixSub: 'password changed, link removed' },
+    { id: 'mail',   x: 790, y: 330, kind: 'risk',   t: 13.0, label: 'john.d@mail.example', sub: 'personal email' },
+    { id: 'old',    x: 210, y: 80,  kind: 'risk',   t: 13.5, label: 'john.d@old-aceme.example', sub: 'previous job' },
+    { id: 'admin',  x: 500, y: 60,  kind: 'priv',   t: 16.0, label: 'admin.aceme.example', sub: 'admin login, no email', fixAt: 43.0, fixSub: 'account closed' },
+    { id: 'forum',  x: 250, y: 400, kind: 'risk',   t: 16.6, label: 'forum-games.example', sub: 'same password, different email', fixAt: 40.2, fixSub: 'password changed, link removed' },
+    { id: 'portal', x: 800, y: 430, kind: 'danger', t: 29.5, label: 'portal.aceme.example', sub: 'corporate resource', fixAt: 41.5, fixSub: 'sign-in only with a second factor', chip: true },
+    { id: 'nick',   x: 520, y: 420, kind: 'risk',   t: 22.5, label: 'john_d87', sub: 'forum nickname: same pattern', fixAt: 40.2, fixSub: 'nickname reissued, password changed' },
+  ];
+  const EDGES = [
+    { from: 'hub',  to: 'corp',   t: 10.9, label: '', u: 0.82 },
+    { from: 'hub',  to: 'shop',   t: 12.5, label: 'same email', warn: true, cut: 40 },
+    { from: 'hub',  to: 'mail',   t: 13.0, label: 'part before @ matches', warn: true },
+    { from: 'hub',  to: 'old',    t: 13.5, label: 'part before @ matches', warn: true },
+    { from: 'hub',  to: 'admin',  t: 16.0, label: 'login without email', warn: true, cut: 43 },
+    { from: 'hub',  to: 'forum',  t: 16.6, label: 'same password', warn: true, cut: 40 },
+    { from: 'hub',  to: 'nick',   t: 22.5, label: 'nickname mutated', warn: true, u: 0.78 },
+    { from: 'shop', to: 'portal', t: 29.5, label: 'password worked', path: true, ctrl: [980, 250] },
+  ];
+  const byId = {};
+  NODES.forEach(n => { byId[n.id] = n; });
+
+  function curveFor(a, b) {
+    const dx = b.x - a.x, dy = b.y - a.y, L = Math.hypot(dx, dy);
+    return [(a.x + b.x) / 2 - dy / L * 26, (a.y + b.y) / 2 + dx / L * 26];
+  }
+  const quad = (a, c, b, u) => ({
+    x: (1 - u) ** 2 * a.x + 2 * u * (1 - u) * c[0] + u * u * b.x,
+    y: (1 - u) ** 2 * a.y + 2 * u * (1 - u) * c[1] + u * u * b.y,
+  });
+
+  // Edges: a curve that draws outward, a label, a cut cross, a burst on cut and flowing dots after drawn.
+  const edges = EDGES.map((e, i) => {
+    const a = byId[e.from], b = byId[e.to];
+    const c = e.ctrl || curveFor(a, b);
+    const cls = 'edge ' + (e.path ? 'path' : e.warn ? 'warn' : 'base');
+    const path = el('path', { d: `M${a.x} ${a.y} Q${c[0]} ${c[1]} ${b.x} ${b.y}`, class: cls }, edgesG);
+    const len = path.getTotalLength();
+    path.style.strokeDasharray = len;
+    path.style.strokeDashoffset = len;
+    const mid = quad(a, c, b, e.u || 0.5);
+    const label = el('text', { class: 'elabel', x: mid.x, y: mid.y - 9, 'text-anchor': 'middle' }, edgesG);
+    label.textContent = e.label;
+    const burst = el('circle', { class: 'burst', cx: mid.x, cy: mid.y, r: 4, opacity: 0 }, edgesG);
+    const cutG = el('g', { class: 'cutx', opacity: 0, transform: `translate(${mid.x} ${mid.y})` }, edgesG);
+    el('line', { x1: -7, y1: -7, x2: 7, y2: 7 }, cutG);
+    el('line', { x1: 7, y1: -7, x2: -7, y2: 7 }, cutG);
+    const dot = el('circle', { class: 'flow', r: e.path ? 3.2 : 2.2, fill: e.path ? '#ffd0da' : e.warn ? '#ffb84d' : '#8fa0c4', opacity: 0 }, edgesG);
+    const comet = el('circle', { class: 'comet', r: 3.2, opacity: 0 }, edgesG);
+    return { e, i, path, len, label, burst, cutG, dot, comet };
+  });
+  const pathEdge = edges.find(x => x.e.path);
+
+  // Nodes: glass boxes with a coloured dot; the hub is an orb.
+  const nodeEls = NODES.map(n => {
+    const g = el('g', {}, nodesG);
+    const burst = el('circle', { class: 'nburst', cx: n.x, cy: n.y, r: 14, opacity: 0 }, burstsG);
+    if (n.kind === 'hub') {
+      const halo = el('circle', { r: 46, fill: 'rgba(62,242,212,.14)' }, g);
+      const orb = el('circle', { r: 30, fill: 'url(#orb)' }, g);
+      el('text', { class: 'hublabel', x: 0, y: 56, 'text-anchor': 'middle' }, g).textContent = n.label;
+      const sub = el('text', { class: 'hubsub', x: 0, y: 73, 'text-anchor': 'middle' }, g);
+      sub.textContent = n.sub;
+      return { n, g, rect: orb, dot: halo, sub, chip: null, burst, check: null, state: 'hub', subText: n.sub, hub: true };
+    }
+    const w = 236, h = 56;
+    const rect = el('rect', { class: 'nbox s-' + n.kind, x: -w / 2, y: -h / 2, width: w, height: h, rx: 16 }, g);
+    if (n.id === 'portal') rect.setAttribute('filter', 'url(#glow)');
+    const dot = el('circle', { class: 'ndot d-' + n.kind, cx: -w / 2 + 20, cy: -6, r: 4 }, g);
+    el('text', { class: 'nlabel', x: -w / 2 + 34, y: -2, 'text-anchor': 'start' }, g).textContent = n.label;
+    const sub = el('text', { class: 'nsub', x: -w / 2 + 34, y: 15, 'text-anchor': 'start' }, g);
+    sub.textContent = n.sub;
+    let chip = null;
+    if (n.chip) {
+      chip = el('g', { transform: `translate(${w / 2 - 8} ${-h / 2 - 8})`, opacity: 0 }, g);
+      el('rect', { class: 'mfabg', x: -46, y: -9, width: 48, height: 18, rx: 9 }, chip);
+      el('text', { class: 'mfatx', x: -22, y: 4, 'text-anchor': 'middle' }, chip).textContent = 'protected';
+    }
+    let check = null;
+    if (n.fixAt !== undefined) {
+      const ck = el('g', { class: 'fixck', transform: `translate(${w / 2} 0)` }, g);
+      check = el('g', { transform: 'scale(0)' }, ck);
+      el('circle', { r: 12 }, check);
+      el('path', { d: 'M20 6 9 17l-5-5', transform: 'translate(-12 -12)' }, check);
+    }
+    return { n, g, rect, dot, sub, chip, burst, check, state: n.kind, subText: n.sub, hub: false };
+  });
+
+  // Cursor target: the button centre in stage coordinates.
+  let target = { x: 0, y: 0 }, start = { x: 0, y: 0 };
+  function measure() {
+    const sr = stage.getBoundingClientRect(), br = btn.getBoundingClientRect();
+    target = { x: br.left - sr.left + br.width * 0.55, y: br.top - sr.top + br.height * 0.5 };
+    start = { x: sr.width * 0.86, y: sr.height * 0.9 };
+    sizeDepth();
+    if (!motion) drawDepth(0, 500, 240); // reduced motion: a static field, drawn once per size
+  }
+
+  // Camera track: slow drift, then a push toward the hidden route, then back to the overview.
+  const CAM_X = [[0, 500], [27, 500], [30.5, 590], [38, 590], [41.5, 500], [52, 500]];
+  const CAM_Y = [[0, 240], [27, 240], [30.5, 200], [38, 200], [41.5, 300], [52, 300]];
+
+  function render(t) {
+    veil.style.opacity = track(t, [[0, 1], [0.7, 0], [50.5, 0], [52, 1]]);
+
+    // Ambient light drifts slowly; the grid parallaxes against the camera.
+    auA.style.transform = `translate(${motion * Math.sin(t * 0.25) * 60}px,${motion * Math.cos(t * 0.2) * 40}px)`;
+    auB.style.transform = `translate(${motion * Math.cos(t * 0.22) * -50}px,${motion * Math.sin(t * 0.3) * 60}px)`;
+    auC.style.transform = `translate(${motion * Math.sin(t * 0.18) * 80}px,${motion * Math.cos(t * 0.27) * -30}px)`;
+
+    // Scene 1: the password changes; the risk appears closed.
+    s1.style.opacity = fade(t, 0, 9.4, 0.4, 0.6);
+    const mk = easeOut(prog(t, 2.0, 1.4));
+    const pressed = t >= 3.3 && t < 3.5;
+    cursor.style.opacity = fade(t, 1.6, 5.4, 0.4, 0.5);
+    cursor.style.transform = `translate(${lerp(start.x, target.x, mk)}px,${lerp(start.y, target.y, mk)}px) scale(${pressed ? 0.82 : 1})`;
+    btn.classList.toggle('pressed', pressed);
+    btn.classList.toggle('done', t >= 3.5);
+    setText(btn, t >= 3.5 ? 'Password changed' : 'Change password');
+    setText(pwd, t >= 3.5 ? 'changed' : '••••••••••••');
+    badge.style.opacity = prog(t, 3.9, 0.6);
+    question.style.opacity = fade(t, 6.0, 9.4, 0.5, 0.6);
+
+    // Camera: slow drift, then a push toward the hidden route, then back to the overview.
+    const dx = motion * 10 * Math.sin(t * 0.45), dy = motion * 5 * Math.cos(t * 0.33);
+    const cx = track(t, CAM_X), cy = track(t, CAM_Y);
+    // Camera velocity from the track itself (t minus 0.1 s) drives the tilt and the parallax, so scrubbing stays exact.
+    const vx = (cx - track(t - 0.1, CAM_X)) / 0.1, vy = (cy - track(t - 0.1, CAM_Y)) / 0.1;
+    const z = track(t, [[0, 1], [27, 1], [30.5, 1.0], [38, 1.0], [41.5, 0.88], [52, 0.88]]);
+    cam.setAttribute('transform', `translate(${500 + dx} ${240 + dy}) scale(${z}) translate(${-cx} ${-cy})`);
+    // Scene 4: the graph shrinks into the top band; the cards get the bottom band.
+    graphBox.style.transform = `scale(${track(t, [[38.4, 1], [41.5, 0.82], [52, 0.82]])})`;
+    graphSvg.style.transform = `rotateY(${motion * clampAbs(vx * 0.06, 3)}deg) rotateX(${motion * clampAbs(-vy * 0.12, 2)}deg)`;
+    if (motion) drawDepth(t, cx, cy);
+    grid.style.backgroundPosition = `${-t * 5 + dx}px ${t * 3 + dy}px`;
+
+    // Hub rings while the reverse check is running.
+    const rk = Math.max(0, ((t - 10.6) % 2.4) / 2.4);
+    ring.setAttribute('cx', 500); ring.setAttribute('cy', 240);
+    ring.setAttribute('r', 40 + rk * 56);
+    ring.setAttribute('opacity', t > 10.6 && t < 27.4 ? (1 - rk) * 0.7 : 0);
+
+    // Edges draw outward; dots flow along drawn edges; a cut emits a burst and a cross.
+    edges.forEach(x => {
+      const p = prog(t, x.e.t, 0.75);
+      x.path.style.strokeDashoffset = x.len * (1 - easeOut(p));
+      const drawing = p > 0 && p < 1;
+      if (drawing) {
+        const cp = x.path.getPointAtLength(x.len * easeOut(p));
+        x.comet.setAttribute('cx', cp.x); x.comet.setAttribute('cy', cp.y);
+      }
+      x.comet.setAttribute('opacity', drawing ? 1 : 0);
+      const cutAt = x.e.cut;
+      const cutP = cutAt ? prog(t, cutAt, 0.45) : 0;
+      const burstP = cutAt ? prog(t, cutAt, 0.7) : 0;
+      x.path.classList.toggle('cut', t >= (cutAt || Infinity));
+      x.cutG.setAttribute('opacity', cutP);
+      x.label.setAttribute('opacity', prog(t, x.e.t + 0.6, 0.4) * (1 - cutP));
+      x.burst.setAttribute('r', 4 + burstP * 26);
+      x.burst.setAttribute('opacity', cutAt && t >= cutAt ? (1 - burstP) : 0);
+      const flowOn = p >= 1 && !(cutAt && t >= cutAt);
+      if (flowOn) {
+        const u = ((t * 0.18 + x.i * 0.29) % 1);
+        const pt = x.path.getPointAtLength(u * x.len);
+        x.dot.setAttribute('cx', pt.x); x.dot.setAttribute('cy', pt.y);
+      }
+      x.dot.setAttribute('opacity', flowOn ? 0.9 : 0);
+    });
+
+    // Path pulse: the hidden route from the third-party shop to the corporate portal.
+    const pt = t - 31;
+    if (pt > 0 && pt < 5.5) {
+      const k = (pt % 1.5) / 1.5;
+      const p = pathEdge.path.getPointAtLength(k * pathEdge.len);
+      pulse.setAttribute('cx', p.x); pulse.setAttribute('cy', p.y);
+      pulse.setAttribute('opacity', fade(t, 31, 36, 0.3, 0.6));
+    } else {
+      pulse.setAttribute('opacity', 0);
+    }
+    // Hidden-path scene: a red vignette breathes at the edges while the route pulses (0.35 max, under the caption layer).
+    vignette.style.opacity = 0.35 * fade(t, 29.5, 38.0, 0.8, 0.8) * (0.55 + 0.45 * Math.sin(t * 4)) * motion;
+
+    // Nodes: they appear with an overshoot; after a fix they turn green and their caption changes.
+    let found = 0;
+    nodeEls.forEach(v => {
+      const n = v.n;
+      const s = easeBack(prog(t, n.t, 0.7));
+      v.g.setAttribute('transform', `translate(${n.x} ${n.y}) scale(${s})`);
+      v.g.setAttribute('opacity', clamp01((t - n.t) / 0.35));
+      const bp = prog(t, n.t, 0.8);
+      v.burst.setAttribute('r', 14 + bp * 50);
+      v.burst.setAttribute('opacity', t >= n.t && bp < 1 ? (1 - bp) * 0.55 : 0);
+      if (!v.hub && t >= n.t) found++;
+      const fixed = n.fixAt !== undefined && t >= n.fixAt;
+      if (!v.hub) {
+        const state = fixed ? 'safe' : n.kind;
+        if (v.state !== state) {
+          v.state = state;
+          v.rect.setAttribute('class', 'nbox s-' + state);
+          v.dot.setAttribute('class', 'ndot d-' + state);
+        }
+        if (v.chip) v.chip.setAttribute('opacity', prog(t, 41.5, 0.4));
+        if (v.check) v.check.setAttribute('transform', `scale(${fixed ? easeBack(prog(t, n.fixAt, 0.5)) : 0})`);
+      }
+      const subText = fixed ? n.fixSub : n.sub;
+      if (v.subText !== subText) { v.subText = subText; v.sub.textContent = subText; }
+    });
+
+    // Captions
+    cap2.style.opacity = fade(t, 9.8, 27.4, 0.5, 0.6);
+    setWords(sub2, t < SUB2_AT
+      ? 'We take one identifier: an address, a login or a nickname. Each check yields new data: previous work, personal email, other accounts.'
+      : 'The nickname mutates along the same pattern: john_d → john_d87 → johndoe_2025. One account yields 300 to 500 new data points.');
+    cap3.style.opacity = fade(t, 27.4, 38.4, 0.5, 0.5);
+    cap4.style.opacity = fade(t, 38.4, 52, 0.5, 0.6);
+    // Words arrive with a stagger (opacity + rise) and the caption sharpens from a blur; both read off t only.
+    CAPS.forEach(c => {
+      const kc = t - c.start;
+      const blur = motion * 6 * (1 - clamp01(kc / 0.35));
+      c.el.style.filter = blur > 0.02 ? `blur(${blur}px)` : '';
+      let i0 = 0;
+      c.parts.forEach(node => {
+        const own = node === sub2 && t >= SUB2_AT; // the second sub2 text gets its own entrance
+        const kp = own ? t - SUB2_AT : kc, base = own ? 0 : i0, n = node._w.length;
+        i0 += n;
+        const st = kp < 0 ? 0 : kp > 0.35 + (base + n) * 0.045 ? 2 : 1; // 0 hidden, 1 arriving, 2 settled
+        if (st !== 1 && node._st === st) return;
+        node._st = st;
+        node._w.forEach((w, i) => {
+          const wp = clamp01((kp - motion * (base + i) * 0.045) / 0.35);
+          w.style.opacity = wp;
+          w.style.transform = `translateY(${(1 - wp) * 10 * motion}px)`;
+        });
+      });
+    });
+    counter.style.opacity = fade(t, 10.6, 27.4, 0.4, 0.6);
+    setText(countEl, String(found));
+    setText(dataEl, String(Math.round(track(t, [[10.6, 0], [27.4, 420]]))));
+
+    // Cycle: the breached password comes back to the company as a new reverse check.
+    cyc.style.opacity = prog(t, 44, 0.8);
+    cyc.style.strokeDashoffset = -t * 18;
+    cycLbl.setAttribute('opacity', prog(t, 44.5, 0.8));
+
+    // Scene 4 cards and value pills
+    cards.forEach(c => {
+      const p = prog(t, +c.dataset.at, 0.5);
+      c.style.opacity = p;
+      c.style.transform = `translateY(${(1 - p) * 16}px)`;
+    });
+    values.style.opacity = prog(t, 46, 0.7);
+  }
+
+  // Presentation mode: the viewer advances step by step. Each step eases t to a finished state,
+  // so every scene and reveal is reached by the same render(t) as before.
+  const STEPS = [
+    { t: 5.2, title: 'What the company sees', text: 'The compromised password was replaced, and the incident is marked closed. But only one address was checked, and the attacker already knows the password and is searching with it for everything linked to this person.' },
+    { t: 12.4, title: 'Starting point', text: 'We take a shared identifier: an address, the part before the @, a login or a nickname. Every check starts from it.' },
+    { t: 18.5, title: 'New accounts', text: 'Previous job, personal email, forums. Each finding gives new data and new identifiers for the next step.' },
+    { t: 25.5, title: 'Nickname mutation', text: 'john_d → john_d87 → johndoe_2025. The pattern is the same, so the link is visible even without a matching address.' },
+    { t: 31.5, title: 'Hidden route', text: 'The password from the shop sign-up worked on the company portal. A standard breach check will not show this route.' },
+    { t: 41.2, title: 'What to close first', text: 'Not the list of breaches, but the links. Changing a password to an old pattern only moves the risk to the next site.' },
+    { t: 46.5, title: 'Return to the company', text: 'Breached databases end up on forums, and new attackers run the check again. The incident is closed on paper, but the links are still open. Attackers come back the same way.' },
+    { t: 49.5, title: 'Protective measures', text: 'Unique passwords for every service, passkeys and a second factor, short sessions, an inventory of forgotten accounts.' },
+  ];
+  const DUR = reduced ? 0 : 1400;
+  const coN = $('#coN'), coT = $('#coT'), coX = $('#coX');
+  const prevBtn = $('#prev'), nextBtn = $('#next'), chapters = $('#chapters');
+  let idx = 0, t = STEPS[0].t, tFrom = t, tTo = t, tStart = 0, tDur = 0;
+
+  // Chapters group steps: 01 Leak, 02 Links, 03 Hidden route, 04 Defence.
+  const CHAPTERS = [
+    { name: '01 Leak', from: 0, to: 0 },
+    { name: '02 Links', from: 1, to: 3 },
+    { name: '03 Hidden route', from: 4, to: 4 },
+    { name: '04 Defence', from: 5, to: 7 },
+  ];
+  CHAPTERS.forEach(c => {
+    const b = document.createElement('button');
+    b.className = 'chap';
+    b.type = 'button';
+    b.textContent = c.name;
+    b.addEventListener('click', () => go(c.from));
+    chapters.append(b);
+  });
+
+  function go(i) {
+    idx = Math.max(0, Math.min(STEPS.length - 1, i));
+    tFrom = t;
+    tTo = STEPS[idx].t;
+    tStart = performance.now();
+    tDur = DUR;
+    updateNav();
+  }
+
+  function updateNav() {
+    const s = STEPS[idx];
+    setText(coN, `Step ${idx + 1} of ${STEPS.length}`);
+    setText(coT, s.title);
+    setText(coX, s.text);
+    prevBtn.disabled = idx === 0;
+    setText(nextBtn, idx === STEPS.length - 1 ? 'Start over' : 'Next');
+    [...chapters.children].forEach((b, i) => { const on = idx >= CHAPTERS[i].from && idx <= CHAPTERS[i].to; b.classList.toggle('on', on); b.setAttribute('aria-pressed', String(on)); });
+  }
+
+  nextBtn.addEventListener('click', () => go(idx === STEPS.length - 1 ? 0 : idx + 1));
+  prevBtn.addEventListener('click', () => go(idx - 1));
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') go(idx === STEPS.length - 1 ? 0 : idx + 1);
+    if (e.key === 'ArrowLeft') go(idx - 1);
+  });
+
+  // Side panel: collected data appears as the steps reach each finding.
+  // Weights are illustrative units that add up to roughly the 300 to 500 range from practice.
+  const FEED = [
+    { at: 10.9, kind: 'acc', title: 'Record from a breach', src: 'john.d@aceme.example', w: 40 },
+    { at: 12.5, kind: 'acc', title: 'Online shop', src: 'work email and the same password', w: 55 },
+    { at: 13.0, kind: 'acc', title: 'Personal email', src: 'john.d@mail.example', w: 45 },
+    { at: 13.5, kind: 'acc', title: 'Previous job', src: 'john.d@old-aceme.example', w: 50 },
+    { at: 16.0, kind: 'acc', title: 'Service login', src: 'admin, no email', w: 35 },
+    { at: 16.6, kind: 'pat', title: 'Password habit', src: 'word + year + "!", repeated across services', w: 60 },
+    { at: 22.5, kind: 'acc', title: 'Forum nickname', src: 'john_d87, same pattern', w: 50 },
+    { at: 29.5, kind: 'acc', title: 'Portal sign-in', src: 'password accepted by the corporate portal', w: 65 },
+  ];
+  const feedBox = $('#feed'), sumEl = $('#dataSum'), accEl = $('#dataAcc');
+  function renderFeed(tNow) {
+    let sum = 0, acc = 0;
+    FEED.forEach(f => {
+      const on = tNow >= f.at;
+      if (on) { sum += f.w; if (f.kind === 'acc') acc++; }
+      if (on && !f.el) {
+        const li = document.createElement('li');
+        li.className = 'feed-i ' + f.kind;
+        li.innerHTML = `<span class="w">+${f.w}</span><div class="t">${f.title}</div><div class="s">${f.src}</div>`;
+        feedBox.append(li);
+        if (!reduced) li.animate([{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'none' }],
+          { duration: 420, easing: 'cubic-bezier(.16,1,.3,1)' });
+        f.el = li;
+      } else if (!on && f.el) {
+        f.el.remove();
+        f.el = null;
+      }
+    });
+    setText(sumEl, String(sum));
+    setText(accEl, String(acc));
+  }
+
+  function frame(now) {
+    if (tDur > 0) {
+      const k = clamp01((now - tStart) / tDur);
+      t = lerp(tFrom, tTo, ss(k));
+      if (k >= 1) tDur = 0;
+    } else {
+      t = tTo;
+    }
+    render(t);
+    renderFeed(t);
+    requestAnimationFrame(frame);
+  }
+
+  window.addEventListener('resize', measure);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+  measure();
+  updateNav();
+  render(t);
+  renderFeed(t);
+  requestAnimationFrame(frame);
+})();
+
+</script>
+</body>
+</html>

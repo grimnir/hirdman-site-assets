@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vendor checklist | Hirdman</title>
+<style>
+:root{
+  --bg:#050812;
+  --glass:linear-gradient(180deg,rgba(22,30,54,.86),rgba(11,16,31,.82));
+  --stroke:rgba(255,255,255,.09);
+  --text:#eef2fa;
+  --muted:#8b97b3;
+  --teal:#17f1d7;
+  --amber:#ffb84d;
+  --red:#ff5c7a;
+  --green:#43e39a;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text)}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;line-height:1.5;
+  background:
+    radial-gradient(ellipse at 12% 0%,rgba(23,241,215,.10),transparent 45%),
+    radial-gradient(ellipse at 92% 8%,rgba(139,123,255,.10),transparent 40%),
+    var(--bg);
+}
+.wrap{max-width:1140px;margin:0 auto;padding:40px 18px 64px}
+.kicker{
+  display:inline-flex;align-items:center;gap:14px;
+  font-size:12px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--teal);
+}
+.kicker::before{content:"";width:28px;height:1px;background:var(--teal);}
+h1{margin:16px 0 12px;font-size:clamp(30px,4.4vw,52px);font-weight:700;letter-spacing:-.03em;line-height:1.08}
+h2{margin:0 0 6px;font-size:clamp(24px,3vw,34px);font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.lead{margin:0;font-size:clamp(15px,1.6vw,18px);color:var(--muted);max-width:760px}
+.muted{color:var(--muted)}
+.section{margin-top:72px}
+.section-h{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:18px}
+.card{padding:20px 22px;border-radius:20px;background:var(--glass);border:1px solid var(--stroke)}
+
+/* Hero: raw data on the left, prioritised tiers on the right */
+.split{
+  margin-top:28px;display:grid;grid-template-columns:1fr 1fr;gap:18px;
+}
+.lane{padding:18px;border-radius:20px;background:var(--glass);border:1px solid var(--stroke);min-height:300px}
+.lane-h{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.lane.us{border-color:rgba(23,241,215,.35)}
+.lane.us .lane-h{color:var(--teal)}
+.raw{
+  display:block;padding:9px 12px;margin-bottom:8px;border-radius:10px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;color:var(--muted);
+  background:rgba(255,255,255,.03);border:1px dashed rgba(255,255,255,.12);
+}
+.tier{margin-bottom:12px}
+.tier-h{font-size:12px;font-weight:600;color:var(--text);margin-bottom:6px;display:flex;justify-content:space-between}
+.tier-h b{color:var(--teal);font-variant-numeric:tabular-nums}
+.tier.t1 .tier-h b{color:var(--red)}
+.tier.t2 .tier-h b{color:var(--amber)}
+.chip{
+  display:block;padding:8px 12px;margin-bottom:6px;border-radius:10px;font-size:13.5px;
+  background:rgba(23,241,215,.06);border:1px solid rgba(23,241,215,.25);
+}
+.tier.t1 .chip{background:rgba(255,92,122,.08);border-color:rgba(255,92,122,.35)}
+.tier.t2 .chip{background:rgba(255,184,77,.08);border-color:rgba(255,184,77,.3)}
+.done-line{margin-top:6px;font-size:14px;color:var(--green);opacity:0}
+.shimmer{animation:shim 3.2s ease-in-out infinite}
+@keyframes shim{0%,100%{opacity:.85}50%{opacity:1}}
+
+/* Counters */
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.stat{padding:20px}
+.stat .v{font-size:40px;font-weight:700;letter-spacing:-.02em;color:var(--teal);font-variant-numeric:tabular-nums;line-height:1}
+.stat .v.warn{color:var(--amber)}
+.stat .t{margin-top:10px;font-size:14px;color:var(--muted)}
+
+/* Case */
+.case{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;align-items:stretch}
+.case .big{font-size:clamp(17px,2vw,21px);font-weight:600;line-height:1.4}
+.case .num{font-size:52px;font-weight:700;color:var(--red);font-variant-numeric:tabular-nums;line-height:1}
+
+/* Filters */
+.chips-f{display:flex;flex-wrap:wrap;gap:8px}
+.fb{
+  height:36px;padding:0 14px;border-radius:999px;cursor:pointer;font:inherit;font-size:13px;font-weight:600;
+  color:var(--text);background:rgba(255,255,255,.04);border:1px solid var(--stroke);
+  transition:border-color .3s var(--ease),background .3s var(--ease);
+}
+.fb:hover{border-color:rgba(23,241,215,.35)}
+.fb.on{color:var(--teal);border-color:rgba(23,241,215,.6);background:rgba(23,241,215,.08)}
+.fb:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+
+/* Tables */
+.tbl-wrap{margin-top:16px;border-radius:20px;border:1px solid var(--stroke);background:var(--glass);overflow:hidden}
+table{width:100%;border-collapse:collapse;font-size:14.5px}
+th{
+  position:sticky;top:0;z-index:2;text-align:left;padding:14px 16px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);background:#0a0f1e;border-bottom:1px solid var(--stroke);
+}
+th.us{color:var(--teal)}
+td{padding:13px 16px;border-bottom:1px solid var(--stroke);vertical-align:top;line-height:1.45}
+tr:last-child td{border-bottom:0}
+tr.grp td{
+  padding:10px 16px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);
+  background:rgba(23,241,215,.04);
+}
+td.crit{font-weight:600;width:20%}
+td.sh{color:var(--muted);width:24%}
+td.us-c{color:var(--text);width:28%}
+td.why{color:var(--muted);width:20%;font-size:13.5px}
+tr.new td.crit::after{
+  content:"new";margin-left:8px;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.04em;
+  color:#03201b;background:var(--teal);vertical-align:middle;
+}
+.confirm{
+  display:inline-block;margin-left:6px;padding:1px 8px;border-radius:999px;font-size:11px;font-weight:700;
+  color:var(--amber);border:1px solid rgba(255,184,77,.45);vertical-align:middle;
+}
+.rv-row{opacity:0;transform:translateY(12px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.rv-row.in{opacity:1;transform:none}
+tr.hide{display:none}
+
+/* Checklist */
+.flag{color:var(--red)}
+.ok{color:var(--green);font-weight:600}
+td.q{width:30%;font-weight:600}
+td.fl{width:30%;color:var(--muted);font-size:13.5px}
+td.an{width:40%}
+td.no{width:52px;color:var(--teal);font-weight:700;font-variant-numeric:tabular-nums}
+
+.cta{margin-top:20px;display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between}
+.btn{
+  height:46px;padding:0 22px;border-radius:14px;border:0;cursor:pointer;font:inherit;font-size:15px;font-weight:600;
+  color:#03201b;background:linear-gradient(180deg,#17f1d7,#0fb8a3);
+}
+.note{margin-top:14px;font-size:12.5px;color:var(--muted);line-height:1.5}
+
+@media (max-width:860px){
+  .split,.case{grid-template-columns:1fr}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  table,thead,tbody,tr,td,th{display:block}
+  thead{display:none}
+  tr{border-bottom:1px solid var(--stroke);padding:8px 0}
+  td{border:0;padding:6px 16px;width:auto !important}
+  td.sh::before{content:"Showcase: ";color:var(--muted);font-weight:600}
+  td.us-c::before{content:"Us: ";color:var(--teal);font-weight:600}
+  td.why::before{content:"Why: ";font-weight:600}
+  tr.grp td{padding:10px 16px}
+}
+@media (prefers-reduced-motion:reduce){
+  .rv-row{opacity:1;transform:none;transition:none}
+  .shimmer{animation:none}
+}
+/* Keyboard focus is always visible; motion respects the system setting */
+:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;scroll-behavior:auto !important}
+}
+</style>
+</head>
+<body>
+<a href="/" style="position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:999;display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 14px;border-radius:999px;background:rgba(3,8,7,.85);border:1px solid rgba(23,241,215,.35);color:#eafffb;font:600 13px/1 Inter,-apple-system,Segoe UI,Roboto,Arial,sans-serif;text-decoration:none;backdrop-filter:blur(10px)">&larr; Back to Hirdman</a>
+<div class="wrap">
+
+  <header>
+    <span class="kicker">Vendor comparison and checklist</span>
+    <h1>The showcase shows the leak. We explain what it means for your business.</h1>
+    <p class="lead">This page compares Hirdman with showcase vendors and lists 26 questions to ask any breach monitoring vendor, with our answer to each.</p>
+
+    <!-- Hero: plays once on load, no clicks needed -->
+    <div class="split" aria-hidden="false">
+      <div class="lane" id="laneRaw">
+        <div class="lane-h">Showcase: raw export</div>
+        <div id="rawBox"></div>
+      </div>
+      <div class="lane us" id="laneUs">
+        <div class="lane-h">Us: verified and prioritized</div>
+        <div id="tierBox"></div>
+        <div class="done-line" id="doneLine">The picture is complete: what to fix now, what can wait.</div>
+      </div>
+    </div>
+  </header>
+
+  <section class="section" aria-labelledby="sum-h">
+    <div class="section-h"><div><span class="kicker">Summary</span><h2 id="sum-h" style="margin-top:12px">The comparison in numbers</h2></div></div>
+    <div class="stats">
+      <div class="card stat"><div class="v" data-count="0" id="cRows">0</div><div class="t">comparison points</div></div>
+      <div class="card stat"><div class="v" data-count="0" id="cNew">0</div><div class="t">new brand protection points</div></div>
+      <div class="card stat"><div class="v" data-count="0" id="cOk">0</div><div class="t">checklist questions</div></div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="case-h">
+    <div class="section-h"><div><span class="kicker">From the field</span><h2 id="case-h" style="margin-top:12px">No breaches on the domain, but infrastructure keys were exposed</h2></div></div>
+    <div class="card case">
+      <div>
+        <p class="big" style="margin:0">During an attack surface review we found two subdomains running a UI development tool. The version was vulnerable to information disclosure: an environment file ended up in the public build, along with access tokens for repositories, cloud roles, databases and storage.</p>
+        <p class="muted" style="margin:14px 0 0">There was no leaked email or password for the domain, so breach monitoring would have shown nothing. The CVSS score rated the flaw "low" (3.1), but the file held working keys. We confirmed one token by accessing a repository, and gave the client all compromised secrets for rotation.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;justify-content:center;gap:8px">
+        <div class="num" data-count="120" id="cSecrets">0</div>
+        <div class="muted">environment variables in one exposed file, over 700 across all builds. Production and cloud keys were readable by anyone who could read the public build.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="cmp-h">
+    <div class="section-h">
+      <div><span class="kicker">Comparison table</span><h2 id="cmp-h" style="margin-top:12px">Showcase and analysis, criterion by criterion</h2></div>
+    </div>
+    <div class="chips-f" id="cmpFilters" role="group" aria-label="Filter by group"></div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Criterion</th><th>Showcase vendor</th><th class="us">Us</th><th>Why it matters to the client</th></tr></thead>
+        <tbody id="cmpBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="chk-h">
+    <div class="section-h">
+      <div><span class="kicker">Checklist</span><h2 id="chk-h" style="margin-top:12px">26 questions for your vendor, and our answers</h2></div>
+    </div>
+    <div class="chips-f" id="chkFilters" role="group" aria-label="Filter by section"></div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>No.</th><th>Question</th><th>Red flag</th><th class="us">Our answer</th></tr></thead>
+        <tbody id="chkBody"></tbody>
+      </table>
+    </div>
+    <p class="note">Red flags: typical answers from showcase vendors, not a description of any specific vendor.</p>
+  </section>
+
+  <section class="section">
+    <div class="card cta">
+      <div>
+        <h2 style="font-size:24px">Let's check it on your data</h2>
+        <p class="muted" style="margin:6px 0 0">A free check of your current vendor: we show the difference live, with no obligation.</p>
+      </div>
+      <button class="btn" type="button" id="ctaBtn">Discuss a side-by-side check</button>
+    </div>
+  </section>
+
+</div>
+
+<script>
+(() => {
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const $ = s => document.querySelector(s);
+
+  /* ---------- Hero: raw rows on the left, tiers on the right ---------- */
+  const RAW = [
+    'john.d@aceme.example: duplicate record',
+    'date: 2025? source unknown',
+    'combined password list, no context',
+    'infostealer: session and cookies',
+    'admin (no email)',
+    'old dump, 10+ years',
+    'duplicate record',
+    'password: word + year + "!"',
+  ];
+  const TIERS = [
+    { name: 'Tier 1 · now', cls: 't1', items: ['infostealer: session and cookies', 'admin (no email)'] },
+    { name: 'Tier 2 · this week', cls: 't2', items: ['john.d@aceme.example: corporate account'] },
+    { name: 'Tier 3 · can wait', cls: '', items: ['old dump, 10+ years', 'duplicate record'] },
+  ];
+  const rawBox = $('#rawBox'), tierBox = $('#tierBox');
+  RAW.forEach((t, i) => {
+    const d = document.createElement('div');
+    d.className = 'raw';
+    d.textContent = t;
+    rawBox.append(d);
+    if (!reduced) d.animate([{ opacity: 0, transform: 'translateY(-10px)' }, { opacity: 1, transform: 'none' }],
+      { duration: 420, delay: i * 260, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'both' });
+  });
+  const baseDelay = reduced ? 0 : RAW.length * 260 + 500;
+  TIERS.forEach((tr, ti) => {
+    const box = document.createElement('div');
+    box.className = 'tier ' + tr.cls;
+    box.innerHTML = `<div class="tier-h"><span>${tr.name}</span><b>${tr.items.length}</b></div>`;
+    tierBox.append(box);
+    tr.items.forEach((it, i) => {
+      const c = document.createElement('div');
+      c.className = 'chip';
+      c.textContent = it;
+      box.append(c);
+      if (!reduced) c.animate([{ opacity: 0, transform: 'translateX(-14px)' }, { opacity: 1, transform: 'none' }],
+        { duration: 480, delay: baseDelay + ti * 380 + i * 200, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'both' });
+    });
+  });
+  if (!reduced) $('#doneLine').animate([{ opacity: 0 }, { opacity: 1 }],
+    { duration: 700, delay: baseDelay + 1200, fill: 'forwards' });
+  else $('#doneLine').style.opacity = 1;
+
+  /* ---------- Data ---------- */
+  const GROUPS = {
+    res: 'Outcome',
+    cov: 'Coverage',
+    rev: 'Reverse check and people',
+    brand: 'Brand protection',
+    sp: 'Speed, price, trust',
+  };
+  const ROWS = [
+    { g: 'res', c: 'What the client gets', s: 'Raw export: "sort it out yourself"', u: 'A finished result with recommendations', w: 'Fewer hours spent on triage' },
+    { g: 'res', c: 'Data quality', s: 'Unverified, often generated records', u: 'Every source validated and junk removed', w: 'No false incidents' },
+    { g: 'res', c: 'Breach date', s: 'Upload date passed off as the breach date', u: 'Source and breach date kept apart, with a stated confidence level', w: 'No panic over old data' },
+    { g: 'res', c: 'Priority', s: 'None, or a formality', u: 'Risk tiers: what to fix now, what can wait', w: 'Risk drops faster' },
+    { g: 'res', c: 'Interface', s: 'Cluttered radars and dashboards', u: 'Only what leads to action', w: 'Clear to management' },
+    { g: 'cov', c: 'Asset reconnaissance and shadow IT', s: 'Usually absent', u: 'Continuous reconnaissance, as an attacker would see it', w: 'The real attack surface is visible' },
+    { g: 'cov', c: 'Breach monitoring and pentesting', s: 'Usually one vector', u: 'Both vectors: breaches and attack surface', w: 'Both gaps get closed' },
+    { g: 'cov', c: 'Dark web', s: 'A public Tor onion site passed off as a closed source', u: 'Access to closed forums and semi-private sources', w: 'We get the data early' },
+    { g: 'cov', c: 'Mobile apps', s: 'Not checked', u: 'Fast APK scan: keys, tokens, endpoints', w: 'Early pre-pentest coverage' },
+    { g: 'cov', c: 'Breach context', s: 'Only URL, login, password', u: 'Raw dumps, cookies, tokens, full URLs, account history', w: 'The scale of compromise is visible' },
+    { g: 'cov', c: 'Non-standard tasks', s: 'Not accepted', u: 'Forensics and insider search through breach analysis', w: 'Complex incidents get closed' },
+    { g: 'rev', c: 'Reverse check', s: '"Password does not work, risk closed"', u: 'Links built from one identifier, in rounds until the picture is complete', w: 'Hidden accounts become visible' },
+    { g: 'rev', c: 'Privileged accounts', s: 'The admin login is not analyzed', u: 'Logins without email, and VIP accounts on priority monitoring', w: 'Protection for executives and administrators' },
+    { g: 'rev', c: 'Infostealer', s: 'Advice is to change the password', u: 'Cookies, tokens and sessions are prioritized', w: 'Second-factor bypass is taken into account' },
+    { g: 'brand', n: 1, c: 'Lookalike domains', s: 'One algorithm and a table of hundreds of thousands of names, substring search', u: 'Typosquatting and domain hijacking: look-alike and misspelled domains', w: 'We catch fakes, not string matches' },
+    { g: 'brand', n: 1, c: '"Domain is dangerous" verdict', s: '"Looks similar in spelling" as the only basis', u: 'A set of signals behind each verdict', w: 'The verdict can be justified', cf: 1 },
+    { g: 'brand', n: 1, c: 'Review volume', s: 'The whole list goes to the client, who sets the priorities', u: 'We select and rank; the client gets decisions', w: 'Fewer hours for the team' },
+    { g: 'brand', n: 1, c: 'Check transparency', s: 'An empty cell reads as "clean"', u: 'We say so plainly when we are not sure; source failures are not hidden', w: 'No false "all clear"' },
+    { g: 'brand', n: 1, c: 'Evidence for takedown', s: 'A screenshot in an email', u: 'Original files and full context for lawyers and the registrar', w: 'Takedown backed by evidence', cf: 1 },
+    { g: 'brand', n: 1, c: 'Fake app', s: 'Only a link to the app store', u: 'We track clones in app stores and scan APKs', w: 'Clear next steps' },
+    { g: 'brand', n: 1, c: 'Social media mentions', s: 'A separate paid option', u: 'Brand mentions and employee posts, reported immediately', w: 'Early warning' },
+    { g: 'sp', c: 'Time to start', s: 'Weeks to a month: sales funnel and sign-up', u: 'First result in 1 to 2 days', w: 'Protection starts right away' },
+    { g: 'sp', c: 'Alerting', s: 'Weeks, after investigations', u: 'VIP accounts every hour; confirmed findings sent at once via the agreed channel', w: 'No time lost on false incidents' },
+    { g: 'sp', c: 'Price', s: 'Hidden modules and add-on fees', u: 'Transparent scope upfront, no add-on fees', w: 'Predictable budget' },
+    { g: 'sp', c: 'Licensing', s: 'Per asset and per user, with export limits', u: 'No limits on portal access, exports or checks', w: 'No hidden add-ons' },
+    { g: 'sp', c: 'API and integrations', s: 'None, or a paid module', u: 'Yes: we deliver verified data and risk tiers', w: 'Fits into monitoring systems and workflows' },
+    { g: 'sp', c: 'Where the data lives', s: 'Public AI and cloud', u: 'Local compute on our own servers, no public AI', w: 'Data does not go to third parties' },
+    { g: 'sp', c: 'Vendor lock-in', s: 'Maximum', u: 'The results belong to you', w: 'Freedom of choice' },
+    { g: 'sp', c: 'Who uses the service', s: 'Only clients', u: 'We do, every day, on real work', w: 'The product is tested in real work' },
+  ];
+
+  // Checklist: [question, red flag, answer, status]. status 'ok' = covered by our material, 'confirm' = needs an answer from the team.
+  const CHK = [
+    ['Do you detect fake and generated breaches? How?', '"We have filters" with no process; an old dataset passed off as a new breach', 'Every source is validated; generated and repackaged records are filtered out', 'ok', 'Accuracy'],
+    ['How do you establish how fresh a breach is and when the compromise really happened?', 'The date the data appeared in a database is passed off as the breach date', 'The date the data appeared at the source and the breach date are kept separate; we state our confidence level', 'ok', 'Accuracy'],
+    ['Do you use infostealer logs? How?', 'Public combo lists only; only passwords are taken from the log', 'We use cookies, tokens and sessions; infostealer records get priority', 'ok', 'Accuracy'],
+    ['Your dark web coverage: public Tor sites or closed platforms?', 'A public Tor site is passed off as a closed source', 'Access to closed forums and semi-private sources; we collect data right after it appears', 'ok', 'Accuracy'],
+    ['Which sources do you monitor? Name them.', 'Vague "many sources" with no list', '', 'confirm', 'Accuracy'],
+    ['Do you account for the risk of second-factor bypass based on breach data?', 'They only advise a password reset; they do not see sessions that bypass the second factor', 'We account for stolen sessions and tokens: they work around the second factor', 'ok', 'Depth of analysis'],
+    ['Do you run reverse checks?', '"Password does not work, risk closed"; personal and corporate accounts are not linked', 'Yes: links built from one identifier, in rounds; we link personal and corporate accounts', 'ok', 'Depth of analysis'],
+    ['What data scope do you process in breaches?', 'Only login, password and URL are stored; email is delivered without context', 'We keep raw dumps and full context, not just login, password and URL', 'ok', 'Depth of analysis'],
+    ['Do you take on breach data as an investigation tool?', 'They can only show a list of breaches', 'Yes: forensics and insider search through breach analysis', 'ok', 'Depth of analysis'],
+    ['Coverage depth: basic breaches only, or attacker-view reconnaissance?', 'They only look at breach databases: ports, shadow IT, secrets outside the scope', 'Attacker-view reconnaissance: ports, subdomains, exposed services, secrets in applications', 'ok', 'Depth of analysis'],
+    ['How do you remove noise and confirm findings?', 'Weeks of filter tuning; brand search: grep by keyword', 'We confirm a finding before reporting it; the client does not sort through raw alerts', 'ok', 'Usefulness and presentation'],
+    ['What is the output: a counter-based export or a report aimed at your goals?', 'A line reading "email found" with no priority; a cluttered interface', 'A report with priorities and a step-by-step plan, not a raw export', 'ok', 'Usefulness and presentation'],
+    ['Do you take the work on yourselves, or does the client handle it?', '"Here is an alert, the rest is up to you"', 'Yes: the client provides the domain, and we do the rest', 'ok', 'Usefulness and presentation'],
+    ['What is the delay between an event and a finding, and what sets the priority?', 'A weekly batch cycle with no prioritization', 'VIP accounts checked every hour; priority is set by risk tiers', 'ok', 'Speed, integrations, price'],
+    ['Is there an API, and in what form do you deliver data?', 'Report export only; no API, or a paid module', 'Yes, an API that delivers verified data and risk tiers', 'ok', 'Speed, integrations, price'],
+    ['How are pricing and licensing structured?', 'Price "on request", licenses per asset, export limits', 'Transparent scope upfront; no limits on portal access or exports', 'ok', 'Speed, integrations, price'],
+    ['Is there a proof of concept (POC), or a POC on real data?', 'A demo on third-party data; questionnaires and months of approvals', 'A cross-check on your data against your current vendor, with no obligation', 'ok', 'Speed, integrations, price'],
+    ['Where is our data processed, and is it kept away from public AI and cloud?', 'Public AI and cloud; one shared environment for all clients', 'No public AI or cloud: models run on our own servers', 'ok', 'Speed, integrations, price'],
+    ['How do you find lookalikes of our brand?', 'One algorithm and an export of hundreds of thousands of names; substring search', 'We track look-alike and misspelled domains, and domain hijacking', 'ok', 'Brand protection'],
+    ['What signals do you use to decide a domain is dangerous?', '"Looks similar in spelling" as the only basis', '', 'confirm', 'Brand protection'],
+    ['How many rows does our team end up reviewing?', 'The whole list "for review"; the client sets priorities', 'We select and rank: the client gets decisions, not the whole list', 'ok', 'Brand protection'],
+    ['How do you show what was actually checked?', 'An empty cell reads as "clean"; a source failure reads as "no lookalikes"', 'We say so plainly when we are not sure; source failures are not hidden', 'ok', 'Brand protection'],
+    ['What do we receive to pass a finding on to lawyers and the registrar?', 'A screenshot in an email; the client collects the evidence', 'We keep the original files and the full context', 'confirm', 'Cases and takedowns'],
+    ['We found a fake mobile app. What happens next?', 'Only a store link; the code is not analyzed', 'We track clones in app stores and scan APKs for keys and endpoints', 'ok', 'Cases and takedowns'],
+    ['Do you track changes to our perimeter?', 'A one-off scan with no history; the client keeps the inventory', 'Continuous perimeter reconnaissance and asset inventory', 'ok', 'Perimeter'],
+    ['Can you show a regulator what work was done, by whom and when?', 'A report with counters but no log; the history can be rewritten after the fact', '', 'confirm', 'Reporting'],
+  ];
+
+  /* ---------- Counters ---------- */
+  const newCount = ROWS.filter(r => r.n).length;
+  const okCount = CHK.filter(c => c[3] === 'ok').length;
+  const confirmCount = CHK.length - okCount;
+  const targets = { cRows: ROWS.length, cNew: newCount, cOk: CHK.length, cSecrets: 120 };
+  function countUp(id, to) {
+    const el = document.getElementById(id);
+    if (reduced) { el.textContent = to; return; }
+    const start = performance.now(), dur = 1100;
+    const step = now => {
+      const k = Math.min(1, (now - start) / dur);
+      el.textContent = Math.round(to * (1 - Math.pow(1 - k, 3)));
+      if (k < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+  const counterIo = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      countUp(e.target.id, targets[e.target.id]);
+      counterIo.unobserve(e.target);
+    });
+  }, { threshold: 0.4 });
+  Object.keys(targets).forEach(id => counterIo.observe(document.getElementById(id)));
+
+  /* ---------- Filters ---------- */
+  function chipsFor(box, items, onPick) {
+    box.innerHTML = '';
+    items.forEach(([key, label], i) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'fb' + (i === 0 ? ' on' : '');
+      b.setAttribute('aria-pressed', String(i === 0));
+      b.textContent = label;
+      b.dataset.key = key;
+      b.addEventListener('click', () => {
+        box.querySelectorAll('.fb').forEach(x => { x.classList.toggle('on', x === b); x.setAttribute('aria-pressed', String(x === b)); });
+        onPick(key);
+      });
+      box.append(b);
+    });
+  }
+
+  /* ---------- Comparison table ---------- */
+  const cmpBody = $('#cmpBody');
+  function renderCmp() {
+    cmpBody.innerHTML = '';
+    let lastG = null;
+    ROWS.forEach(r => {
+      if (r.g !== lastG) {
+        lastG = r.g;
+        const tr = document.createElement('tr');
+        tr.className = 'grp';
+        tr.dataset.g = r.g;
+        tr.innerHTML = `<td colspan="4">${GROUPS[r.g]}</td>`;
+        cmpBody.append(tr);
+      }
+      const tr = document.createElement('tr');
+      tr.className = 'rv-row' + (r.n ? ' new' : '');
+      tr.dataset.g = r.g;
+      tr.innerHTML = `<td class="crit">${r.c}</td><td class="sh">${r.s}</td><td class="us-c">${r.u}</td><td class="why">${r.w}</td>`;
+      cmpBody.append(tr);
+    });
+    applyFilter(cmpBody, 'cmp');
+  }
+  function applyFilter(body, kind) {
+    const key = body.dataset.filter || 'all';
+    body.querySelectorAll('tr[data-g]').forEach(tr => {
+      const show = key === 'all' || tr.dataset.g === key;
+      tr.classList.toggle('hide', !show);
+    });
+  }
+  const CMP_FILTERS = [['all', 'All groups'], ...Object.entries(GROUPS)];
+  chipsFor($('#cmpFilters'), CMP_FILTERS, key => { cmpBody.dataset.filter = key; applyFilter(cmpBody, 'cmp'); });
+  renderCmp();
+
+  /* ---------- Checklist table ---------- */
+  const chkBody = $('#chkBody');
+  const CHK_SECTIONS = [['all', 'All sections'], ...[...new Set(CHK.map(c => c[4]))].map(s => [s, s])];
+  function renderChk() {
+    chkBody.innerHTML = '';
+    CHK.forEach((c, i) => {
+      const [q, flag, ans, st, sec] = c;
+      const tr = document.createElement('tr');
+      tr.className = 'rv-row';
+      tr.dataset.g = sec;
+      const answer = st === 'ok'
+        ? `<span class="ok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span> ${ans}`
+        : (ans || 'no data');
+      tr.innerHTML = `<td class="no">${String(i + 1).padStart(2, '0')}</td><td class="q">${q}</td><td class="fl"><span class="flag"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></span> ${flag}</td><td class="an">${answer}</td>`;
+      chkBody.append(tr);
+    });
+    applyFilter(chkBody, 'chk');
+  }
+  chipsFor($('#chkFilters'), CHK_SECTIONS, key => { chkBody.dataset.filter = key; applyFilter(chkBody, 'chk'); });
+  renderChk();
+
+  /* ---------- Reveal rows on scroll ---------- */
+  const rowIo = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('in'); rowIo.unobserve(e.target); }
+    });
+  }, { threshold: 0.15 });
+  function observeRows() {
+    document.querySelectorAll('.rv-row').forEach((tr, i) => {
+      if (reduced) { tr.classList.add('in'); return; }
+      tr.style.transitionDelay = `${Math.min(i % 12, 11) * 40}ms`;
+      rowIo.observe(tr);
+    });
+  }
+  observeRows();
+
+  $('#ctaBtn').addEventListener('click', () => { /* contact details to be added by the owner */ });
+})();
+</script>
+</body>
+</html>
