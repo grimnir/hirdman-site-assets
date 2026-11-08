@@ -295,7 +295,7 @@
     rec1022963401: '/how-it-works',    // How Hirdman Works
     rec1001267276: '/integrations',    // API Integration
     rec1246570471: '/services',        // Security Intelligence
-    rec997967251: '#contact',          // Request a Free Check
+    rec997967251: '/contact',          // Request a Free Check
     zeropopup: '/cases', zeropopup2: '/cases', zeropopup3: '/cases'
   };
   const to = OLD_ANCHORS[location.hash.slice(1)];
