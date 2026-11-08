@@ -16,8 +16,14 @@
     const norm = p => (p.replace(/\/$/, '').split('/').pop() || 'index').replace(/\.html$/, '') || 'index';
     const here = norm(location.pathname);
     $$('#top .nav a').forEach(a => { const href = a.getAttribute('href') || ''; if (!href.startsWith('http') && norm(href) === here) a.classList.add('active'); });
-    // Links that leave this site get a marker and open safely.
-    $$('a[href^="http"]').forEach(a => { if (a.hostname !== location.hostname && !a.querySelector('svg')) { a.classList.add('ext'); a.rel = 'noopener'; } });
+    // Owner (08.11): anything that leaves these pages (scanner, demo, tools, Tech Library, legal) opens in a new tab,
+    // so the visitor keeps the page they were reading. Site pages are linked relatively; the absolute site root stays in place.
+    $$('a[href^="http"]').forEach(a => {
+      const sameHost = a.hostname === location.hostname;
+      if (sameHost && a.pathname.replace(/\/$/, '') === '') return;
+      a.target = '_blank'; a.rel = 'noopener';
+      if (!sameHost && !a.querySelector('svg')) a.classList.add('ext');
+    });
     const burger = $('#burger'), nav = $('#nav');
     if (burger && nav) burger.addEventListener('click', () => {
       const open = nav.classList.toggle('open');
