@@ -139,7 +139,7 @@ h2{
 .edge.cut{stroke:rgba(139,151,179,.22)}
 .edge.path{stroke:var(--red);stroke-width:2.6;filter:url(#glow)}
 .flow{filter:url(#glow)}
-.elabel{font-size:12px;fill:#aab5cf;paint-order:stroke;stroke:#060a16;stroke-width:6px;stroke-linejoin:round;letter-spacing:.01em}
+.elabel{font-size:12px;fill:#aab5cf;filter:url(#txthalo)}
 .cutx line{stroke:var(--red);stroke-width:2.4;stroke-linecap:round}
 .burst{fill:none;stroke:var(--red);stroke-width:1.4}
 .nburst{fill:none;stroke:var(--teal);stroke-width:1.2}
@@ -149,22 +149,22 @@ h2{
 .ring{fill:none;stroke:var(--teal);stroke-width:1}
 .pulse{fill:#ffd0da;filter:url(#glow)}
 .halo{fill:var(--red);opacity:.25;filter:blur(6px)}
-.nbox{fill:rgba(12,17,32,.88);stroke-width:1.4}
+.nbox{fill:#0c1120;stroke-width:1.4}
 .s-hub{stroke:var(--teal)} .s-corp{stroke:#b8c6e4} .s-risk{stroke:var(--amber)}
 .s-priv{stroke:var(--red)} .s-danger{stroke:var(--red)} .s-safe{stroke:var(--green)}
 .ndot{stroke:none}
 .d-corp{fill:#b8c6e4}.d-risk{fill:var(--amber)}.d-priv{fill:var(--red)}.d-danger{fill:var(--red)}.d-safe{fill:var(--green)}
 .nlabel{font-size:14.5px;font-weight:600;fill:var(--text)}
 .nsub{font-size:11.5px;fill:var(--muted)}
-.hublabel{font-size:15px;font-weight:700;fill:var(--text)}
-.hubsub{font-size:11.5px;fill:var(--muted)}
+.hublabel{font-size:15px;font-weight:700;fill:var(--text);filter:url(#txthalo)}
+.hubsub{font-size:11.5px;fill:var(--muted);filter:url(#txthalo)}
 .mfabg{fill:var(--green)} .mfatx{font-size:11px;font-weight:700;fill:#03180f}
 .counter{
   position:absolute;left:28px;bottom:24px;z-index:6;font-size:14px;color:var(--muted);opacity:0;
   display:flex;align-items:center;gap:10px;
 }
 .cycle{stroke:var(--red);stroke-width:1.8;stroke-dasharray:6 8;stroke-linecap:round;opacity:.9}
-.cycle-lbl{font-size:12px;font-weight:600;fill:#ff8fa0;paint-order:stroke;stroke:#060a16;stroke-width:6px;stroke-linejoin:round}
+.cycle-lbl{font-size:12px;font-weight:600;fill:#ff8fa0;filter:url(#txthalo)}
 .counter b{
   display:inline-grid;place-items:center;min-width:34px;height:28px;padding:0 8px;border-radius:9px;
   color:var(--teal);font-weight:700;background:rgba(62,242,212,.09);border:1px solid rgba(62,242,212,.25);
@@ -345,6 +345,7 @@ h2{
     <div class="graph">
       <svg id="graph" viewBox="0 0 1000 480" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Graph of linked accounts">
         <defs>
+          <filter id="txthalo" x="-10%" y="-50%" width="120%" height="200%"><feMorphology in="SourceAlpha" operator="dilate" radius="2.6" result="d"/><feFlood flood-color="#060a16"/><feComposite in2="d" operator="in" result="h"/><feMerge><feMergeNode in="h"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
           <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
             <feGaussianBlur stdDeviation="3.2" result="b"/>
             <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
