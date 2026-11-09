@@ -355,3 +355,132 @@
   const el = document.querySelector(to);
   if (el) { history.replaceState(null, '', to); el.scrollIntoView(); }
 })();
+
+// Home page: the in-house triage calculator (ideas 09.11, 06), adapted from domain-scanner web2/js/calc.js.
+// Every record takes the average minutes; infostealer records take the session test on top. The page renders
+// the default example (1,000 records); this only follows the sliders. Nothing leaves the browser.
+(() => {
+  const card = document.querySelector('#triage-cost .calc');
+  if (!card) return;
+  const RATES = { USD: { min: 20, max: 200, step: 5, value: 95 }, EUR: { min: 20, max: 160, step: 5, value: 55 } };
+  const RATE_SOURCE = {
+    USD: 'Default: US median wage for information security analysts, $62/h (BLS, May 2025, the latest release), plus 3.1% wage growth to June 2026 and benefits and taxes (wages are 68.5% of employer cost, BLS, June 2026).',
+    EUR: 'Default: a rough estimate. EU analyst base pay of about €36–42/h (recruiter benchmarks, 2025–26), plus employer costs.',
+  };
+  const nf = new Intl.NumberFormat('en-US', { maximumFractionDigits: 1 });
+  const money = (v, cur) => new Intl.NumberFormat('en-US', { style: 'currency', currency: cur, currencyDisplay: 'narrowSymbol', maximumFractionDigits: 0 }).format(v);
+  // rounded so a figure never reads as a quote
+  const approx = (v, cur) => {
+    if (!v) return money(0, cur);
+    let unit = 10;
+    if (v >= 100000) unit = 1000;
+    else if (v >= 1000) unit = 100;
+    return '≈ ' + money(Math.round(v / unit) * unit, cur);
+  };
+  const duration = m => {
+    if (m < 60) return m + ' min';
+    const hours = Math.floor(m / 60) + ' h';
+    return m % 60 ? hours + ' ' + (m % 60) + ' min' : hours;
+  };
+  const input = n => card.querySelector(`input[name="${n}"]`);
+  const out = n => card.querySelector(`[data-out="${n}"]`);
+  const figs = [...card.querySelectorAll('.calc-fig-v')];
+  const src = card.querySelector('.calc-src');
+  const curBtns = [...card.querySelectorAll('.calc-cur button')];
+  let cur = 'USD', touched = false;
+  const paint = (el, shown, spoken) => {
+    out(el.name).textContent = shown;
+    el.setAttribute('aria-valuetext', spoken);
+    el.style.setProperty('--fill', Math.round((el.value - el.min) / (el.max - el.min) * 1000) / 10 + '%');
+  };
+  function update() {
+    const records = +input('records').value;
+    const share = +input('stealers').value;
+    const average = +input('average').value;
+    const extra = +input('extra').value;
+    const rate = +input('rate').value;
+    const stealers = Math.round(records * share / 100);
+    const hours = (records * average + stealers * extra) / 60;
+    paint(input('records'), nf.format(records), nf.format(records) + ' records');
+    paint(input('stealers'), share + '%', share + ' percent');
+    paint(input('average'), duration(average), average + ' minutes');
+    paint(input('extra'), duration(extra), extra + ' minutes');
+    paint(input('rate'), money(rate, cur) + ' / h', money(rate, cur) + ' per hour');
+    figs[0].textContent = nf.format(Math.round(hours));
+    figs[1].textContent = nf.format(Math.round(hours * 10 / 40) / 10);
+    figs[2].textContent = approx(Math.round(hours * rate), cur);
+    figs[3].textContent = duration(average);
+    src.textContent = RATE_SOURCE[cur];
+    curBtns.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.cur === cur)));
+  }
+  const engaged = () => {
+    if (touched) return;
+    touched = true;
+    (window.dataLayer = window.dataLayer || []).push({ event: 'hm_calc', hm_location: 'triage-cost' });
+  };
+  card.addEventListener('input', e => { if (e.target.matches('.calc-range')) { update(); engaged(); } });
+  curBtns.forEach(b => b.addEventListener('click', () => {
+    cur = b.dataset.cur;
+    const r = RATES[cur], el = input('rate');
+    Object.assign(el, { min: r.min, max: r.max, step: r.step });
+    el.value = r.value;
+    update(); engaged();
+  }));
+  update();
+})();
+
+// Funnel events for GTM (ideas 09.11, 19): pushed to dataLayer only; GTM runs under Consent Mode, so nothing is
+// sent before consent. hm_cta: a click on a call to action, with where it sits and where it leads.
+// hm_form_start / hm_form_submit: the Tilda free-check form. hm_scroll: 50 and 90 percent of a page.
+(() => {
+  const dl = () => (window.dataLayer = window.dataLayer || []);
+  const CTA = /(^|\/)contact(\.html)?(#|$)|^#contact$|^mailto:|scan\.hirdman\.pro|demo\.hirdman\.pro|\/tools\/|^tools\//;
+  const where = el => {
+    if (el.closest('header')) return 'header';
+    if (el.closest('footer')) return 'footer';
+    if (el.closest('.trust')) return 'trust';
+    const sec = el.closest('section[id]');
+    if (sec) return sec.id;
+    const section = el.closest('section');
+    const h = section && section.querySelector('h1, h2');
+    return h ? h.textContent.trim().slice(0, 40) : 'page';
+  };
+  document.addEventListener('click', e => {
+    const a = e.target.closest && e.target.closest('a[href]');
+    if (!a) return;
+    const href = a.getAttribute('href');
+    if (!CTA.test(href)) return;
+    const target = href.startsWith('mailto:') ? 'mailto' : href.replace(/^https?:\/\//, '').split('?')[0];
+    dl().push({ event: 'hm_cta', hm_location: where(a), hm_target: target, hm_label: a.textContent.trim().replace(/\s+/g, ' ').slice(0, 60) });
+  }, true);
+
+  let started = false, sent = false;
+  document.addEventListener('focusin', e => {
+    if (started || !e.target.closest || !e.target.closest('form.t-form')) return;
+    started = true;
+    dl().push({ event: 'hm_form_start', hm_form: 'free_check' });
+  });
+  // Tilda shows .js-successbox after a successful send; its own event name differs between versions
+  const submitted = () => { if (sent) return; sent = true; dl().push({ event: 'hm_form_submit', hm_form: 'free_check' }); };
+  document.addEventListener('tildaform:aftersuccess', submitted, true);
+  if ('MutationObserver' in window) {
+    const watch = () => document.querySelectorAll('form.t-form .js-successbox').forEach(box => {
+      const shown = () => { if (box.offsetParent !== null && box.textContent.trim()) submitted(); };
+      new MutationObserver(shown).observe(box, { attributes: true, attributeFilter: ['style', 'class'] });
+    });
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', watch);
+    else watch();
+  }
+
+  const marks = [50, 90], seen = new Set();
+  addEventListener('scroll', () => {
+    const h = document.documentElement.scrollHeight - innerHeight;
+    if (h <= 0) return;
+    const p = scrollY / h * 100;
+    for (const m of marks) {
+      if (p < m || seen.has(m)) continue;
+      seen.add(m);
+      dl().push({ event: 'hm_scroll', hm_depth: m });
+    }
+  }, { passive: true });
+})();
