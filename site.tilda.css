@@ -407,8 +407,7 @@ html.js [data-reveal].in{opacity:1;transform:none}
 .hirdman #contact-form-slot{margin-top:14px}
 .hirdman #contact-form-slot .t-rec{padding:0 !important;background:none !important}
 .hirdman #contact-form-slot .t-container,.hirdman #contact-form-slot .t-col{max-width:none !important;width:100% !important;margin:0 !important;padding:0 !important;float:none !important}
-.hirdman #contact-form-slot .t-form__inputsbox{display:grid;gap:14px}
-.hirdman #contact-form-slot .t-input-group{margin:0 !important}
+.hirdman #contact-form-slot .t-input-group{margin:0 0 14px !important}
 .hirdman #contact-form-slot .t-input-title{color:var(--ink) !important;font-family:inherit !important;font-weight:600 !important;font-size:14px !important;line-height:1.4 !important;padding-bottom:6px !important}
 .hirdman #contact-form-slot .t-input{background:rgba(3,8,7,.6) !important;color:var(--ink) !important;border:1px solid rgba(23,241,215,.28) !important;border-radius:12px !important;font-family:inherit !important;font-size:15px !important;line-height:1.4 !important;padding:12px 14px !important;height:auto !important;box-sizing:border-box;width:100%}
 .hirdman #contact-form-slot textarea.t-input{min-height:110px;resize:vertical}
