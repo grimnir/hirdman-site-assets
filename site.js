@@ -190,7 +190,7 @@
     }
     const CHIP = document.documentElement.lang === 'ru' ? { portal: '2FA', other: 'закрыто' } : { portal: '2FA on', other: 'fixed' };
     const STEPS = [
-      { nodes: ['src', 'login', 'mailp', 'pass', 'dom'], edges: [['src', 'login', 'id'], ['src', 'mailp', 'id'], ['src', 'pass', 'id'], ['src', 'dom', 'id']] },
+      { nodes: ['login', 'mailp', 'pass', 'dom'], edges: [['src', 'login', 'id'], ['src', 'mailp', 'id'], ['src', 'pass', 'id'], ['src', 'dom', 'id']] },
       { nodes: ['mail', 'old'], edges: [['mailp', 'mail', 'acc'], ['mailp', 'old', 'acc']] },
       { nodes: ['nick', 'shop'], edges: [['login', 'nick', 'acc'], ['pass', 'shop', 'acc']] },
       { nodes: ['admin', 'portal'], edges: [['dom', 'admin', 'bad'], { from: 'shop', to: 'portal', k: 'bad', d: 'M775 326 Q758 460 678 510' }] },
@@ -199,6 +199,18 @@
     const gE = rvSvg.querySelector('#rvEdges'), gN = rvSvg.querySelector('#rvNodes'), gM = rvSvg.querySelector('#rvMarks');
     const ends = (a, b) => b.x > a.x ? [[a.x + a.w / 2, a.y], [b.x - b.w / 2, b.y]] : [[a.x - a.w / 2, a.y], [b.x + b.w / 2, b.y]];
     const edgeEls = [], nodeEls = {}, stepEls = [];
+    // Owner 09.11: the source account is on screen from the first caption; the branches grow out of it.
+    // It used to be one of step 0's nodes, revealed after its own edges were drawn.
+    const addNode = id => {
+      const n = RV[id];
+      const g = svgEl('g', { class: 'node', 'data-id': id }, gN);
+      svgEl('rect', { class: 'nb ' + n.k, x: n.x - n.w / 2, y: n.y - n.h / 2, width: n.w, height: n.h, rx: 14 }, g);
+      svgEl('text', { class: 'nl', x: n.x, y: n.y - 3, 'text-anchor': 'middle' }, g).textContent = n.l;
+      svgEl('text', { class: 'ns', x: n.x, y: n.y + 16, 'text-anchor': 'middle' }, g).textContent = n.s;
+      nodeEls[id] = g;
+      return g;
+    };
+    addNode('src');
     STEPS.forEach(st => {
       const se = { edges: [], nodes: [], comets: [] };
       st.edges.forEach(e => {
@@ -208,14 +220,7 @@
         const p = svgEl('path', { d, class: 'e ' + k, 'data-edge': from + '-' + to }, gE);
         se.edges.push(p); se.comets.push(svgEl('circle', { class: 'comet', r: 3.4, opacity: 0 }, gM)); edgeEls.push(p);
       });
-      st.nodes.forEach(id => {
-        const n = RV[id];
-        const g = svgEl('g', { class: 'node', 'data-id': id }, gN);
-        svgEl('rect', { class: 'nb ' + n.k, x: n.x - n.w / 2, y: n.y - n.h / 2, width: n.w, height: n.h, rx: 14 }, g);
-        svgEl('text', { class: 'nl', x: n.x, y: n.y - 3, 'text-anchor': 'middle' }, g).textContent = n.l;
-        svgEl('text', { class: 'ns', x: n.x, y: n.y + 16, 'text-anchor': 'middle' }, g).textContent = n.s;
-        nodeEls[id] = g; se.nodes.push(g);
-      });
+      st.nodes.forEach(id => se.nodes.push(addNode(id)));
       stepEls.push(se);
     });
     const fixMarks = STEPS[4].cut.map(([a, b]) => {
@@ -244,11 +249,13 @@
     else {
       edgeEls.forEach(p => { const L = p.getTotalLength(); p.style.strokeDasharray = L; p.style.strokeDashoffset = L; p.dataset.len = L; });
       const build = pin => {
-        gsap.set(Object.values(nodeEls), { autoAlpha: 0, scale: .6, transformOrigin: '50% 50%' });
+        gsap.set(Object.values(nodeEls).filter(g => g !== nodeEls.src), { autoAlpha: 0, scale: .6, transformOrigin: '50% 50%' });
         const section = rvSvg.closest('section');
         const tl = gsap.timeline({ defaults: { ease: 'none' }, scrollTrigger: pin
           ? { trigger: section, start: 'top top', end: '+=' + (section.dataset.pinEnd || 2800), pin: true, scrub: 1, anticipatePin: 1 }
           : { trigger: rvSvg, start: 'top 75%', end: 'bottom 45%', scrub: 1 } });
+        // A short hold on the account alone before the first branch starts to draw.
+        tl.to({}, { duration: .6 });
         stepEls.forEach((se, i) => {
           tl.addLabel('s' + i);
           tl.call(() => caps.forEach((c, k) => c.classList.toggle('on', k === i)));
