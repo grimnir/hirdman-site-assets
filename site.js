@@ -170,17 +170,18 @@
   if (rvSvg) {
     const NS = 'http://www.w3.org/2000/svg';
     const svgEl = (tag, attrs, parent) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.append(e); return e; };
+    // The right column is 276 wide: john.d@old-aceme.example filled 236 edge to edge, the Russian label overflowed it.
     const RV = {
       src:    { x: 126, y: 290, w: 226, h: 84, k: 'src', l: 'Corporate account', s: 'login, password, sign-in site' },
       login:  { x: 392, y: 110, w: 244, h: 56, k: 'id', l: 'John.D', s: 'login from the breach' },
       mailp:  { x: 392, y: 220, w: 244, h: 56, k: 'id', l: 'john.d@', s: 'mailbox name before @' },
       pass:   { x: 392, y: 330, w: 244, h: 56, k: 'id', l: 'SecretJohn1986!', s: 'password: name + year + symbol' },
       dom:    { x: 392, y: 440, w: 244, h: 56, k: 'id', l: 'secretadminpanel.example', s: 'unique domain' },
-      mail:   { x: 775, y: 60,  w: 236, h: 52, k: 'acc', l: 'john.d@mail.example', s: 'personal mailbox' },
-      old:    { x: 775, y: 140, w: 236, h: 52, k: 'acc', l: 'john.d@old-aceme.example', s: 'previous employer' },
-      nick:   { x: 775, y: 220, w: 236, h: 52, k: 'acc', l: 'john_d87', s: 'username, same rule' },
-      shop:   { x: 775, y: 300, w: 236, h: 52, k: 'acc', l: 'shop-partner.example', s: 'same password, work email' },
-      admin:  { x: 775, y: 380, w: 236, h: 52, k: 'bad', l: 'admin.aceme.example', s: 'admin login without email' },
+      mail:   { x: 775, y: 60,  w: 276, h: 52, k: 'acc', l: 'john.d@mail.example', s: 'personal mailbox' },
+      old:    { x: 775, y: 140, w: 276, h: 52, k: 'acc', l: 'john.d@old-aceme.example', s: 'previous employer' },
+      nick:   { x: 775, y: 220, w: 276, h: 52, k: 'acc', l: 'john_d87', s: 'username, same rule' },
+      shop:   { x: 775, y: 300, w: 276, h: 52, k: 'acc', l: 'shop-partner.example', s: 'same password, work email' },
+      admin:  { x: 775, y: 380, w: 276, h: 52, k: 'bad', l: 'admin.aceme.example', s: 'admin login without email' },
       portal: { x: 560, y: 510, w: 236, h: 52, k: 'bad', l: 'portal.aceme.example', s: 'corporate portal' },
     };
     // Russian edition: the graph labels follow the page language; coordinates and logic stay shared.
