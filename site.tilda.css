@@ -390,7 +390,7 @@ html.js [data-reveal].in{opacity:1;transform:none}
 
 
 #main{position:relative;isolation:isolate}
-#main::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background-image:linear-gradient(rgba(23,241,215,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(23,241,215,.035) 1px,transparent 1px);background-size:64px 64px;background-position:center top;-webkit-mask-image:linear-gradient(90deg,#000,rgba(0,0,0,.25) 30%,rgba(0,0,0,.25) 70%,#000),linear-gradient(180deg,transparent 70vh,#000 100vh);-webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,#000,rgba(0,0,0,.25) 30%,rgba(0,0,0,.25) 70%,#000),linear-gradient(180deg,transparent 70vh,#000 100vh);mask-composite:intersect}
+#main::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background-image:linear-gradient(rgba(23,241,215,.065) 1px,transparent 1px),linear-gradient(90deg,rgba(23,241,215,.065) 1px,transparent 1px);background-size:64px 64px;background-position:center top;-webkit-mask-image:linear-gradient(90deg,#000,rgba(0,0,0,.5) 30%,rgba(0,0,0,.5) 70%,#000),linear-gradient(180deg,transparent 70vh,#000 100vh);-webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,#000,rgba(0,0,0,.5) 30%,rgba(0,0,0,.5) 70%,#000),linear-gradient(180deg,transparent 70vh,#000 100vh);mask-composite:intersect}
 
 
 @media (max-width:640px){
