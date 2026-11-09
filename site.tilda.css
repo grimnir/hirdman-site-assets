@@ -236,7 +236,7 @@ html{scroll-padding-top:88px}
 .hirdman .plan h3{font-size:26px;margin:10px 0 6px}
 .hirdman .plan .cad{font-size:14px;color:var(--teal);font-weight:600}
 .hirdman .plan .for{margin:12px 0 0;font-size:15px;color:var(--muted);line-height:1.5}
-.hirdman .plan ul{list-style:none;padding:0;margin:20px 0 0;display:grid;gap:10px;flex:1}
+.hirdman .plan ul{list-style:none;padding:0;margin:20px 0 0;display:grid;gap:10px;flex:1;align-content:start}
 .hirdman .plan li{padding-left:26px;position:relative;font-size:15px;line-height:1.45}
 .hirdman .plan li::before{content:"";position:absolute;left:1px;top:7px;width:13px;height:7px;border-left:2px solid var(--teal);border-bottom:2px solid var(--teal);transform:rotate(-45deg)}
 .hirdman .plan .btn{margin-top:24px;align-self:flex-start}
