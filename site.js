@@ -1,4 +1,4 @@
-/* Hirdman site behaviour. Every block is guarded by the presence of its markup, so one file serves every page. */
+/* Hirdman site behavior. Every block is guarded by the presence of its markup, so one file serves every page. */
 (() => {
   document.documentElement.classList.add('js');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -179,8 +179,8 @@
       mail:   { x: 775, y: 60,  w: 236, h: 52, k: 'acc', l: 'john.d@mail.example', s: 'personal mailbox' },
       old:    { x: 775, y: 140, w: 236, h: 52, k: 'acc', l: 'john.d@old-aceme.example', s: 'previous employer' },
       nick:   { x: 775, y: 220, w: 236, h: 52, k: 'acc', l: 'john_d87', s: 'username, same rule' },
-      shop:   { x: 775, y: 300, w: 236, h: 52, k: 'acc', l: 'shop-partner.example', s: 'same password, work e-mail' },
-      admin:  { x: 775, y: 380, w: 236, h: 52, k: 'bad', l: 'admin.aceme.example', s: 'admin login without e-mail' },
+      shop:   { x: 775, y: 300, w: 236, h: 52, k: 'acc', l: 'shop-partner.example', s: 'same password, work email' },
+      admin:  { x: 775, y: 380, w: 236, h: 52, k: 'bad', l: 'admin.aceme.example', s: 'admin login without email' },
       portal: { x: 560, y: 510, w: 236, h: 52, k: 'bad', l: 'portal.aceme.example', s: 'corporate portal' },
     };
     // Russian edition: the graph labels follow the page language; coordinates and logic stay shared.
