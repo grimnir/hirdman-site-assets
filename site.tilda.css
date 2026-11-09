@@ -402,3 +402,23 @@ html.js [data-reveal].in{opacity:1;transform:none}
   .t972__buttons-wrap .t-btn{flex:1 1 auto !important;width:auto !important;margin:0 !important;min-height:38px;padding:8px 10px !important}
   .t972__settings-btn{flex:0 0 auto !important;width:auto !important;margin:0 !important;min-height:38px;padding:8px 4px !important}
 }
+
+
+.hirdman #contact-form-slot{margin-top:14px}
+.hirdman #contact-form-slot .t-rec{padding:0 !important;background:none !important}
+.hirdman #contact-form-slot .t-container,.hirdman #contact-form-slot .t-col{max-width:none !important;width:100% !important;margin:0 !important;padding:0 !important;float:none !important}
+.hirdman #contact-form-slot .t-form__inputsbox{display:grid;gap:14px}
+.hirdman #contact-form-slot .t-input-group{margin:0 !important}
+.hirdman #contact-form-slot .t-input-title{color:var(--ink) !important;font-family:inherit !important;font-weight:600 !important;font-size:14px !important;line-height:1.4 !important;padding-bottom:6px !important}
+.hirdman #contact-form-slot .t-input{background:rgba(3,8,7,.6) !important;color:var(--ink) !important;border:1px solid rgba(23,241,215,.28) !important;border-radius:12px !important;font-family:inherit !important;font-size:15px !important;line-height:1.4 !important;padding:12px 14px !important;height:auto !important;box-sizing:border-box;width:100%}
+.hirdman #contact-form-slot textarea.t-input{min-height:110px;resize:vertical}
+.hirdman #contact-form-slot .t-input::placeholder{color:var(--muted);opacity:1}
+.hirdman #contact-form-slot .t-input:focus{outline:none;border-color:var(--teal) !important;box-shadow:0 0 0 3px rgba(23,241,215,.18)}
+.hirdman #contact-form-slot .t-form__submit{margin-top:18px !important;width:auto !important}
+.hirdman #contact-form-slot .t-submit{background:var(--teal) !important;color:#03100e !important;border:0 !important;border-radius:12px !important;font-family:inherit !important;font-weight:700 !important;font-size:15px !important;line-height:1 !important;height:auto !important;padding:14px 22px !important;width:auto !important}
+.hirdman #contact-form-slot .t-submit:hover{background:#14d9c1 !important}
+.hirdman #contact-form-slot .t-submit:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
+.hirdman #contact-form-slot .t678__form-bottom-text{color:var(--muted) !important;font-size:13px !important;margin-top:12px !important;text-align:left !important}
+.hirdman #contact-form-slot .t-form__successbox{background:var(--teal-soft) !important;color:var(--ink) !important;border:1px solid rgba(23,241,215,.35);border-radius:12px;padding:16px !important}
+.hirdman #contact-form-slot .t-form__errorbox-wrapper{background:rgba(255,59,92,.12) !important;border-radius:12px}
+.hirdman #contact-form-slot .t-form__errorbox-text,.hirdman #contact-form-slot .t-input-error{color:#ff8fa3 !important}

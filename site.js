@@ -165,6 +165,16 @@
     }
   }
 
+  /* ---------- /contact: the native Tilda form record moves into the request card (zb5fp) ---------- */
+  const formSlot = $('#contact-form-slot');
+  if (formSlot) {
+    const moveForm = () => {
+      const rec = [...document.querySelectorAll('.t-rec')].find(r => r.querySelector('form.t-form') && !formSlot.contains(r));
+      if (rec) formSlot.append(rec);
+    };
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', moveForm); else moveForm();
+  }
+
   /* ---------- Reverse check graph: data-driven SVG, scroll-driven rounds ---------- */
   const rvSvg = $('#rvSvg');
   if (rvSvg) {
