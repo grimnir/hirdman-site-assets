@@ -178,6 +178,7 @@ html{scroll-padding-top:88px}
 .hirdman .nb.src,.hirdman .nb.id{stroke:var(--teal)} .hirdman .nb.acc{stroke:var(--amber)} .hirdman .nb.bad{stroke:var(--red)}
 .hirdman .nl{font-size:17px;font-weight:700;fill:var(--ink);font-family:inherit}
 .hirdman .ns{font-size:12.5px;fill:var(--muted);font-family:inherit}
+.hirdman .rv-v .nl{font-size:18px} .hirdman .rv-v .ns{font-size:13.5px}
 .hirdman .cutx line{stroke:var(--red);stroke-width:2.4;stroke-linecap:round}
 .hirdman .fixchip rect{fill:var(--green)} .hirdman .fixchip text{font-size:11px;font-weight:800;fill:#03180f;font-family:inherit}
 .hirdman .comet{fill:#bffff4;filter:url(#rvglow)}

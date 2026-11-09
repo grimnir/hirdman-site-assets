@@ -188,6 +188,23 @@
       const RU = { src: ['Корпоративная учётка', 'логин, пароль, сайт входа'], login: ['Иванов.П', 'логин из утечки'], mailp: ['ivanov.p@', 'имя ящика до @'], pass: ['СекретИван1986!', 'пароль: имя + год + символ'], dom: ['skrytaya-panel.example', 'уникальный домен'], mail: ['ivanov.p@mail.example', 'личная почта'], old: ['ivanov.p@old-aceme.example', 'прошлое место работы'], nick: ['ivanov_p87', 'никнейм, та же схема'], shop: ['shop-partner.example', 'тот же пароль, рабочая почта'], admin: ['admin.aceme.example', 'логин admin без e-mail'], portal: ['portal.aceme.example', 'корпоративный портал'] };
       for (const k in RU) { RV[k].l = RU[k][0]; RV[k].s = RU[k][1]; }
     }
+    // Phones (owner 09.11): an indented tree, one node per row: [depth, row]. The edge runs down a spine
+    // at the parent's left and turns into the child, so the graph reads top to bottom.
+    const vertical = matchMedia('(max-width: 640px)').matches;
+    const TREE = { src: [0, 0], login: [1, 1], nick: [2, 2], mailp: [1, 3], mail: [2, 4], old: [2, 5], pass: [1, 6], shop: [2, 7], portal: [3, 8], dom: [1, 9], admin: [2, 10] };
+    const VW = 340, INDENT = 18, ROW = 62, NODE_H = 50, PAD = 4;
+    if (vertical) {
+      for (const id in TREE) {
+        const [depth, row] = TREE[id], left = PAD + depth * INDENT;
+        Object.assign(RV[id], { w: VW - PAD - left, h: NODE_H, x: (left + VW - PAD) / 2, y: NODE_H / 2 + PAD + row * ROW });
+      }
+      rvSvg.setAttribute('viewBox', `0 0 ${VW} ${NODE_H + 2 * PAD + 10 * ROW}`);
+      rvSvg.classList.add('rv-v');
+    }
+    const treeEdge = (a, b) => {
+      const x = a.x - a.w / 2 + INDENT / 2, y = b.y, r = 6;
+      return `M${x} ${a.y + a.h / 2} L${x} ${y - r} Q${x} ${y} ${x + r} ${y} L${b.x - b.w / 2} ${y}`;
+    };
     const CHIP = document.documentElement.lang === 'ru' ? { portal: '2FA', other: 'закрыто' } : { portal: '2FA on', other: 'fixed' };
     const STEPS = [
       { nodes: ['login', 'mailp', 'pass', 'dom'], edges: [['src', 'login', 'id'], ['src', 'mailp', 'id'], ['src', 'pass', 'id'], ['src', 'dom', 'id']] },
@@ -215,7 +232,8 @@
       const se = { edges: [], nodes: [], comets: [] };
       st.edges.forEach(e => {
         const from = Array.isArray(e) ? e[0] : e.from, to = Array.isArray(e) ? e[1] : e.to, k = Array.isArray(e) ? e[2] : e.k;
-        let d = e.d;
+        let d = vertical ? null : e.d;
+        if (!d && vertical) d = treeEdge(RV[from], RV[to]);
         if (!d) { const [[x1, y1], [x2, y2]] = ends(RV[from], RV[to]); const mx = (x1 + x2) / 2; d = `M${x1} ${y1} C${mx} ${y1} ${mx} ${y2} ${x2} ${y2}`; }
         const p = svgEl('path', { d, class: 'e ' + k, 'data-edge': from + '-' + to }, gE);
         se.edges.push(p); se.comets.push(svgEl('circle', { class: 'comet', r: 3.4, opacity: 0 }, gM)); edgeEls.push(p);
