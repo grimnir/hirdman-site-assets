@@ -134,7 +134,9 @@ td.no{width:52px;color:var(--teal);font-weight:700;font-variant-numeric:tabular-
 .btn{
   height:46px;padding:0 22px;border-radius:14px;border:0;cursor:pointer;font:inherit;font-size:15px;font-weight:600;
   color:#03201b;background:linear-gradient(180deg,#17f1d7,#0fb8a3);
+  display:inline-flex;align-items:center;text-decoration:none;
 }
+.btn-ghost{color:var(--teal);background:transparent;border:1px solid var(--teal)}
 .note{margin-top:14px;font-size:12.5px;color:var(--muted);line-height:1.5}
 
 @media (max-width:860px){
@@ -161,7 +163,7 @@ td.no{width:52px;color:var(--teal);font-weight:700;font-variant-numeric:tabular-
 </style>
 </head>
 <body>
-<a href="/" style="position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:999;display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 14px;border-radius:999px;background:rgba(3,8,7,.85);border:1px solid rgba(23,241,215,.35);color:#eafffb;font:600 13px/1 Inter,-apple-system,Segoe UI,Roboto,Arial,sans-serif;text-decoration:none;backdrop-filter:blur(10px)">&larr; Back to Hirdman</a>
+<a href="https://hirdman.pro/" style="position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:999;display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 14px;border-radius:999px;background:rgba(3,8,7,.85);border:1px solid rgba(23,241,215,.35);color:#eafffb;font:600 13px/1 Inter,-apple-system,Segoe UI,Roboto,Arial,sans-serif;text-decoration:none;backdrop-filter:blur(10px)">&larr; Back to Hirdman</a>
 <div class="wrap">
 
   <header>
@@ -222,6 +224,7 @@ td.no{width:52px;color:var(--teal);font-weight:700;font-variant-numeric:tabular-
   <section class="section" aria-labelledby="chk-h">
     <div class="section-h">
       <div><span class="kicker">Checklist</span><h2 id="chk-h" style="margin-top:12px">26 questions for your vendor, and our answers</h2></div>
+      <a class="btn btn-ghost" href="hirdman-vendor-checklist.pdf" download>Download as PDF (3 pages)</a>
     </div>
     <div class="chips-f" id="chkFilters" role="group" aria-label="Filter by section"></div>
     <div class="tbl-wrap">
@@ -239,7 +242,7 @@ td.no{width:52px;color:var(--teal);font-weight:700;font-variant-numeric:tabular-
         <h2 style="font-size:24px">Let's check it on your data</h2>
         <p class="muted" style="margin:6px 0 0">A free check of your current vendor: we show the difference live, with no obligation.</p>
       </div>
-      <button class="btn" type="button" id="ctaBtn">Discuss a side-by-side check</button>
+      <a class="btn" href="https://hirdman.pro/contact">Discuss a side-by-side check</a>
     </div>
   </section>
 
@@ -476,7 +479,6 @@ td.no{width:52px;color:var(--teal);font-weight:700;font-variant-numeric:tabular-
   }
   observeRows();
 
-  $('#ctaBtn').addEventListener('click', () => { /* contact details to be added by the owner */ });
 })();
 </script>
 </body>
