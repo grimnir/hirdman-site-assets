@@ -30,8 +30,13 @@ body{
 .hirdman button{font-family:inherit}
 .hirdman :focus-visible{outline:2px solid var(--teal);outline-offset:3px}
 .hirdman [id]{scroll-margin-top:88px}
-.skip{position:absolute;left:-999px;top:10px;z-index:100;background:var(--teal);color:var(--teal-ink);padding:10px 14px;border-radius:10px;font-weight:700}
-.skip:focus{left:16px}
+.hirdman a.skip{position:absolute;left:-999px;top:10px;z-index:100;background:var(--teal);color:var(--teal-ink);padding:10px 14px;border-radius:10px;font-weight:700}
+.hirdman a.skip:focus{left:16px}
+html{scroll-padding-top:88px}
+.hirdman p a:not(.btn),.hirdman td a,.hirdman li > span a,.hirdman .plan li a,.hirdman .foot-bottom a,.hirdman details a{text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
+.hirdman .card{overflow-wrap:anywhere}
+.hirdman .card .tag{max-width:100%;white-space:normal}
+.hirdman .tbl-wrap:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
 .hirdman a.ext::after{content:"\2197";font-size:.85em;margin-left:4px;opacity:.7}
 .hirdman img,.hirdman svg{max-width:100%}
 .hirdman .wrap{max-width:var(--wrap);margin:0 auto;padding:0 24px}
@@ -157,7 +162,7 @@ body{
 
 
 .hirdman .rv-section{padding:0}
-.hirdman .rv{min-height:100vh;display:grid;grid-template-columns:4.3fr 7.7fr;gap:36px;align-items:center;padding:96px 0 48px}
+.hirdman .rv{min-height:100vh;display:grid;grid-template-columns:4.3fr 7.7fr;gap:36px;align-items:center;padding-block:96px 48px}
 .hirdman .rv .lead{font-size:16px;margin-bottom:4px}
 .hirdman .caps{display:grid;gap:8px;margin-top:14px}
 .hirdman .cap{display:grid;grid-template-columns:34px 1fr;gap:12px;align-items:start;padding:11px 14px;border-radius:14px;border:1px solid transparent;opacity:.6;transition:opacity .35s,border-color .35s,background .35s}

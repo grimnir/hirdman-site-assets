@@ -25,12 +25,27 @@
       if (!sameHost && !a.querySelector('svg')) a.classList.add('ext');
     });
     const burger = $('#burger'), nav = $('#nav');
-    if (burger && nav) burger.addEventListener('click', () => {
-      const open = nav.classList.toggle('open');
-      burger.setAttribute('aria-expanded', String(open));
-      // The primary call to action is hidden from the bar on phones, so the open menu carries it.
-      if (open && !nav.querySelector('.m-cta')) { const cta = document.querySelector('.top-cta a.btn:not(.ghost)'); if (cta) { const a = cta.cloneNode(true); a.className = 'btn sm m-cta'; nav.append(a); } }
-    });
+    if (burger && nav) {
+      burger.setAttribute('aria-controls', 'nav');
+      const setOpen = (open, refocus) => {
+        nav.classList.toggle('open', open);
+        burger.setAttribute('aria-expanded', String(open));
+        if (!open && refocus) burger.focus();
+      };
+      burger.addEventListener('click', () => {
+        const open = !nav.classList.contains('open');
+        // Both calls to action are hidden from the bar on phones, so the open menu carries them.
+        if (open && !nav.querySelector('.m-cta')) $$('.top-cta a.btn').forEach(cta => { const a = cta.cloneNode(true); a.className = (cta.classList.contains('ghost') ? 'btn ghost' : 'btn') + ' sm m-cta'; nav.append(a); });
+        setOpen(open, false);
+      });
+      // Audit 08.11 (M5): Escape closes and returns focus; Tab past the menu closes it instead of moving under it.
+      document.addEventListener('keydown', e => { if (e.key === 'Escape' && nav.classList.contains('open')) setOpen(false, true); });
+      // The menu precedes the burger in the DOM, so Tab from the open burger would skip it; send it into the menu.
+      burger.addEventListener('keydown', e => { if (e.key === 'Tab' && !e.shiftKey && nav.classList.contains('open')) { const first = nav.querySelector('a'); if (first) { e.preventDefault(); first.focus(); } } });
+      nav.addEventListener('focusout', e => { if (nav.classList.contains('open') && e.relatedTarget && !nav.contains(e.relatedTarget) && e.relatedTarget !== burger) setOpen(false, false); });
+      document.addEventListener('click', e => { if (nav.classList.contains('open') && !nav.contains(e.target) && !burger.contains(e.target)) setOpen(false, false); });
+      nav.addEventListener('click', e => { if (e.target.closest('a')) setOpen(false, false); });
+    }
   }
 
   /* ---------- Reveal on scroll ---------- */
@@ -258,7 +273,7 @@
   if (hasGsap && !reduced) {
     if ($('#procLine')) {
       gsap.fromTo('#procLine', { scaleX: 0 }, { scaleX: 1, ease: 'none', scrollTrigger: { trigger: '#steps', start: 'top 70%', end: 'bottom 55%', scrub: 1 } });
-      gsap.from('#steps .step', { autoAlpha: .18, y: 14, stagger: .12, ease: 'none', scrollTrigger: { trigger: '#steps', start: 'top 72%', end: 'bottom 52%', scrub: 1 } });
+      gsap.from('#steps .step', { autoAlpha: 0, y: 14, stagger: .12, duration: .6, ease: 'power2.out', scrollTrigger: { trigger: '#steps', start: 'top 80%', once: true } });
     }
     if ($('#bento')) gsap.from('#bento .tile', { y: 34, autoAlpha: 0, stagger: .09, duration: .8, ease: 'power3.out', scrollTrigger: { trigger: '#bento', start: 'top 78%', once: true } });
     if ($('#rows')) gsap.from('#rows .row', { x: -22, autoAlpha: 0, stagger: .08, duration: .6, ease: 'power3.out', scrollTrigger: { trigger: '#rows', start: 'top 80%', once: true } });
