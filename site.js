@@ -410,6 +410,8 @@
     figs[1].textContent = nf.format(Math.round(hours * 10 / 40) / 10);
     figs[2].textContent = approx(Math.round(hours * rate), cur);
     figs[3].textContent = duration(average);
+    // at a 0% share the session test multiplies by zero records; say so instead of looking broken
+    input('extra').closest('.calc-field').classList.toggle('is-idle', share === 0);
     src.textContent = RATE_SOURCE[cur];
     curBtns.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.cur === cur)));
   }
@@ -429,8 +431,8 @@
   update();
 })();
 
-// Funnel events for GTM (ideas 09.11, 19): pushed to dataLayer only; GTM runs under Consent Mode, so nothing is
-// sent before consent. hm_cta: a click on a call to action, with where it sits and where it leads.
+// Funnel events for GTM (ideas 09.11, 19): pushed to dataLayer only. The container meant to pick them up
+// (GTM-N49H3ZL9) is a Tilda cookie-type script that starts only after consent; the built-in GTM-5ZT423G9 starts at once. hm_cta: a click on a call to action, with where it sits and where it leads.
 // hm_form_start / hm_form_submit: the Tilda free-check form. hm_scroll: 50 and 90 percent of a page.
 (() => {
   const dl = () => (window.dataLayer = window.dataLayer || []);

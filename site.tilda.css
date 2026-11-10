@@ -439,6 +439,8 @@ html.js [data-reveal].in{opacity:1;transform:none}
 .hirdman .calc-label{display:flex;justify-content:space-between;gap:10px;font-size:14px;color:var(--muted)}
 .hirdman .calc-val{color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap}
 .hirdman .calc-hint,.hirdman .calc-src,.hirdman .calc-note{font-size:13px;color:var(--muted-2);line-height:1.5;margin:0}
+.hirdman .calc-field.is-idle .calc-range,.hirdman .calc-field.is-idle .calc-val{opacity:.5}
+.hirdman .calc-field.is-idle .calc-hint{color:var(--teal)}
 .hirdman .calc-range{-webkit-appearance:none;appearance:none;width:100%;height:24px;background:transparent;margin:0;cursor:pointer;--fill:50%}
 .hirdman .calc-range::-webkit-slider-runnable-track{height:4px;border-radius:2px;background:linear-gradient(90deg,var(--teal) var(--fill),rgba(23,241,215,.18) var(--fill))}
 .hirdman .calc-range::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--teal);margin-top:-8px;border:3px solid var(--bg);box-shadow:0 0 0 1px var(--teal)}
