@@ -199,7 +199,7 @@ td.no{width:52px;color:var(--teal);font-weight:700;font-variant-numeric:tabular-
     <div class="card case">
       <div>
         <p class="big" style="margin:0">During an attack surface review we found two subdomains running a UI development tool. The version was vulnerable to information disclosure: an environment file ended up in the public build, along with access tokens for repositories, cloud roles, databases and storage.</p>
-        <p class="muted" style="margin:14px 0 0">There was no leaked email or password for the domain, so breach monitoring would have shown nothing. The CVSS score rated the flaw "low" (3.1), but the file held working keys. We confirmed one token by accessing a repository, and gave the client all compromised secrets for rotation.</p>
+        <p class="muted" style="margin:14px 0 0">There was no leaked email or password for the domain, so breach monitoring would have shown nothing. The vulnerability is rated only Medium by CVSS (5.3), yet the file held working keys. We confirmed one token by accessing a repository, and gave the client all compromised secrets for rotation.</p>
       </div>
       <div style="display:flex;flex-direction:column;justify-content:center;gap:8px">
         <div class="num" data-count="120" id="cSecrets">0</div>
@@ -233,7 +233,7 @@ td.no{width:52px;color:var(--teal);font-weight:700;font-variant-numeric:tabular-
         <tbody id="chkBody"></tbody>
       </table>
     </div>
-    <p class="note">Red flags: typical answers from showcase vendors, not a description of any specific vendor.</p>
+    <p class="note">Red flags: typical answers from showcase vendors; they describe no one vendor.</p>
   </section>
 
   <section class="section">
