@@ -443,8 +443,8 @@
   update();
 })();
 
-// Funnel events for GTM (ideas 09.11, 19): pushed to dataLayer only. The container meant to pick them up
-// (GTM-N49H3ZL9) is a Tilda cookie-type script that starts only after consent; the built-in GTM-5ZT423G9 starts at once. hm_cta: a click on a call to action, with where it sits and where it leads.
+// Funnel events for GTM (ideas 09.11, 19): pushed to dataLayer only. GTM-5ZT423G9 picks them up; since 10.11 it is a
+// Tilda cookie-type script in the project HEAD, so nothing leaves the page before consent. hm_cta: a click on a call to action, with where it sits and where it leads.
 // hm_form_start / hm_form_submit: the Tilda free-check form. hm_scroll: 50 and 90 percent of a page.
 (() => {
   const dl = () => (window.dataLayer = window.dataLayer || []);
