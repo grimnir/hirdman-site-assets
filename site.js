@@ -339,6 +339,18 @@
   new IntersectionObserver(([e]) => top.classList.toggle('past-hero', !e.isIntersecting), { rootMargin: '-72px 0px 0px 0px', threshold: 0 }).observe(hero);
 })();
 
+// A link to a FAQ answer (home stat -> /how-it-works#raw-records) lands on a closed <details>: open the one the
+// hash names. Runs again on load, because Tilda may still be laying out the page when this script first runs.
+(() => {
+  const openNamed = () => {
+    const el = location.hash.length > 1 && document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    if (el && el.tagName === 'DETAILS') el.open = true;
+  };
+  openNamed();
+  window.addEventListener('load', openNamed);
+  window.addEventListener('hashchange', openNamed);
+})();
+
 // Links to the previous hirdman.pro (social posts, emails) point at its section anchors; send them to the matching new page
 (() => {
   const OLD_ANCHORS = {
