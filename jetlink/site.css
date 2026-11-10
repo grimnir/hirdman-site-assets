@@ -193,8 +193,6 @@ body{margin:0;background:#000}
 .jl .mail{display:inline-block;margin-top:28px;font-size:clamp(28px,5vw,60px);font-weight:800;letter-spacing:-.03em;line-height:1.05;color:var(--text);border-bottom:3px solid var(--accent);overflow-wrap:anywhere}
 .jl .mail:hover{color:var(--accent-text)}
 .jl .topics{margin-top:36px;display:flex;flex-wrap:wrap;gap:10px;max-width:760px}
-.jl .contact .phone{margin-top:28px;color:var(--muted);font-size:17px}
-.jl .contact .phone a{color:var(--text);font-weight:600;text-decoration:none}
 
 
 .jl .foot{border-top:1px solid var(--line);padding-block:48px 40px;font-size:15px;color:var(--muted)}
