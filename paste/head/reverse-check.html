@@ -1,0 +1,78 @@
+<!-- Hirdman new site: fonts and styles for this page only -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://grimnir.github.io/hirdman-site-assets/site.tilda.css?v=2">
+<style>body,#allrecords{background:#030807 !important}</style>
+<meta property="og:image" content="https://grimnir.github.io/hirdman-site-assets/og/reverse-check.png?v=2">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="Hirdman">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://grimnir.github.io/hirdman-site-assets/og/reverse-check.png?v=2">
+<style>
+.hirdman .kicker{display:block;font-size:15px;font-weight:600;letter-spacing:0;text-transform:none;color:var(--muted)}
+.hirdman .kicker::before{content:none}
+.hirdman .label,.hirdman .feed-h,.hirdman .plan .name{letter-spacing:0;text-transform:none}
+.hirdman .label{font-size:14px;color:var(--muted)}
+.hirdman .plan .name{font-size:15px;color:var(--ink)}
+.hirdman .card::before{content:none}
+.hirdman .card:hover{border-color:var(--teal-line);box-shadow:none}
+.hirdman .btn{box-shadow:none}
+.hirdman .btn:hover{transform:none;box-shadow:none}
+.hirdman .cta{background:var(--bg-2)}
+#main::before{content:none;display:none}
+.hirdman .trust li::before{content:"\00b7";width:auto;height:auto;background:none;-webkit-mask:none;mask:none;color:var(--muted)}
+.hirdman .more{min-height:44px}
+.hirdman .btn.sm{height:44px}
+.hirdman .top .wrap > a[href="/"]{display:inline-flex;align-items:center;min-height:44px}
+.hirdman .foot .ns-foot-h{margin:0 0 12px;max-width:none;font-size:13px;line-height:1.4;font-weight:700;letter-spacing:0;color:var(--muted)}
+.hirdman .faq details{padding:6px 0}
+.hirdman .faq summary{min-height:48px;padding-block:8px}
+.hirdman .faq details p:last-child{margin-bottom:14px}
+.hirdman .burger{width:auto;min-width:44px;padding:0 12px;grid-auto-flow:column;gap:8px;align-items:center}
+.hirdman .ns-menu-t{font-size:14px;font-weight:600}
+@media (max-width:720px){.hirdman a.side-tab{display:none}}
+@media (max-width:640px){
+.hirdman .top-cta .btn{height:44px}
+.hirdman .nav.open{gap:2px}
+.hirdman .nav.open a:not(.btn){padding-block:10px}
+.hirdman .foot ul{gap:0}
+.hirdman .foot li a{display:inline-block;padding-block:12px}
+}
+.hirdman .hero-ctas{margin-bottom:0}
+.hirdman .crumbs{display:flex;flex-wrap:wrap;align-items:center}
+.hirdman .crumbs a{display:inline-flex;align-items:center;min-height:24px}
+.hirdman .prose h2{color:var(--ink)}
+.hirdman .calc-report b{color:var(--ink)}
+.hirdman .calc-report a{display:inline-flex;align-items:center;min-height:24px;align-self:flex-start}
+.hirdman .ns-dump{margin-top:14px;display:grid;gap:10px;font-size:14px}
+.hirdman .ns-dump .raw{margin:0}
+.hirdman .ns-dump-note{margin:14px 0 0;font-size:14px}
+.hirdman .ns-quote{margin-top:14px}
+.hirdman .ns-ids{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px 32px;margin:0;padding:22px 0 0;border-top:1px solid var(--teal-line)}
+.hirdman .ns-ids > div{min-width:0}
+.hirdman .ns-ids dt{font-size:14px;font-weight:600;color:var(--muted)}
+.hirdman .ns-ids .mono{display:block;margin-top:8px;font-size:17px;font-weight:700;color:var(--ink);overflow-wrap:anywhere}
+.hirdman .ns-ids dd{margin:10px 0 0;font-size:15px;line-height:1.5;color:var(--muted)}
+.hirdman .ns-rows{list-style:none;margin:0;padding:0;border-top:1px solid var(--teal-line)}
+.hirdman .ns-rows li{display:grid;grid-template-columns:40px minmax(0,5fr) minmax(0,7fr);gap:6px 32px;align-items:start;padding:22px 0;border-bottom:1px solid rgba(23,241,215,.12)}
+.hirdman .ns-n{font-weight:800;color:var(--muted);font-variant-numeric:tabular-nums;line-height:1.5}
+.hirdman .ns-rows h3{margin:0;font-size:18px;line-height:1.4}
+.hirdman .ns-rows p{margin:0;color:var(--muted);font-size:15px;line-height:1.55}
+.hirdman .ns-gains{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 40px}
+.hirdman .ns-gains > div{min-width:0;padding-top:16px;border-top:1px solid var(--teal-line)}
+.hirdman .ns-gains h3{font-size:18px}
+.hirdman .ns-gains p{margin:0;color:var(--muted);font-size:15px}
+.hirdman .cta-side{gap:6px}
+.hirdman .cta-side .btn{justify-self:start}
+.hirdman .ns-cta-links{list-style:none;margin:6px 0 0;padding:0}
+@media (min-width:641px){.hirdman .trust a{display:inline-block;padding-block:3px}.hirdman .foot li a{display:inline-block;padding-block:4px}}
+@media (max-width:1000px){.hirdman .ns-ids{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:900px){.hirdman .ns-rows li{grid-template-columns:40px minmax(0,1fr)}.hirdman .ns-rows p{grid-column:2}}
+@media (max-width:640px){
+.hirdman .ns-ids,.hirdman .ns-gains{grid-template-columns:minmax(0,1fr)}
+.hirdman .crumbs a,.hirdman .calc-report a{min-height:44px}
+.hirdman .ns-rows li{grid-template-columns:32px minmax(0,1fr);column-gap:12px}
+}
+</style>

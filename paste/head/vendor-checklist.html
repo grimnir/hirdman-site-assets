@@ -1,0 +1,104 @@
+<!-- Hirdman new site: fonts and styles for this page only -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://grimnir.github.io/hirdman-site-assets/site.tilda.css?v=2">
+<style>body,#allrecords{background:#030807 !important}</style>
+<meta property="og:image" content="https://grimnir.github.io/hirdman-site-assets/og/index.png?v=2">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="Hirdman">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://grimnir.github.io/hirdman-site-assets/og/index.png?v=2">
+<style>
+.hirdman .kicker{display:block;font-size:15px;font-weight:600;letter-spacing:0;text-transform:none;color:var(--muted)}
+.hirdman .kicker::before{content:none}
+.hirdman .label,.hirdman .feed-h,.hirdman .plan .name{letter-spacing:0;text-transform:none}
+.hirdman .label{font-size:14px;color:var(--muted)}
+.hirdman .plan .name{font-size:15px;color:var(--ink)}
+.hirdman .card::before{content:none}
+.hirdman .card:hover{border-color:var(--teal-line);box-shadow:none}
+.hirdman .btn{box-shadow:none}
+.hirdman .btn:hover{transform:none;box-shadow:none}
+.hirdman .cta{background:var(--bg-2)}
+#main::before{content:none;display:none}
+.hirdman .trust li::before{content:"\00b7";width:auto;height:auto;background:none;-webkit-mask:none;mask:none;color:var(--muted)}
+.hirdman .more{min-height:44px}
+.hirdman .btn.sm{height:44px}
+.hirdman .top .wrap > a[href="/"]{display:inline-flex;align-items:center;min-height:44px}
+.hirdman .foot .ns-foot-h{margin:0 0 12px;max-width:none;font-size:13px;line-height:1.4;font-weight:700;letter-spacing:0;color:var(--muted)}
+.hirdman .faq details{padding:6px 0}
+.hirdman .faq summary{min-height:48px;padding-block:8px}
+.hirdman .faq details p:last-child{margin-bottom:14px}
+.hirdman .burger{width:auto;min-width:44px;padding:0 12px;grid-auto-flow:column;gap:8px;align-items:center}
+.hirdman .ns-menu-t{font-size:14px;font-weight:600}
+@media (max-width:720px){.hirdman a.side-tab{display:none}}
+@media (max-width:640px){
+.hirdman .top-cta .btn{height:44px}
+.hirdman .nav.open{gap:2px}
+.hirdman .nav.open a:not(.btn){padding-block:10px}
+.hirdman .foot ul{gap:0}
+.hirdman .foot li a{display:inline-block;padding-block:12px}
+}
+.hirdman .vc h1{font-size:clamp(36px,4.8vw,62px);max-width:24ch}
+.hirdman .vc .crumbs a{display:inline-flex;align-items:center;min-height:44px}
+.hirdman .vc .crumbs{margin-bottom:4px}
+.hirdman .vc .vc-ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.hirdman .vc .btn svg{width:18px;height:18px}
+.hirdman .vc .vc-lanes{margin-top:44px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.hirdman .vc .vc-lane{padding:22px}
+.hirdman .vc .vc-lane-h{font-size:14px;font-weight:700;color:var(--muted);margin-bottom:14px}
+.hirdman .vc .vc-lane.us{border-color:rgba(23,241,215,.45)}
+.hirdman .vc .vc-lane.us .vc-lane-h{color:var(--teal)}
+.hirdman .vc .vc-raw{padding:9px 12px;margin-bottom:8px;border-radius:10px;font-size:13px;color:var(--muted);border:1px dashed rgba(23,241,215,.18);background:rgba(255,255,255,.02);overflow-wrap:anywhere}
+.hirdman .vc .vc-tier{margin-bottom:14px}
+.hirdman .vc .vc-tier-h{display:flex;justify-content:space-between;gap:12px;font-size:13px;font-weight:700;color:var(--ink);margin-bottom:6px}
+.hirdman .vc .vc-tier-h b{font-variant-numeric:tabular-nums;color:var(--muted)}
+.hirdman .vc .vc-tier.t1 .vc-tier-h b{color:var(--red)}
+.hirdman .vc .vc-tier.t2 .vc-tier-h b{color:var(--amber)}
+.hirdman .vc .vc-chip{padding:9px 12px;margin-bottom:6px;border-radius:10px;font-size:14px;color:var(--ink);background:var(--teal-soft);border:1px solid var(--teal-line);overflow-wrap:anywhere}
+.hirdman .vc .vc-tier.t1 .vc-chip{background:rgba(255,59,92,.08);border-color:rgba(255,59,92,.4)}
+.hirdman .vc .vc-tier.t2 .vc-chip{background:rgba(255,184,77,.08);border-color:rgba(255,184,77,.35)}
+.hirdman .vc .vc-done{margin:12px 0 0;font-size:15px;font-weight:600;color:var(--teal)}
+.hirdman .vc .vc-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px 32px;margin-bottom:24px}
+.hirdman .vc .vc-head .sec-h{margin-bottom:0}
+.hirdman .vc .vc-head h2{margin-bottom:0}
+.hirdman .vc .vc-filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.hirdman .vc .vc-filters[hidden]{display:none}
+.hirdman .vc .vc-filters button{min-height:44px;padding:6px 16px;border-radius:999px;border:1px solid var(--teal-line);background:rgba(255,255,255,.03);color:var(--muted);font-size:14px;font-weight:600;cursor:pointer;transition:border-color .3s var(--ease),background .3s var(--ease),color .3s var(--ease)}
+.hirdman .vc .vc-filters button:hover{border-color:var(--teal);color:var(--ink)}
+.hirdman .vc .vc-filters button[aria-pressed="true"]{color:var(--teal);border-color:var(--teal);background:var(--teal-soft)}
+.hirdman .vc .vc-tbl-wrap{border:1px solid var(--teal-line);border-radius:16px;background:var(--card);overflow:hidden}
+.hirdman .vc .vc-tbl{width:100%;border-collapse:collapse;font-size:15px;line-height:1.5}
+.hirdman .vc .vc-tbl th,.hirdman .vc .vc-tbl td{padding:14px 16px;border-bottom:1px solid rgba(23,241,215,.12);text-align:left;vertical-align:top;overflow-wrap:anywhere}
+.hirdman .vc .vc-tbl th{white-space:nowrap;font-size:14px;font-weight:700;color:var(--muted);background:rgba(3,8,7,.5)}
+.hirdman .vc .vc-tbl th.hl{color:var(--teal)}
+.hirdman .vc .vc-tbl tbody tr:last-child td{border-bottom:0}
+.hirdman .vc .vc-tbl tr[hidden]{display:none}
+.hirdman .vc .vc-tbl tr.vc-grp td{padding:10px 16px;font-size:14px;font-weight:700;color:var(--teal);background:var(--teal-soft)}
+.hirdman .vc .vc-crit{width:26%;font-weight:600;color:var(--ink)}
+.hirdman .vc .vc-us{width:44%;color:var(--ink)}
+.hirdman .vc .vc-why{width:30%;color:var(--muted);font-size:14px}
+.hirdman .vc .vc-no{width:56px;color:var(--teal);font-weight:800;font-variant-numeric:tabular-nums}
+.hirdman .vc .vc-q{width:30%;font-weight:600;color:var(--ink)}
+.hirdman .vc .vc-flag{width:30%;color:var(--muted);font-size:14px}
+.hirdman .vc .vc-ans{color:var(--ink)}
+.hirdman .vc .vc-note{margin:14px 0 0;font-size:14px;color:var(--muted-2)}
+.hirdman .vc .ns-actions{display:flex;flex-wrap:wrap;gap:12px}
+.hirdman .trust a{display:inline-block;padding-block:3px}
+@media (min-width:641px){.hirdman .foot li a{display:inline-block;padding-block:4px}}
+@media (max-width:900px){.hirdman .vc .vc-lanes{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:760px){
+.hirdman .vc .vc-tbl,.hirdman .vc .vc-tbl tbody,.hirdman .vc .vc-tbl tr,.hirdman .vc .vc-tbl td{display:block;width:auto}
+.hirdman .vc .vc-tbl thead{display:none}
+.hirdman .vc .vc-tbl tr{padding:12px 0;border-bottom:1px solid rgba(23,241,215,.12)}
+.hirdman .vc .vc-tbl tbody tr:last-child{border-bottom:0}
+.hirdman .vc .vc-tbl td{border:0;padding:4px 18px}
+.hirdman .vc .vc-tbl tr.vc-grp{padding:0}
+.hirdman .vc .vc-tbl tr.vc-grp td{padding:10px 18px}
+.hirdman .vc .vc-tbl td[data-label]::before{content:attr(data-label);display:block;margin:8px 0 2px;font-size:13px;font-weight:700;color:var(--muted-2)}
+.hirdman .vc .vc-tbl td.vc-us::before,.hirdman .vc .vc-tbl td.vc-ans::before{color:var(--teal)}
+.hirdman .vc .vc-crit,.hirdman .vc .vc-q{font-size:16px}
+.hirdman .vc .vc-no{padding-bottom:0}
+}
+</style>
