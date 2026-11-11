@@ -162,11 +162,18 @@ body{margin:0;background:#000}
 .jl .sector p{margin-top:10px;font-size:16px;color:var(--muted)}
 
 
-.jl .cases{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.jl .cases{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
 .jl .case{display:flex;flex-direction:column;padding:32px;min-height:340px;border:1px solid var(--line);border-radius:20px;background:radial-gradient(520px circle at var(--mx) var(--my),rgba(0,127,255,calc(var(--spot)*.14)),transparent 65%),var(--surface);position:relative;overflow:hidden;transition:border-color .2s,--spot .35s}
 .jl .case::after{content:"";position:absolute;inset:auto -30% -45% auto;width:80%;aspect-ratio:1;border-radius:50%;filter:blur(10px);opacity:.55;pointer-events:none}
 .jl .case.c-lab::after{background:radial-gradient(closest-side,rgba(61,220,151,.35),transparent)}
-.jl .case.c-vpn::after{background:radial-gradient(closest-side,rgba(0,127,255,.45),transparent)}
+.jl .case.c-vpn::after{background:radial-gradient(closest-side,rgba(255,159,67,.30),transparent)}
+
+.jl .case-wide{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:40px;align-items:center;min-height:0}
+.jl .case-copy{display:flex;flex-direction:column;height:100%}
+.jl .case-copy .link{align-self:flex-start;margin-top:22px;position:relative;z-index:1}
+.jl .case-shot{position:relative;z-index:1;margin:0;font-family:var(--mono);font-size:13px;overflow:hidden;border:1px solid var(--line);border-radius:14px;background:#0b0f0d;box-shadow:0 30px 80px rgba(0,0,0,.55),0 0 0 1px rgba(255,159,67,.08);transition:transform .35s,box-shadow .35s}
+.jl .case-shot img{display:block;width:100%;height:auto}
+.jl .case-wide:hover .case-shot{transform:translateY(-4px);box-shadow:0 36px 90px rgba(0,0,0,.6),0 0 60px rgba(255,159,67,.14)}
 .jl .case.c-portal::after{background:radial-gradient(closest-side,rgba(127,178,255,.35),transparent)}
 .jl .case h3{margin-top:12px;font-size:24px;line-height:1.2;font-weight:800;letter-spacing:-.015em;text-wrap:balance}
 .jl .case p{margin-top:14px;font-size:16px;color:var(--soft)}
@@ -299,6 +306,7 @@ body{margin:0;background:#000}
   .jl .sectors{grid-template-columns:repeat(2,minmax(0,1fr))}
   .jl .offices{grid-template-columns:repeat(3,minmax(0,1fr))}
   .jl .cases{grid-template-columns:minmax(0,1fr)}
+  .jl .case-wide{grid-template-columns:minmax(0,1fr);gap:28px}
   .jl .case{min-height:0}
   .jl .posts{grid-template-columns:repeat(2,minmax(0,1fr))}
   .jl .facts{grid-template-columns:repeat(2,minmax(0,1fr))}
