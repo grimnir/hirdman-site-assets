@@ -79,11 +79,6 @@ body{margin:0;background:#000}
 .jl .globe-wrap{position:relative;aspect-ratio:1;width:100%;max-width:600px;justify-self:end}
 .jl .globe{display:block;width:100%;height:100%}
 .jl .globe-cap{position:absolute;z-index:1;left:50%;bottom:4%;transform:translateX(-50%);padding:6px 14px;border:1px solid var(--line);border-radius:999px;background:#000;font-size:14px;font-weight:600;color:var(--soft);white-space:nowrap}
-.jl .facts{margin-top:clamp(40px,6vw,72px);display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--line);border-radius:16px;background:var(--surface)}
-.jl .facts>div{padding:24px 28px;display:flex;flex-direction:column-reverse;gap:4px}
-.jl .facts>div+div{border-left:1px solid var(--line)}
-.jl .facts dt{font-size:15px;color:var(--muted)}
-.jl .facts dd{font-size:clamp(32px,3.6vw,44px);font-weight:800;letter-spacing:-.03em;line-height:1.1;font-variant-numeric:tabular-nums;background:linear-gradient(180deg,#fff 35%,#9cc8ff 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
 
 
 .jl .bento{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
@@ -154,11 +149,6 @@ body{margin:0;background:#000}
 .jl .steps p{margin-top:8px;font-size:16px;color:var(--muted)}
 
 
-.jl .sectors{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}
-.jl .sector{padding:28px;border:1px solid var(--line);border-radius:16px;background:var(--surface)}
-.jl .sector h3{font-size:20px;font-weight:800}
-.jl .sector h3::before{content:"";display:block;width:28px;height:3px;border-radius:2px;background:var(--accent);margin-bottom:18px}
-.jl .sector p{margin-top:10px;font-size:16px;color:var(--muted)}
 
 
 .jl .cases{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
@@ -296,15 +286,11 @@ body{margin:0;background:#000}
 @media (max-width:1024px){
   .jl .steps{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:36px}
   .jl .steps::before{display:none}
-  .jl .sectors{grid-template-columns:repeat(2,minmax(0,1fr))}
   .jl .offices{grid-template-columns:repeat(3,minmax(0,1fr))}
   .jl .cases{grid-template-columns:minmax(0,1fr)}
   .jl .case-wide{grid-template-columns:minmax(0,1fr);gap:28px}
   .jl .case{min-height:0}
   .jl .posts{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .jl .facts{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .jl .facts>div:nth-child(3){border-left:0}
-  .jl .facts>div:nth-child(n+3){border-top:1px solid var(--line)}
 }
 @media (max-width:900px){
   .jl .nav{display:none}
@@ -329,12 +315,10 @@ body{margin:0;background:#000}
   .jl .logo{width:124px}
   .jl .tile{padding:24px}
   .jl .steps{grid-template-columns:minmax(0,1fr)}
-  .jl .sectors{grid-template-columns:minmax(0,1fr)}
   .jl .offices{grid-template-columns:repeat(2,minmax(0,1fr))}
   .jl .posts,.jl .posts.two{grid-template-columns:minmax(0,1fr)}
   .jl .prose{font-size:17px}
   .jl .hero .actions .btn{flex:1 1 100%}
-  .jl .facts>div{padding:18px 20px}
   .jl .findings li{grid-template-columns:minmax(0,1fr);gap:4px}
   .jl .findings .sev{justify-self:start}
   .jl .contact-panel .eagle{width:70%;opacity:.3}
