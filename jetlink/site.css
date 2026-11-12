@@ -234,6 +234,21 @@ body{margin:0;background:#000}
 .jl .prose ul>li{position:relative;padding-left:22px}
 .jl .prose ul>li::before{content:"";position:absolute;left:0;top:.7em;width:8px;height:8px;background:var(--accent)}
 .jl .prose strong{color:var(--text);font-weight:700}
+
+.jl .prose code{font-family:var(--mono);font-size:.84em;color:var(--text)}
+.jl .prose pre{margin-top:18px;padding:16px 18px;overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:#0b0f0d;font-size:15px;line-height:1.6}
+.jl .prose pre code{font-size:14px;white-space:pre;color:var(--soft)}
+.jl .prose .table-wrap{margin-top:22px;overflow-x:auto;border:1px solid var(--line);border-radius:12px}
+.jl .prose table{width:100%;min-width:560px;border-collapse:collapse;font-size:16px;line-height:1.5}
+.jl .prose th,.jl .prose td{padding:12px 14px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+.jl .prose thead th{color:var(--text);font-weight:700;background:var(--surface)}
+.jl .prose tbody th{color:var(--text);font-weight:600}
+.jl .prose tbody tr:last-child>*{border-bottom:0}
+
+.jl .post-card .cover-type{display:flex;align-items:flex-end;aspect-ratio:16/9;padding:22px 24px;border-radius:12px;border:1px solid var(--line);background:linear-gradient(160deg,var(--slate) 0%,#000 78%);transition:border-color .25s}
+.jl .post-card .cover-type span{font-size:clamp(26px,2.6vw,34px);line-height:1.05;font-weight:800;letter-spacing:-.025em;color:var(--text);text-wrap:balance}
+.jl .post-card .cover-type span::before{content:"";display:block;width:32px;height:3px;border-radius:2px;background:var(--accent);margin-bottom:16px}
+.jl .post-card a:hover .cover-type,.jl .post-card a:focus-visible .cover-type{border-color:rgba(0,127,255,.5)}
 .jl .post-cta{border-top:1px solid var(--line)}
 .jl section.alt{background:var(--slate)}
 
