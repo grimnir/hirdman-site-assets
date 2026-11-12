@@ -489,3 +489,8 @@ html.js [data-reveal].in{opacity:1;transform:none}
 @media (max-width:760px){.hirdman .glossary{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:640px){.hirdman dl.ns-facts{grid-template-columns:minmax(0,1fr)}}
 @media (min-width:721px) and (max-width:1240px){body:has(a.side-tab) .hirdman .wrap:not(.top > .wrap){padding-right:48px}}
+@media (max-width:900px){.hirdman .split > :not(.card) :is(p,li),.hirdman .cols .card p,.hirdman .ns-who .prose p{max-width:34em}}
+@media (min-width:641px) and (max-width:1180px){.hirdman dl.ns-facts,.hirdman dl.ns-ids,.hirdman ol.ns-steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:901px) and (max-width:1180px){.hirdman .ns-who dl.ns-facts{grid-template-columns:minmax(0,1fr)}}
+.hirdman div.ns-pair{grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr))}
+.hirdman .ns-pair :is(p,li){max-width:34em}
