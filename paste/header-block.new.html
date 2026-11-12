@@ -1,0 +1,78 @@
+<!-- Hirdman header for Tilda header pages (Header 88625876, Header Library 91823756), 08.11.
+Same look and links as the new site's header. Self-contained: styles live under .hm-hdr only, so the
+pages it sits on keep their own look. Colours carry !important: post pages paint every link cyan, which hid
+the Free check label on its cyan button. No site.js here: it would retarget every link on the page. -->
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700&display=swap" rel="stylesheet">
+<style>
+.hm-hdr{--ink:#eafffb;--muted:#9edbd4;--teal:#17F1D7;--teal-ink:#03201b;--teal-line:rgba(23,241,215,.2);--teal-soft:rgba(23,241,215,.08);font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+.hm-hdr *{box-sizing:border-box}
+.hm-hdr .hm-top{position:fixed;top:0;left:0;right:0;z-index:9990;height:72px;display:flex;align-items:center;background:rgba(3,8,7,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(23,241,215,.12)}
+.hm-hdr .hm-wrap{width:100%;max-width:1180px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.hm-hdr .hm-home{display:block;line-height:0}
+.hm-hdr .hm-logo{height:26px;width:auto;color:var(--ink);display:block}
+.hm-hdr .hm-nav{display:flex;gap:22px;font-size:14px;font-weight:600;align-items:center;white-space:nowrap}
+.hm-hdr .hm-nav a{color:var(--muted)!important;text-decoration:none!important;font-family:inherit!important;transition:color .25s}
+.hm-hdr .hm-nav a:hover{color:var(--ink)!important}
+.hm-hdr .hm-nav a.active{color:var(--teal)!important}
+.hm-hdr .hm-cta{display:flex;gap:10px;align-items:center}
+.hm-hdr .hm-btn{display:inline-flex;align-items:center;justify-content:center;height:42px;padding:0 18px;border-radius:12px;font-size:14px;font-weight:700;text-decoration:none!important;font-family:inherit!important;color:var(--teal-ink)!important;background:var(--teal)!important;border:0;transition:background .25s}
+.hm-hdr .hm-btn:hover{background:#14d9c1!important}
+.hm-hdr .hm-btn.ghost{background:transparent!important;color:var(--ink)!important;border:1px solid var(--teal-line)}
+.hm-hdr .hm-btn.ghost:hover{border-color:var(--teal);background:var(--teal-soft)!important}
+.hm-hdr a:focus-visible,.hm-hdr button:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:6px}
+.hm-hdr .hm-burger{display:none;width:44px;height:44px;border-radius:10px;border:1px solid var(--teal-line);background:transparent;color:var(--ink);place-items:center;cursor:pointer;padding:0}
+.hm-hdr .hm-burger svg{width:22px;height:22px}
+.hm-hdr .hm-space{height:72px}
+@media (max-width:1100px){
+  .hm-hdr .hm-nav{display:none}
+  .hm-hdr .hm-nav.open{display:flex;flex-direction:column;align-items:flex-start;position:fixed;top:72px;left:0;right:0;padding:20px 24px 24px;gap:18px;background:#040b0a;border-bottom:1px solid var(--teal-line);font-size:16px;white-space:normal;max-height:calc(100vh - 72px);max-height:calc(100dvh - 72px);overflow-y:auto;overscroll-behavior:contain}
+  html:has(.hm-hdr .hm-nav.open),body:has(.hm-hdr .hm-nav.open){overflow:hidden}
+  .hm-hdr .hm-burger{display:grid}
+}
+@media (max-width:640px){
+  .hm-hdr .hm-top{height:64px} .hm-hdr .hm-space{height:64px} .hm-hdr .hm-nav.open{top:64px;max-height:calc(100vh - 64px);max-height:calc(100dvh - 64px)}
+  .hm-hdr .hm-wrap{padding:0 16px}
+  .hm-hdr .hm-btn.ghost{display:none}
+  .hm-hdr .hm-btn{height:38px;padding:0 14px;font-size:13px}
+  .hm-hdr .hm-logo{height:22px}
+}
+</style>
+<div class="hm-hdr">
+<header class="hm-top">
+  <div class="hm-wrap">
+    <a class="hm-home" href="https://hirdman.pro/" aria-label="Hirdman home"><svg class="hm-logo" viewBox="0 0 942 181" aria-hidden="true"><g fill="currentColor"><path d="M175.949 0C175.949 0 173.222 15.7292 158.195 15.9271H127.757V71.8853L88.2347 85.3914L48.7128 71.8853V15.9271H18.2748C3.24728 15.7292 0.520576 0 0.520576 0C0.520576 0 -1.9304 14.7395 3.81407 28.1999C8.57814 39.3611 14.1081 43.5789 16.8349 45.3299V168.666L48.6975 181V82.7115L53.9671 104.273L88.2194 117.565L122.456 104.288L127.741 82.7115V102.247V180.086L159.604 167.905V45.3452C162.331 43.6093 167.861 39.3763 172.64 28.2151C178.384 14.7547 175.933 0.0152267 175.933 0.0152267L175.949 0Z"/><path d="M442.722 102.156C450.581 96.172 455.682 87.5536 455.682 77.9913C455.682 59.8106 437.621 44.9645 415.486 44.9645H369.469V134.711H398.16V110.896H415.93L432.826 134.711H465.884L442.722 102.156ZM415.915 90.5381H398.145V67.5153L392.339 64.8049H415.915C424.646 64.8049 431.647 70.5454 431.647 77.7324C431.647 84.9194 424.662 90.5381 415.915 90.5381Z"/><path d="M519.805 44.9493H479.318V134.696H519.805C549.952 134.696 574.416 114.596 574.416 89.8224C574.416 65.0485 549.952 44.9493 519.805 44.9493ZM519.959 111.49H507.872V71.7026L502.097 69.0075H519.959C534.235 69.0075 545.878 78.5851 545.878 90.1879C545.878 101.791 534.22 111.49 519.959 111.49Z"/><path d="M650.703 78.2197L606.141 44.9493H593.166V134.696H622.011V91.4517L616.42 84.5997L622.011 88.7413V88.7565L623.619 89.9442L650.703 110.043L677.694 89.792L679.011 88.8022L679.088 88.7413L679.241 88.6347L684.664 84.5997L679.241 91.2537V134.696H708.086V44.9493H695.126L650.703 78.2197Z"/><path d="M346.568 44.9493H317.876V134.696H346.568V44.9493Z"/><path d="M266.023 76.8949L248.238 81.9807L231.357 76.8949V44.9493H202.665V134.696H231.357V100.481L248.238 105.552L266.023 100.481V134.696H294.714V44.9493H266.023V76.8949Z"/><path d="M772.393 44.9493L721.413 134.696H750.105L756.661 122.971H801.376L808.07 134.696H836.762L785.353 44.9493H772.393ZM765.776 106.8L767.89 103.07L779.087 83.3511L790.163 103.1H770.616L765.791 106.8H765.776Z"/><path d="M913.309 44.9493V84.5997L917.261 90.5533L913.309 87.2948V87.31L861.609 44.9493H849.951V134.696H878.643V92.213L930.205 134.696H942V44.9493H913.309Z"/></g></svg></a>
+    <nav class="hm-nav" id="hm-nav" aria-label="Site">
+      <a href="https://hirdman.pro/services">Services</a>
+      <a href="https://hirdman.pro/reverse-check">Reverse check</a>
+      <a href="https://hirdman.pro/how-it-works">How we work</a>
+      <a href="https://hirdman.pro/plans">Plans</a>
+      <a href="https://hirdman.pro/integrations">Integrations</a>
+      <a href="https://hirdman.pro/cases">Cases</a>
+      <a href="https://hirdman.pro/about">About</a>
+      <a href="https://hirdman.pro/techlibrary" data-lib>Tech Library</a>
+    </nav>
+    <div class="hm-cta">
+      <a class="hm-btn ghost" href="https://demo.hirdman.pro" target="_blank" rel="noopener">Try demo</a>
+      <a class="hm-btn" href="https://hirdman.pro/contact">Free check</a>
+      <button class="hm-burger" id="hm-burger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="hm-nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/></svg></button>
+    </div>
+  </div>
+</header>
+<div class="hm-space" aria-hidden="true"></div>
+</div>
+<script>
+(function(){
+  var nav=document.getElementById('hm-nav'),btn=document.getElementById('hm-burger');
+  if(/^\/techlibrary/.test(location.pathname)){var l=nav.querySelector('[data-lib]');l.classList.add('active');l.setAttribute('aria-current','page');}
+  function setOpen(o,refocus){nav.classList.toggle('open',o);btn.setAttribute('aria-expanded',String(o));if(!o&&refocus)btn.focus();}
+  var isOpen=function(){return nav.classList.contains('open');};
+  btn.addEventListener('click',function(){setOpen(!isOpen(),false);});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&isOpen())setOpen(false,true);});
+  // The menu precedes the burger in the DOM, so Tab from the open burger would skip it (audit 11.11): send it in.
+  btn.addEventListener('keydown',function(e){if(e.key==='Tab'&&!e.shiftKey&&isOpen()){e.preventDefault();nav.querySelector('a').focus();}});
+  // Focus or a tap leaving the menu closes it: the page under it is locked in CSS while it is open.
+  nav.addEventListener('focusout',function(e){if(isOpen()&&e.relatedTarget&&!nav.contains(e.relatedTarget)&&e.relatedTarget!==btn)setOpen(false,false);});
+  document.addEventListener('click',function(e){if(isOpen()&&!nav.contains(e.target)&&!btn.contains(e.target))setOpen(false,false);});
+})();
+</script>
