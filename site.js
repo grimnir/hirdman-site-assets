@@ -175,11 +175,17 @@
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', moveForm); else moveForm();
   }
 
-  /* ---------- Reverse check graph: data-driven SVG, scroll-driven rounds ---------- */
+  /* ---------- Reverse check graph: always on screen, a timed flow through the rounds ---------- */
+  // Owner 11.11 (aop7z, variant 6 «Поток», phones and desktop): every node and edge is drawn from the
+  // start in shadow, dashes run along the edges, and a timed cycle lights the steps one after another.
+  // Scroll drove it before: on a phone the rounds sit on rows 1/3/6/9, 4/5, 2/7, 8/10 of the tree, so
+  // the top left the screen before the bottom was drawn. The cycle stands still off screen and under
+  // the pause button (WCAG 2.2.2, motion past 5 s); reduced motion gets the finished graph, still.
   const rvSvg = $('#rvSvg');
   if (rvSvg) {
     const NS = 'http://www.w3.org/2000/svg';
     const svgEl = (tag, attrs, parent) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.append(e); return e; };
+    const ru = document.documentElement.lang === 'ru';
     // The right column is 276 wide: john.d@old-aceme.example filled 236 edge to edge, the Russian label overflowed it.
     const RV = {
       src:    { x: 126, y: 290, w: 226, h: 84, k: 'src', l: 'Corporate account', s: 'login, password, sign-in site' },
@@ -195,7 +201,7 @@
       portal: { x: 560, y: 510, w: 236, h: 52, k: 'bad', l: 'portal.aceme.example', s: 'corporate portal' },
     };
     // Russian edition: the graph labels follow the page language; coordinates and logic stay shared.
-    if (document.documentElement.lang === 'ru') {
+    if (ru) {
       const RU = { src: ['Корпоративная учётка', 'логин, пароль, сайт входа'], login: ['Иванов.П', 'логин из утечки'], mailp: ['ivanov.p@', 'имя ящика до @'], pass: ['СекретИван1986!', 'пароль: имя + год + символ'], dom: ['skrytaya-panel.example', 'уникальный домен'], mail: ['ivanov.p@mail.example', 'личная почта'], old: ['ivanov.p@old-aceme.example', 'прошлое место работы'], nick: ['ivanov_p87', 'никнейм, та же схема'], shop: ['shop-partner.example', 'тот же пароль, рабочая почта'], admin: ['admin.aceme.example', 'логин admin без e-mail'], portal: ['portal.aceme.example', 'корпоративный портал'] };
       for (const k in RU) { RV[k].l = RU[k][0]; RV[k].s = RU[k][1]; }
     }
@@ -216,92 +222,142 @@
       const x = a.x - a.w / 2 + INDENT / 2, y = b.y, r = 6;
       return `M${x} ${a.y + a.h / 2} L${x} ${y - r} Q${x} ${y} ${x + r} ${y} L${b.x - b.w / 2} ${y}`;
     };
-    const CHIP = document.documentElement.lang === 'ru' ? { portal: '2FA', other: 'закрыто' } : { portal: '2FA on', other: 'fixed' };
-    const STEPS = [
-      { nodes: ['login', 'mailp', 'pass', 'dom'], edges: [['src', 'login', 'id'], ['src', 'mailp', 'id'], ['src', 'pass', 'id'], ['src', 'dom', 'id']] },
-      { nodes: ['mail', 'old'], edges: [['mailp', 'mail', 'acc'], ['mailp', 'old', 'acc']] },
-      { nodes: ['nick', 'shop'], edges: [['login', 'nick', 'acc'], ['pass', 'shop', 'acc']] },
-      { nodes: ['admin', 'portal'], edges: [['dom', 'admin', 'bad'], { from: 'shop', to: 'portal', k: 'bad', d: 'M775 326 Q758 460 678 510' }] },
-      { nodes: [], edges: [], fix: ['shop', 'admin', 'portal'], cut: [['pass', 'shop']] },
-    ];
-    const gE = rvSvg.querySelector('#rvEdges'), gN = rvSvg.querySelector('#rvNodes'), gM = rvSvg.querySelector('#rvMarks');
     const ends = (a, b) => b.x > a.x ? [[a.x + a.w / 2, a.y], [b.x - b.w / 2, b.y]] : [[a.x - a.w / 2, a.y], [b.x + b.w / 2, b.y]];
-    const edgeEls = [], nodeEls = {}, stepEls = [];
-    // Owner 09.11: the source account is on screen from the first caption; the branches grow out of it.
-    // It used to be one of step 0's nodes, revealed after its own edges were drawn.
-    const addNode = id => {
-      const n = RV[id];
-      const g = svgEl('g', { class: 'node', 'data-id': id }, gN);
-      svgEl('rect', { class: 'nb ' + n.k, x: n.x - n.w / 2, y: n.y - n.h / 2, width: n.w, height: n.h, rx: 14 }, g);
-      svgEl('text', { class: 'nl', x: n.x, y: n.y - 3, 'text-anchor': 'middle' }, g).textContent = n.l;
-      svgEl('text', { class: 'ns', x: n.x, y: n.y + 16, 'text-anchor': 'middle' }, g).textContent = n.s;
-      nodeEls[id] = g;
-      return g;
+    const edgePath = e => {
+      const a = RV[e[0]], b = RV[e[1]];
+      if (vertical) return treeEdge(a, b);
+      // admin sits between shop and portal: the side-to-side curve crossed its box (34 of 201 sample points).
+      if (e[0] === 'shop' && e[1] === 'portal') return 'M775 326 Q758 460 678 510';
+      const [[x1, y1], [x2, y2]] = ends(a, b), mx = (x1 + x2) / 2;
+      return `M${x1} ${y1} C${mx} ${y1} ${mx} ${y2} ${x2} ${y2}`;
     };
-    addNode('src');
-    STEPS.forEach(st => {
-      const se = { edges: [], nodes: [], comets: [] };
-      st.edges.forEach(e => {
-        const from = Array.isArray(e) ? e[0] : e.from, to = Array.isArray(e) ? e[1] : e.to, k = Array.isArray(e) ? e[2] : e.k;
-        let d = vertical ? null : e.d;
-        if (!d && vertical) d = treeEdge(RV[from], RV[to]);
-        if (!d) { const [[x1, y1], [x2, y2]] = ends(RV[from], RV[to]); const mx = (x1 + x2) / 2; d = `M${x1} ${y1} C${mx} ${y1} ${mx} ${y2} ${x2} ${y2}`; }
-        const p = svgEl('path', { d, class: 'e ' + k, 'data-edge': from + '-' + to }, gE);
-        se.edges.push(p); se.comets.push(svgEl('circle', { class: 'comet', r: 3.4, opacity: 0 }, gM)); edgeEls.push(p);
-      });
-      st.nodes.forEach(id => se.nodes.push(addNode(id)));
-      stepEls.push(se);
+    const CHIP = ru ? { portal: '2FA', other: 'закрыто' } : { portal: '2FA on', other: 'fixed' };
+    // [from, to, kind, step]: step 0 takes the record's four identifiers out, steps 1-3 are the rounds,
+    // step 4 (the captions' fifth) gives every risky link its fix.
+    const EDGES = [
+      ['src', 'login', 'id', 0], ['src', 'mailp', 'id', 0], ['src', 'pass', 'id', 0], ['src', 'dom', 'id', 0],
+      ['mailp', 'mail', 'acc', 1], ['mailp', 'old', 'acc', 1],
+      ['login', 'nick', 'acc', 2], ['pass', 'shop', 'acc', 2],
+      ['dom', 'admin', 'bad', 3], ['shop', 'portal', 'bad', 3],
+    ];
+    const FIXED = ['shop', 'admin', 'portal'];
+    const gE = rvSvg.querySelector('#rvEdges'), gN = rvSvg.querySelector('#rvNodes'), gM = rvSvg.querySelector('#rvMarks');
+    const defs = rvSvg.querySelector('defs') || svgEl('defs', {}, rvSvg);
+    const halo = svgEl('radialGradient', { id: 'rvHalo' }, defs);
+    svgEl('stop', { offset: 0, 'stop-color': '#f2fffd' }, halo);
+    svgEl('stop', { offset: .35, 'stop-color': '#17F1D7', 'stop-opacity': .55 }, halo);
+    svgEl('stop', { offset: 1, 'stop-color': '#17F1D7', 'stop-opacity': 0 }, halo);
+    // One record per edge: the shadowed path, the lit path over it, its particle; `start` is set below.
+    const edges = EDGES.map(e => {
+      const d = edgePath(e), k = e[0] + '-' + e[1];
+      const base = svgEl('path', { d, class: 'rv-e ' + e[2], 'data-edge': k }, gE);
+      const lit = svgEl('path', { d, class: 'rv-l ' + e[2] }, gE);
+      const dot = svgEl('g', { class: 'rv-dot', opacity: 0 }, gM);
+      svgEl('circle', { r: 10, fill: 'url(#rvHalo)' }, dot);
+      svgEl('circle', { r: 2.8, class: 'rv-core' }, dot);
+      return { k, to: e[1], step: e[3], base, lit, dot, len: base.getTotalLength(), start: 0 };
     });
-    const fixMarks = STEPS[4].cut.map(([a, b]) => {
-      const p = gE.querySelector(`[data-edge="${a}-${b}"]`);
-      const pt = p.getPointAtLength(p.getTotalLength() * .5);
-      const g = svgEl('g', { class: 'cutx', transform: `translate(${pt.x} ${pt.y})`, opacity: 0 }, gM);
-      svgEl('line', { x1: -7, y1: -7, x2: 7, y2: 7 }, g); svgEl('line', { x1: 7, y1: -7, x2: -7, y2: 7 }, g);
-      return { el: g, edge: p };
-    });
-    const chips = STEPS[4].fix.map(id => {
+    const cutEdge = edges.find(e => e.k === 'pass-shop');
+    // A node in shadow, its lit frame, its fixed frame, and its labels twice: the shadowed copy stays
+    // readable underneath (--muted-2 on the node fill is 5.26:1), the lit copy fades in over it.
+    const nodes = {};
+    for (const id in RV) {
+      const n = RV[id], box = { x: n.x - n.w / 2, y: n.y - n.h / 2, width: n.w, height: n.h, rx: 14 };
+      const g = svgEl('g', { class: 'rv-n', 'data-id': id }, gN);
+      svgEl('rect', { ...box, class: 'rv-nd ' + n.k }, g);
+      const litFrame = svgEl('rect', { ...box, class: 'rv-nr ' + n.k }, g);
+      const fixFrame = svgEl('rect', { ...box, class: 'rv-nx' }, g);
+      const text = (cls, dy, s) => { const t = svgEl('text', { class: cls, x: n.x, y: n.y + dy, 'text-anchor': 'middle' }, g); t.textContent = s; return t; };
+      text('rv-tl dim', -3, n.l); const tl = text('rv-tl lit', -3, n.l);
+      text('rv-ts dim', 16, n.s); const ts = text('rv-ts lit', 16, n.s);
+      nodes[id] = { litFrame, fixFrame, tl, ts, cues: [] };
+    }
+    const chips = FIXED.map(id => {
       const n = RV[id];
-      const g = svgEl('g', { class: 'fixchip', transform: `translate(${n.x + n.w / 2 - 10} ${n.y - n.h / 2 - 6})`, opacity: 0 }, gM);
+      const g = svgEl('g', { class: 'rv-chip', opacity: 0, transform: `translate(${n.x + n.w / 2 - 10} ${n.y - n.h / 2 - (vertical ? 0 : 6)})` }, gM);
       svgEl('rect', { x: -58, y: -10, width: 60, height: 20, rx: 10 }, g);
       svgEl('text', { x: -28, y: 4, 'text-anchor': 'middle' }, g).textContent = id === 'portal' ? CHIP.portal : CHIP.other;
-      return { el: g, node: nodeEls[id] };
+      return g;
     });
+    const cutPt = cutEdge.base.getPointAtLength(cutEdge.len * .5);
+    const cut = svgEl('g', { class: 'rv-cut', opacity: 0, transform: `translate(${cutPt.x} ${cutPt.y})` }, gM);
+    svgEl('line', { x1: -7, y1: -7, x2: 7, y2: 7 }, cut); svgEl('line', { x1: 7, y1: -7, x2: -7, y2: 7 }, cut);
+
+    // One cycle, in seconds: a step's edges start GAP apart, a particle runs each in RUN and the node it
+    // reaches lights on arrival; then the fixes CHIP_GAP apart, a hold, a fade back to shadow and a rest.
+    const RUN = .85, GAP = .22, HOLD = .55, CHIP_GAP = .25, CHIP_IN = .3, LAST_HOLD = 1.6, FADE = .9, REST = .7;
+    const capAt = [];
+    nodes.src.cues.push({ start: .1 });
+    let at = .6;
+    for (let step = 0; step < 4; step++) {
+      const es = edges.filter(e => e.step === step);
+      capAt.push(at);
+      es.forEach((e, j) => { e.start = at + j * GAP; nodes[e.to].cues.push({ start: e.start + RUN * .8 }); });
+      at += (es.length - 1) * GAP + RUN + HOLD;
+    }
+    capAt.push(at);
+    const cutOn = at, chipOn = FIXED.map((_, j) => at + CHIP_GAP + j * CHIP_GAP);
+    FIXED.forEach((id, j) => nodes[id].cues.push({ start: chipOn[j], fix: true }));
+    const fadeAt = at + CHIP_GAP + FIXED.length * CHIP_GAP + CHIP_IN + LAST_HOLD, CYCLE = fadeAt + FADE + REST;
+
+    const clamp = v => Math.min(1, Math.max(0, v));
+    const ease = p => p < .5 ? 2 * p * p : 1 - (2 - 2 * p) ** 2 / 2;
     const caps = $$('#caps .cap');
-    const showFinal = () => {
-      edgeEls.forEach(p => { p.style.strokeDasharray = ''; p.style.strokeDashoffset = 0; });
-      Object.values(nodeEls).forEach(g => { g.style.opacity = 1; g.style.transform = ''; });
-      caps.forEach(c => c.classList.add('on'));
-      fixMarks.forEach(m => { m.el.setAttribute('opacity', 1); m.edge.style.opacity = .25; });
-      chips.forEach(c => { c.el.setAttribute('opacity', 1); c.node.querySelector('rect').setAttribute('stroke', '#43e39a'); });
+    let capOn = null;
+    const draw = (t, clock) => {
+      const ramp = (start, dur) => clamp((t - start) / dur);
+      const f = clamp(1 - (t - fadeAt) / FADE), c = ramp(cutOn, .4) * f;
+      // Offsets wrap at 11, the period of stroke-dasharray 2 9 on .rv-e/.rv-l in site.css and, by hand, in
+      // site.tilda.css (the copy the live pages load): change all three together.
+      const drift = -(clock * 9 % 11), rush = -(clock * 28 % 11);
+      for (const e of edges) {
+        e.base.style.strokeDashoffset = drift;
+        e.lit.style.opacity = ease(ramp(e.start, .6)) * f * (e === cutEdge ? 1 - .7 * c : 1);
+        e.lit.style.strokeDashoffset = rush;
+        const raw = (t - e.start) / RUN;
+        if (raw > 0 && raw < 1) {
+          const pt = e.base.getPointAtLength(e.len * ease(raw));
+          e.dot.setAttribute('transform', `translate(${pt.x.toFixed(1)} ${pt.y.toFixed(1)})`);
+          e.dot.setAttribute('opacity', Math.min(1, raw * 8, (1 - raw) * 8).toFixed(2));
+        } else e.dot.setAttribute('opacity', 0);
+      }
+      for (const id in nodes) {
+        const n = nodes[id]; let litLevel = 0, fixLevel = 0;
+        for (const q of n.cues) { const a = ramp(q.start, .35) * f; if (q.fix) fixLevel = Math.max(fixLevel, a); else litLevel = Math.max(litLevel, a); }
+        n.litFrame.style.opacity = litLevel * (1 - fixLevel); n.fixFrame.style.opacity = fixLevel;
+        n.tl.style.opacity = n.ts.style.opacity = Math.max(litLevel, fixLevel);
+      }
+      chips.forEach((g, j) => g.setAttribute('opacity', (ramp(chipOn[j], CHIP_IN) * f).toFixed(2)));
+      cut.setAttribute('opacity', c.toFixed(2));
+      // The first caption leads the rest as well: the graph is back in shadow and the record comes next.
+      let cap = 0;
+      if (t < fadeAt) capAt.forEach((s, i) => { if (t >= s) cap = i; });
+      if (cap !== capOn) { capOn = cap; caps.forEach((el, i) => el.classList.toggle('on', i === cap)); }
     };
-    if (!hasGsap || reduced) showFinal();
-    else {
-      edgeEls.forEach(p => { const L = p.getTotalLength(); p.style.strokeDasharray = L; p.style.strokeDashoffset = L; p.dataset.len = L; });
-      const build = pin => {
-        gsap.set(Object.values(nodeEls).filter(g => g !== nodeEls.src), { autoAlpha: 0, scale: .6, transformOrigin: '50% 50%' });
-        const section = rvSvg.closest('section');
-        const tl = gsap.timeline({ defaults: { ease: 'none' }, scrollTrigger: pin
-          ? { trigger: section, start: 'top top', end: '+=' + (section.dataset.pinEnd || 2800), pin: true, scrub: 1, anticipatePin: 1 }
-          : { trigger: rvSvg, start: 'top 75%', end: 'bottom 45%', scrub: 1 } });
-        // A short hold on the account alone before the first branch starts to draw.
-        tl.to({}, { duration: .6 });
-        stepEls.forEach((se, i) => {
-          tl.addLabel('s' + i);
-          tl.call(() => caps.forEach((c, k) => c.classList.toggle('on', k === i)));
-          se.edges.forEach((p, k) => {
-            const L = +p.dataset.len, comet = se.comets[k], pos = tl.duration(), o = { t: 0 };
-            tl.to(p, { strokeDashoffset: 0, duration: 1 }, pos + k * .35);
-            tl.to(o, { t: 1, duration: 1, onUpdate() { const pt = p.getPointAtLength(L * o.t); comet.setAttribute('cx', pt.x); comet.setAttribute('cy', pt.y); comet.setAttribute('opacity', o.t > 0 && o.t < 1 ? 1 : 0); } }, pos + k * .35);
-          });
-          if (se.nodes.length) tl.to(se.nodes, { autoAlpha: 1, scale: 1, duration: .6, stagger: .25, ease: 'back.out(1.7)' }, '<0.45');
-          if (STEPS[i].fix) {
-            fixMarks.forEach(m => { tl.to(m.edge, { opacity: .25, duration: .4 }); tl.to(m.el, { opacity: 1, duration: .3 }, '<'); });
-            chips.forEach(c => { tl.to(c.node.querySelector('rect'), { stroke: '#43e39a', duration: .4 }, '<'); tl.to(c.el, { opacity: 1, duration: .3 }, '<0.1'); });
-          }
-          tl.to({}, { duration: .6 });
-        });
+
+    if (reduced) {
+      rvSvg.classList.add('rv-still');
+      draw(fadeAt - .01, 0);
+      caps.forEach(c => c.classList.add('on'));
+    } else {
+      const L = ru ? { pause: 'Остановить анимацию', play: 'Запустить анимацию' } : { pause: 'Pause animation', play: 'Play animation' };
+      const btn = document.createElement('button');
+      btn.type = 'button'; btn.className = 'rv-pause';
+      (rvSvg.closest('.rv-stage') || rvSvg.parentNode).prepend(btn);
+      const canObserve = 'IntersectionObserver' in window;
+      let t = 0, clock = 0, last = 0, raf = 0, paused = false, onScreen = !canObserve;
+      const label = () => { btn.textContent = paused ? L.play : L.pause; };
+      const frame = now => {
+        const dt = Math.min(.1, (now - last) / 1000); last = now;
+        t = (t + dt) % CYCLE; clock += dt; draw(t, clock);
+        raf = requestAnimationFrame(frame);
       };
-      gsap.matchMedia().add({ desktop: '(min-width: 900px)', mobile: '(max-width: 899px)' }, ctx => build(ctx.conditions.desktop));
+      const run = () => { if (!raf && onScreen && !paused) { last = performance.now(); raf = requestAnimationFrame(frame); } };
+      const stop = () => { if (raf) { cancelAnimationFrame(raf); raf = 0; } };
+      btn.addEventListener('click', () => { paused = !paused; label(); if (paused) stop(); else run(); });
+      // The last queued entry is the current state when several arrive in one callback.
+      if (canObserve) new IntersectionObserver(entries => { onScreen = entries[entries.length - 1].isIntersecting; if (onScreen) run(); else stop(); }).observe(rvSvg);
+      label(); draw(0, 0); run();
     }
   }
 

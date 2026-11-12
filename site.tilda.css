@@ -172,16 +172,26 @@ html{scroll-padding-top:88px}
 .hirdman .cap p{margin:0;font-size:14px;line-height:1.45}
 .hirdman .rv-stage{position:relative}
 .hirdman .rv-stage svg{width:100%;height:auto;display:block;overflow:visible}
-.hirdman .e{fill:none;stroke-width:1.8;stroke-linecap:round}
-.hirdman .e.id{stroke:rgba(23,241,215,.65)} .hirdman .e.acc{stroke:rgba(255,184,77,.75)} .hirdman .e.bad{stroke:rgba(255,59,92,.9);stroke-width:2.2;filter:url(#rvglow)}
-.hirdman .nb{fill:rgba(8,18,17,.94);stroke-width:1.5}
-.hirdman .nb.src,.hirdman .nb.id{stroke:var(--teal)} .hirdman .nb.acc{stroke:var(--amber)} .hirdman .nb.bad{stroke:var(--red)}
-.hirdman .nl{font-size:17px;font-weight:700;fill:var(--ink);font-family:inherit}
-.hirdman .ns{font-size:12.5px;fill:var(--muted);font-family:inherit}
-.hirdman .rv-v .nl{font-size:18px} .hirdman .rv-v .ns{font-size:13.5px}
-.hirdman .cutx line{stroke:var(--red);stroke-width:2.4;stroke-linecap:round}
-.hirdman .fixchip rect{fill:var(--green)} .hirdman .fixchip text{font-size:11px;font-weight:800;fill:#03180f;font-family:inherit}
-.hirdman .comet{fill:#bffff4;filter:url(#rvglow)}
+.hirdman .rv-pause{display:block;min-height:44px;min-width:44px;margin:0 0 10px auto;padding:0 16px;border-radius:12px;border:1px solid rgba(23,241,215,.35);background:transparent;color:var(--muted);font-size:14px;font-weight:600;cursor:pointer;transition:color .2s,background .2s}
+.hirdman .rv-pause:hover{color:var(--ink);background:var(--teal-soft)} .hirdman .rv-pause:active{transform:translateY(1px)}
+.hirdman .rv-e,.hirdman .rv-l{fill:none;stroke-linecap:round;stroke-dasharray:2 9}
+.hirdman .rv-e{stroke-width:1.6}
+.hirdman .rv-e.id{stroke:rgba(23,241,215,.22)} .hirdman .rv-e.acc{stroke:rgba(255,184,77,.22)} .hirdman .rv-e.bad{stroke:rgba(255,59,92,.26)}
+.hirdman .rv-l{stroke-width:2;opacity:0}
+.hirdman .rv-l.id{stroke:var(--teal)} .hirdman .rv-l.acc{stroke:var(--amber)} .hirdman .rv-l.bad{stroke:var(--red);stroke-width:2.4}
+.hirdman .rv-still .rv-l{stroke-dasharray:none}
+.hirdman .rv-nd{fill:rgba(8,18,17,.94);stroke-width:1.4}
+.hirdman .rv-nd.src,.hirdman .rv-nd.id{stroke:rgba(23,241,215,.34)} .hirdman .rv-nd.acc{stroke:rgba(255,184,77,.34)} .hirdman .rv-nd.bad{stroke:rgba(255,59,92,.38)}
+.hirdman .rv-nr,.hirdman .rv-nx{fill:none;opacity:0}
+.hirdman .rv-nr{stroke-width:1.7}
+.hirdman .rv-nr.src,.hirdman .rv-nr.id{stroke:var(--teal)} .hirdman .rv-nr.acc{stroke:var(--amber)} .hirdman .rv-nr.bad{stroke:var(--red)}
+.hirdman .rv-nx{stroke:var(--green);stroke-width:1.9}
+.hirdman .rv-tl{font-size:17px;font-weight:700;font-family:inherit} .hirdman .rv-ts{font-size:12.5px;font-family:inherit}
+.hirdman .rv-v .rv-tl{font-size:18px} .hirdman .rv-v .rv-ts{font-size:13.5px}
+.hirdman .rv-tl.dim,.hirdman .rv-ts.dim{fill:var(--muted-2)} .hirdman .rv-tl.lit{fill:var(--ink);opacity:0} .hirdman .rv-ts.lit{fill:var(--muted);opacity:0}
+.hirdman .rv-chip rect{fill:var(--green)} .hirdman .rv-chip text{font-size:11px;font-weight:800;fill:#03180f;font-family:inherit}
+.hirdman .rv-cut line{stroke:var(--red);stroke-width:2.4;stroke-linecap:round}
+.hirdman .rv-core{fill:#f2fffd}
 @media (max-height:860px){ .hirdman .rv h2{font-size:clamp(26px,3.2vw,40px)} .hirdman .rv .lead{display:none} }
 
 
