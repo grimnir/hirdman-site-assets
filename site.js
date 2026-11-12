@@ -154,14 +154,14 @@
     if (!hasGsap || reduced) finish();
     else {
       gsap.set(tags, { autoAlpha: 0, scale: .6, transformOrigin: 'right center' });
+      // #feedOut, the section's conclusion, is not animated: it came last, 3.5 s after the trigger, so a reader
+      // scrolling on never saw it (audit 11.11).
       gsap.set(tiers, { autoAlpha: 0, y: 12 });
-      gsap.set('#feedOut', { autoAlpha: 0 });
       gsap.timeline({ scrollTrigger: { trigger: '#feed', start: 'top 70%', once: true }, defaults: { ease: 'power3.out' } })
         .from(rows, { x: -26, autoAlpha: 0, stagger: .12, duration: .5 })
         .to(tags, { autoAlpha: 1, scale: 1, stagger: .14, duration: .45, ease: 'back.out(1.8)' }, '+=.3')
         .call(() => rows.forEach(r => { if (r.dataset.verdict === 'drop') r.classList.add('drop'); }), null, '-=.2')
-        .to(tiers, { autoAlpha: 1, y: 0, stagger: .1, duration: .5, onStart: () => $$('#feed .num').forEach(el => countUp(el, 1000)) })
-        .to('#feedOut', { autoAlpha: 1, duration: .6 });
+        .to(tiers, { autoAlpha: 1, y: 0, stagger: .1, duration: .5, onStart: () => $$('#feed .num').forEach(el => countUp(el, 1000)) });
     }
   }
 
