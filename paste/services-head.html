@@ -1,0 +1,121 @@
+<!-- Hirdman new site: fonts and styles for this page only -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://grimnir.github.io/hirdman-site-assets/site.tilda.css?v=2">
+<style>body,#allrecords{background:#030807 !important}</style>
+<meta property="og:image" content="https://grimnir.github.io/hirdman-site-assets/og/services.png?v=2">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="Hirdman">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://grimnir.github.io/hirdman-site-assets/og/services.png?v=2">
+<style>
+.hirdman .kicker{display:block;font-size:15px;font-weight:600;letter-spacing:0;text-transform:none;color:var(--muted)}
+.hirdman .kicker::before{content:none}
+.hirdman .label,.hirdman .feed-h,.hirdman .plan .name{letter-spacing:0;text-transform:none}
+.hirdman .label{font-size:14px;color:var(--muted)}
+.hirdman .plan .name{font-size:15px;color:var(--ink)}
+.hirdman .card::before{content:none}
+.hirdman .card:hover{border-color:var(--teal-line);box-shadow:none}
+.hirdman .btn{box-shadow:none}
+.hirdman .btn:hover{transform:none;box-shadow:none}
+.hirdman .cta{background:var(--bg-2)}
+#main::before{content:none;display:none}
+.hirdman .trust li::before{content:"\00b7";width:auto;height:auto;background:none;-webkit-mask:none;mask:none;color:var(--muted)}
+.hirdman .more{min-height:44px}
+.hirdman .btn.sm{height:44px}
+.hirdman .top .wrap > a[href="/"]{display:inline-flex;align-items:center;min-height:44px}
+.hirdman .foot .ns-foot-h{margin:0 0 12px;max-width:none;font-size:13px;line-height:1.4;font-weight:700;letter-spacing:0;color:var(--muted)}
+.hirdman .faq details{padding:6px 0}
+.hirdman .faq summary{min-height:48px;padding-block:8px}
+.hirdman .faq details p:last-child{margin-bottom:14px}
+.hirdman .burger{width:auto;min-width:44px;padding:0 12px;grid-auto-flow:column;gap:8px;align-items:center}
+.hirdman .ns-menu-t{font-size:14px;font-weight:600}
+@media (max-width:720px){.hirdman a.side-tab{display:none}}
+@media (max-width:640px){
+.hirdman .top-cta .btn{height:44px}
+.hirdman .nav.open{gap:2px}
+.hirdman .nav.open a:not(.btn){padding-block:10px}
+.hirdman .foot ul{gap:0}
+.hirdman .foot li a{display:inline-block;padding-block:12px}
+}
+.hirdman .crumbs{margin-bottom:4px}
+.hirdman .crumbs a{display:inline-flex;align-items:center;min-height:44px}
+.hirdman section.ns-body{padding-top:24px}
+.hirdman .ns-cols{display:grid;grid-template-columns:minmax(0,3fr) minmax(240px,1fr);gap:48px 56px;align-items:start}
+.hirdman .ns-toc{grid-column:2;grid-row:1;position:sticky;top:96px}
+.hirdman .ns-practices{grid-column:1;grid-row:1;min-width:0}
+.hirdman .ns-toc .card{padding:22px 24px}
+.hirdman .ns-toc ol{list-style:none;margin:12px 0 0;padding:0;border-top:1px solid var(--teal-line)}
+.hirdman .ns-toc li{border-bottom:1px solid rgba(23,241,215,.12)}
+.hirdman .ns-toc li a{display:block;padding:12px 0;color:var(--ink)}
+.hirdman .ns-toc li b{display:block;line-height:1.3}
+.hirdman .ns-toc li a:hover b{color:var(--teal)}
+.hirdman .ns-toc li span{display:block;margin-top:4px;font-size:14px;line-height:1.45;color:var(--muted)}
+.hirdman .ns-toc .btn{margin-top:20px}
+.hirdman .ns-practice{padding:0}
+.hirdman .ns-practice + .ns-practice{margin-top:72px;padding-top:56px;border-top:1px solid var(--teal-line)}
+.hirdman .ns-practice h2{margin-top:0;font-size:clamp(30px,3.4vw,44px)}
+.hirdman .ns-practice > .lead{margin:0}
+.hirdman .ns-pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:24px 40px;margin-top:32px;align-items:start}
+.hirdman .ns-pair h3,.hirdman .ns-legal h3{font-size:18px;margin:0 0 10px}
+.hirdman .ns-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--teal-line)}
+.hirdman .ns-list li{padding:12px 0;border-bottom:1px solid rgba(23,241,215,.12);font-size:16px;line-height:1.5}
+.hirdman .ns-get{padding:24px 26px}
+.hirdman .ns-get ul,.hirdman .ns-sub ul,.hirdman .ns-legal ul{margin:0;padding:0 0 0 20px;display:grid;gap:10px}
+.hirdman .ns-get li,.hirdman .ns-sub li,.hirdman .ns-legal li{font-size:16px;line-height:1.5}
+.hirdman .ns-get li::marker,.hirdman .ns-sub li::marker,.hirdman .ns-legal li::marker{color:var(--muted)}
+.hirdman .ns-sub{padding-top:16px;border-top:1px solid var(--teal-line)}
+.hirdman .ns-sub li a{text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
+.hirdman .ns-sub-more{margin:8px 0 0}
+.hirdman .ns-sub-more a{display:inline-flex;align-items:center;min-height:44px;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
+.hirdman .ns-legal{margin-top:24px}
+.hirdman .ns-legal p{margin:0 0 14px;max-width:68ch;color:var(--muted);font-size:15px}
+.hirdman .ns-for{margin-top:32px}
+.hirdman .ns-for p{margin:0;max-width:68ch;color:var(--muted);font-size:16px}
+.hirdman .ns-for .more{margin-top:4px}
+.hirdman .ns-cta-actions{display:flex;flex-wrap:wrap;gap:12px}
+@media (min-width:641px){.hirdman .foot ul{gap:0}.hirdman .foot li a{display:inline-block;padding-block:4px}}
+@media (max-width:900px){
+.hirdman .ns-cols{grid-template-columns:minmax(0,1fr)}
+.hirdman .ns-toc,.hirdman .ns-practices{grid-column:auto;grid-row:auto}
+.hirdman .ns-toc{position:static}
+.hirdman .ns-toc .btn{display:none}
+.hirdman .ns-practice + .ns-practice{margin-top:56px;padding-top:44px}
+}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet">
+<style>
+.hirdman h1,.hirdman h2:not(.ns-foot-h){font-family:"Source Serif 4",Georgia,"Times New Roman",serif;font-weight:600;letter-spacing:-.012em}
+.hirdman h1{font-size:clamp(38px,5vw,64px);line-height:1.06;max-width:24ch}
+.hirdman h2{font-size:clamp(28px,3.4vw,44px);line-height:1.1;max-width:24ch}
+.hirdman{--muted:#b3c0bd;--muted-2:#8a9a97}
+.hirdman p,.hirdman li,.hirdman dd{font-size:16px}
+.hirdman .lead{font-size:clamp(17px,1.5vw,19px)}
+.hirdman .kicker{display:none}
+.hirdman .case,.hirdman .bignum{background:none;border:0;border-radius:0;padding:0}
+.hirdman .bignum{border-left:1px solid var(--teal-line);padding-left:32px}
+.hirdman .calc-report{background:none;border:0;border-top:1px solid var(--teal-line);border-radius:0;padding:14px 0 0}
+.hirdman .cta{background:none;border:0;border-top:1px solid var(--teal-line);border-radius:0;padding:56px 0 0}
+.hirdman .hp-plain{max-width:62ch;margin:28px 0 0;color:var(--muted)}
+.hirdman .hp-foot{display:flex;flex-wrap:wrap;gap:4px 22px;margin:20px 0 0;padding:0;list-style:none}
+.hirdman .hp-foot li{font-size:14px}
+.hirdman .hp-foot a{display:inline-block;padding-block:12px;color:var(--muted)}
+.hirdman .calc-report a{display:inline-block;padding-block:12px}
+.hirdman .hp-foot a:hover{color:var(--ink)}
+.hirdman footer .hp-about{max-width:60ch;color:var(--muted-2);font-size:14px;margin:12px 0 0}
+.hirdman .hp-quote{margin:40px 0;padding:4px 0 4px 24px;border-left:2px solid var(--teal);max-width:34ch}
+.hirdman .hp-quote blockquote{margin:0}
+.hirdman .hp-quote p{margin:0;font-family:"Source Serif 4",Georgia,serif;font-style:italic;font-size:clamp(21px,2.2vw,26px);line-height:1.35;color:var(--ink)}
+.hirdman .hp-quote figcaption{margin-top:12px;font-size:14px;color:var(--muted-2)}
+@media (min-width:1100px){.hirdman .hp-quote.side{float:right;width:34ch;margin:0 0 24px 48px}}
+@media (max-width:720px){.hirdman .bignum{border-left:0;padding-left:0;border-top:1px solid var(--teal-line);padding-top:20px}}
+.hirdman .ns-toc .card{background:none;border:0;border-radius:0;padding:0}
+.hirdman .ns-get{background:none;border:0;border-top:2px solid var(--teal);border-radius:0;padding:16px 0 0}
+.hirdman .ns-legal{background:none;border:0;border-top:1px solid var(--teal-line);border-radius:0;padding:20px 0 0}
+.hirdman section.ns-body{padding-bottom:96px}
+.hirdman .cta-side .more{align-self:start}
+.hirdman .ns-pair li{max-width:50ch}
+@media (max-width:640px){.hirdman section.ns-body{padding-bottom:56px}}
+</style>
