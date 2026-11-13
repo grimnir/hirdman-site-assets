@@ -123,15 +123,6 @@
     });
     document.querySelectorAll(".jl canvas.globe").forEach(globe);
 
-    // Card spotlight: CSS draws the light, this only tells it where the pointer is.
-    document.querySelectorAll(".jl .tile, .jl .case").forEach(function (card) {
-      card.addEventListener("pointermove", function (e) {
-        var r = card.getBoundingClientRect();
-        card.style.setProperty("--mx", (e.clientX - r.left) + "px");
-        card.style.setProperty("--my", (e.clientY - r.top) + "px");
-      });
-    });
-
     var top = document.querySelector(".jl .top");
     if (!top) return;
     var onScroll = function () { top.classList.toggle("scrolled", window.scrollY > 8); };
