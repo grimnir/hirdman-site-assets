@@ -133,7 +133,7 @@ button:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
     ['Reverse check', 'A shared password leads from a work mailbox to personal mail; the profile of jd.ops fills in.'],
     ['Users', 'Stealer logs show infected home PCs; raw leaks add home mail and personal details, for staff and suppliers alike.'],
     ['Privileged account', 'A personal login turns out to be the admin of admin.aceme.example.'],
-    ['Decisions', 'Everything lands in your portal: the tier, one action and its evidence. Brand Protection and Asset management get their share.'],
+    ['Your portal', 'Everything lands in your portal: the tier, one action and its evidence. Brand Protection and Asset management get their share.'],
   ];
   // One verb per station, steps 4 to 10 (scope is step 2, collection step 3, the decisions step 11).
   // Two lines where the width is short (the phone, the orbit's dial), one line elsewhere.
@@ -145,7 +145,7 @@ button:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
   const DUMPS = ['dumps', 'Dumps, up to terabytes'];
   const PERIM = [['cert', 'Certificate logs'], ['clock', 'DNS history'], ['radar', 'Scan engines'], ['archive', 'Web archives'], ['guess', 'Name guessing'], ['reg', 'Registrations']];
   // Every figure below is published on the site's home page or counted in code (collect.py STEPS).
-  const FIG = { db: '106+ bn records', raw: '46 bn raw records', steps: '25 collection steps', tb: 'up to terabytes' };
+  const FIG = { db: 'over 106 bn records', raw: '46 bn raw records', steps: '25 collection steps', tb: 'up to terabytes' };
   // What one domain opens up before collection: the attacker's first map of a target.
   const SCOPE = [['Subdomains', 'admin, dev, vpn'], ['Related domains', 'same group, shared staff'], ['Third parties', 'suppliers with access'], ['People', 'roles, habits, profiles']];
   const scopeOn = (t, i) => clamp((t - at(2) - .1 - i * .35) / .4);
@@ -283,7 +283,7 @@ button:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
     const h = head + ROWS.length * rh + 4;
     const panel = box(parent, x, y, w, h, { rx: 14, stroke: 'rgba(67,227,154,.5)', sw: 1.5, fill: COL.panel });
     icon(panel, 'decide', x + 14, y + (compact ? 10 : 16), COL.fix, 1);
-    T(panel, x + 38, y + (compact ? 23 : 29), 'Decisions', 't15 ink');
+    T(panel, x + 38, y + (compact ? 23 : 29), 'To act on', 't15 ink');
     if (compact) T(panel, x + w - 12, y + 23, 'in your portal', 't11 mut', 'end');
     else T(panel, x + 14, y + 46, 'in your portal', 't11 mut');
     const rows = ROWS.map((r, i) => {
@@ -416,7 +416,7 @@ button:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
   ];
   const LEAD = CARDS.findIndex(c => c.lead), JOHN = CARDS.findIndex(c => c.row === 1);
   const V2 = {
-    aria: 'Side view of a conveyor belt: sources feed the ETL, which throws junk into a bin; one domain opens up subdomains, related domains, third parties and people; record cards, a supplier among them, ride under seven presses and change at each; at the reverse check the profile of jd.ops fills in: work mail, personal mail, a home PC in a stealer log, the admin role; a duplicate folds, a generated record drops off, and finished cards rise into the decisions in your portal, with Brand Protection and Asset management fed alongside.',
+    aria: 'Side view of a conveyor belt: sources feed the ETL, which throws junk into a bin; one domain opens up subdomains, related domains, third parties and people; record cards, a supplier among them, ride under seven presses and change at each; at the reverse check the profile of jd.ops fills in: work mail, personal mail, a home PC in a stealer log, the admin role; a duplicate folds, a generated record drops off, and finished cards rise into the findings to act on in your portal, with Brand Protection and Asset management fed alongside.',
     vb: { desktop: [1160, 580], phone: [358, 640] },
     make(layout) {
       const P = layout === 'phone';
