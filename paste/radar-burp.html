@@ -1,0 +1,148 @@
+<div class="hirdman">
+<style>.t-records [class*="t-feed__post-popup__cover-wrapper"]{display:none !important}
+.t-records [class*="t-feed__post-popup__title-wrapper"],.t-records [class*="t-feed__post-popup__header"],.t-records [class*="post-popup__title"],.t-records [class*="post-popup__uptitle"],.t-records [class*="post-popup__descr"],.t-records [class*="post-popup__date"],.t-records [class*="post-popup__categories"],.t-records [class*="post__uptitle"],.t-records [class*="post__title"]{display:none !important}
+.hirdman{--bg:#030807;--ink:#eafffb;--text:#c7f7f1;--muted:#9edbd4;--teal:#17F1D7;--teal-hover:#14d9c1;--teal-ink:#03201b;--line:rgba(23,241,215,.2);--line-2:rgba(23,241,215,.12);position:relative;width:100vw;max-width:100vw;left:50%;margin-left:-50vw;margin-top:-40px;padding:88px 20px 112px;box-sizing:border-box;overflow:hidden;background:var(--bg);color:var(--ink);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased;text-align:left}
+.hirdman *,.hirdman *::before,.hirdman *::after{box-sizing:border-box}
+.hirdman .container{max-width:800px;margin:0 auto;padding:0 20px}
+.hirdman :is(p,ul,ol,dl,dd,h1,h2,h3,figure,blockquote){margin:0;padding:0}
+.hirdman :is(p,li,dt,dd){font-family:inherit;font-size:18px;font-weight:400;line-height:1.7;color:var(--text)}
+.hirdman p{margin-bottom:16px}
+.hirdman b{font-weight:600;color:var(--ink)}
+.hirdman h1{margin-bottom:24px;font-family:inherit;font-size:clamp(36px,4.4vw,56px);line-height:1.06;font-weight:800;letter-spacing:-.025em;color:var(--ink);text-wrap:balance}
+.hirdman .lead{margin:0;font-size:21px;line-height:1.55}
+.hirdman .ns-meta{margin:20px 0 0;font-size:15px;line-height:1.5;color:var(--muted)}
+.hirdman .hero{padding-bottom:48px;border-bottom:1px solid var(--line)}
+.hirdman .block{margin-top:72px}
+.hirdman h2{margin-bottom:18px;font-family:inherit;font-size:clamp(26px,3vw,36px);line-height:1.15;font-weight:800;letter-spacing:-.015em;color:var(--ink);text-wrap:balance}
+.hirdman h3{margin:40px 0 12px;font-family:inherit;font-size:22px;line-height:1.3;font-weight:700;letter-spacing:-.01em;color:var(--ink)}
+.hirdman .ns-step{display:block;margin-bottom:10px;font-size:15px;font-weight:600;letter-spacing:0;color:var(--muted)}
+.hirdman a{color:var(--teal);text-decoration:underline;text-decoration-thickness:1px;text-decoration-color:rgba(23,241,215,.45);text-underline-offset:3px;border-bottom:0;cursor:pointer}
+.hirdman a:hover{text-decoration-color:var(--teal)}
+.hirdman :is(a,button):focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:4px}
+.hirdman .ns-list,.hirdman .ns-points,.hirdman .ns-steps{list-style:none;margin:8px 0 20px;border-top:1px solid var(--line)}
+.hirdman .ns-list li,.hirdman .ns-points > div,.hirdman .ns-steps li{margin:0;padding:14px 0;border-bottom:1px solid var(--line-2)}
+.hirdman .ns-points > div{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:4px 32px}
+.hirdman .ns-points dt{font-weight:600;color:var(--ink)}
+.hirdman .ns-ver{margin-left:6px;font-size:15px;color:var(--muted)}
+.hirdman .ns-steps{counter-reset:s}
+.hirdman .ns-steps li{counter-increment:s;display:grid;grid-template-columns:28px minmax(0,1fr);gap:2px 12px}
+.hirdman .ns-steps li::before{content:counter(s);grid-row:span 2;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
+.hirdman .ns-steps span{grid-column:2}
+.hirdman .ns-claim{margin:28px 0;padding:16px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-size:20px;font-weight:600;line-height:1.55;color:var(--ink)}
+.hirdman .container .ns-wide{width:min(1024px,calc(100vw - 40px));margin:36px 0 36px calc(50% - min(512px,calc(50vw - 20px)))}
+.hirdman .ns-fig,.hirdman .ns-anim{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#020606}
+.hirdman .ns-fig a{display:block;text-decoration:none}
+.hirdman .ns-fig a:focus-visible{outline-offset:-3px;border-radius:10px}
+.hirdman .ns-fig img{display:block;width:100% !important;max-width:100%;height:auto !important;margin:0 !important;border:0 !important;border-radius:0 !important}
+.hirdman .ns-anim canvas{display:block;width:100%}
+.hirdman .container figure figcaption{margin:0 !important;padding:12px 16px !important;border-top:1px solid var(--line);font-family:inherit !important;font-style:normal !important;font-size:15px !important;line-height:1.5 !important;letter-spacing:0;text-transform:none;text-align:left;color:var(--muted) !important;opacity:1 !important}
+.hirdman .ns-anim figcaption{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
+.hirdman .ns-anim figcaption span{flex:1 1 240px;min-width:0}
+.hirdman .ns-anim button{min-height:36px;padding:0 16px;border:1px solid rgba(23,241,215,.5);border-radius:10px;background:transparent;color:var(--ink);font:600 14px/1 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;cursor:pointer;transition:background-color .2s,border-color .2s}
+.hirdman .ns-anim button:hover{border-color:var(--teal);background:rgba(23,241,215,.08)}
+.hirdman .container .ns-pull{margin:56px 0 0}
+.hirdman .ns-q p{margin:0 0 12px;font-size:clamp(22px,2.4vw,28px);font-weight:700;line-height:1.35;letter-spacing:-.01em;color:var(--ink)}
+.hirdman .container .ns-pull figcaption{padding:0 !important;border:0}
+.hirdman .btns{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px}
+.hirdman .hero .btns{margin-top:32px}
+.hirdman a.btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 28px;border-radius:12px;font-size:16px;font-weight:700;text-decoration:none;transition:background-color .2s,border-color .2s}
+.hirdman a.btn.primary{background:var(--teal);border:1px solid var(--teal);color:var(--teal-ink)}
+.hirdman a.btn.primary:hover{background:var(--teal-hover);border-color:var(--teal-hover)}
+.hirdman a.btn.ghost{background:transparent;border:1px solid rgba(23,241,215,.5);color:var(--ink)}
+.hirdman a.btn.ghost:hover{border-color:var(--teal);background:rgba(23,241,215,.08)}
+.hirdman a.btn:active,.hirdman .ns-anim button:active{transform:translateY(1px)}
+.hirdman .tags{margin:40px 0 0;padding-top:20px;border-top:1px solid var(--line);font-size:15px;line-height:1.6;color:var(--muted)}
+@media (max-width:640px){
+.hirdman{padding:48px 0 80px}
+.hirdman :is(p,li,dt,dd){font-size:17px}
+.hirdman .lead{font-size:18px}
+.hirdman .block{margin-top:56px}
+.hirdman .ns-points > div{grid-template-columns:minmax(0,1fr)}
+.hirdman .btns a.btn{flex:1 1 100%}
+.hirdman .ns-anim button{flex:1 1 0;min-height:44px}
+}</style>
+<div class="container">
+<header class="hero">
+<h1>Hirdman Radar for Burp Suite: leak counts for every subdomain</h1>
+<p class="lead">Hirdman Radar is a free Burp Suite extension. Give it a domain and it finds the subdomains, then shows how many leaked records mention each host: infostealer logs, work email addresses, credentials from breaches and records in breached databases. The numbers appear in Burp next to the traffic you are testing, and hosts with findings get Burp issues.</p>
+<p class="ns-meta">Hirdman Radar 0.1.0 · Release · News · Our Tech · November 2026</p>
+<ul class="ns-list">
+<li><b>Free:</b> no account and no API key</li>
+<li><b>Up to 400 subdomains</b> checked in one domain scan, mail, VPN and sign-in hosts first</li>
+<li><b>4 counts per host,</b> with a risk level and the newest known breach date</li>
+<li><b>1 server:</b> the plugin talks to scan.hirdman.pro and never to your targets</li>
+<li><b>Counts only:</b> no accounts, passwords or raw records come back</li>
+</ul>
+<div class="btns"><a class="btn primary" href="https://github.com/grimnir/hirdman-radar-burp/releases/latest" target="_blank" rel="noopener">Download the plugin</a><a class="btn ghost" href="https://github.com/grimnir/hirdman-radar-burp" target="_blank" rel="noopener">Source on GitHub</a></div>
+</header>
+<section class="block">
+<h2><span class="ns-step">Why</span>A stolen login is part of the attack surface</h2>
+<p>A test usually starts from a few domains in scope, and the work moves to the subdomains behind them: mail, VPN gateways, single sign-on, staging. Some of those hosts already have a history. An infostealer on an employee's computer takes the saved passwords, cookies and live sessions, and every host in that list ends up in a stealer log. A stolen session gets past MFA, and a password reset does not end it.</p>
+<p>That history changes where you look first. A VPN gateway with thousands of stealer records is a different target from a marketing site with none, and the count belongs in the report either way. Hirdman Radar puts it in Burp, next to the host. We wrote about subdomains as the starting point of external security in <a href="https://hirdman.pro/techlibrary/e3ckhgkt11-analysis-of-subdomains-the-key-to-practi" target="_blank" rel="noopener">Analysis of Subdomains</a>.</p>
+</section>
+<section class="block">
+<h2><span class="ns-step">How it works</span>From a domain to issues in Burp</h2>
+<ol class="ns-steps">
+<li><b>Start from a domain or a request</b><span>Type a domain on the Hirdman Radar tab and click Check for leaks. Or right-click a request in Proxy, Target, Repeater or Logger and choose Find subdomains and check for leaks.</span></li>
+<li><b>The server finds the subdomains</b><span>It queries four sources in parallel, Certificate Transparency logs among them, merges the lists and drops infrastructure names such as mx, smtp and ns.</span></li>
+<li><b>The important hosts go first</b><span>Mail, remote access and sign-in come first (mail, owa, vpn, sso, adfs, citrix), then internal systems (gitlab, jira, jenkins, grafana), then APIs and test environments. A domain scan checks up to 400 of them. The rest wait in the table as Not checked yet, and one button sends them for a check.</span></li>
+<li><b>Results fill the table</b><span>Hosts with findings get Burp issues. Login pages are marked from responses Burp has already received: the plugin itself never contacts the hosts.</span></li>
+</ol>
+<figure class="ns-fig ns-wide"><a href="https://grimnir.github.io/hirdman-site-assets/img/hirdman-radar/results.webp" target="_blank" rel="noopener"><img src="https://grimnir.github.io/hirdman-site-assets/img/hirdman-radar/results.webp" width="2048" height="1274" alt="Hirdman Radar tab in Burp after a domain scan: the jobs list and a table of nine subdomains with risk, scope and four counts each" loading="lazy"></a><figcaption>The Hirdman Radar tab after a domain scan: 9 hosts, 5 with leaks. The domain is hidden.</figcaption></figure>
+</section>
+<section class="block">
+<h2><span class="ns-step">The table</span>What you see for each host</h2>
+<dl class="ns-points">
+<div><dt>Risk</dt><dd>The highest level among the host's findings.</dd></div>
+<div><dt>Scope</dt><dd>Whether the host is in Burp's target scope.</dd></div>
+<div><dt>Infostealer</dt><dd>Infostealer log records that mention the host.</dd></div>
+<div><dt>Work</dt><dd>Breach records with work email addresses.</dd></div>
+<div><dt>Personal</dt><dd>Breach records with credentials for the host, whoever they belong to.</dd></div>
+<div><dt>DB rec</dt><dd>Records in breached databases that mention the host together with an email or URL.</dd></div>
+<div><dt>Latest breach</dt><dd>The newest known breach date among the 10 largest sources. Stealer logs and some sources carry no date, so a newer breach is possible.</dd></div>
+<div><dt>Login page</dt><dd>A password form, HTTP authentication or a known gateway path (FortiGate, Cisco, Ivanti, GlobalProtect, Citrix, Outlook on the web, AD FS, Keycloak) seen in Burp's traffic.</dd></div>
+</dl>
+<p>You can filter the rows (With leaks, Not checked yet, Check failed, In scope), export them as JSON or CSV, or copy a Markdown summary into the report. Results are saved in the Burp project and are still there after a restart, offline too.</p>
+</section>
+<section class="block">
+<h2><span class="ns-step">Issues</span>Findings in the site map</h2>
+<p>Each host with leaks gets an issue at https://&lt;host&gt;/ for every kind of finding: infostealer records, work accounts, employees' personal accounts and presence in breached databases. Confidence is Tentative, because no analyst has verified the numbers. The issue carries the count, its sources, the date of the check and a link to the latest scan of the domain on scan.hirdman.pro.</p>
+<figure class="ns-fig ns-wide"><a href="https://grimnir.github.io/hirdman-site-assets/img/hirdman-radar/issue.webp" target="_blank" rel="noopener"><img src="https://grimnir.github.io/hirdman-site-assets/img/hirdman-radar/issue.webp" width="2048" height="1225" alt="Burp Target, Site map with four Hirdman Radar issues for one host and the advisory for infostealer records" loading="lazy"></a><figcaption>Target › Site map: four Hirdman Radar issues for one host. The advisory counts 10,016 infostealer records and links to the latest scan. The domain is hidden.</figcaption></figure>
+<p>In the settings you choose whether issues are created automatically, whether out-of-scope hosts get them, and the lowest severity worth an issue.</p>
+</section>
+<section class="block">
+<h2><span class="ns-step">Privacy</span>What leaves Burp, and what stays</h2>
+<ul class="ns-list">
+<li><b>Only the names you choose.</b> Domain and host names go to one server, the Server URL in the settings (https://scan.hirdman.pro by default), through Burp's own HTTP stack and its upstream proxy settings.</li>
+<li><b>Nothing from the traffic.</b> Requests, responses, cookies and paths stay in Burp. The plugin sends nothing to target hosts and never changes the scope.</li>
+<li><b>Counts come back,</b> without accounts, passwords, raw records or dumps.</li>
+<li><b>Background checks are off by default.</b> New in-scope hosts from your traffic are checked only if you turn that on.</li>
+<li><b>Private project.</b> Tick it at the bottom of the tab and the plugin sends nothing for that project; a running job stops before its next request.</li>
+<li><b>Open source.</b> The code is on <a href="https://github.com/grimnir/hirdman-radar-burp" target="_blank" rel="noopener">GitHub</a>, so you can read what the plugin sends before you install it.</li>
+</ul>
+</section>
+<section class="block">
+<h2><span class="ns-step">Limits</span>Free, with limits per address</h2>
+<p>Without a key you can check up to 50 hosts at a time and 300 hosts an hour from one address, and rescan a domain once an hour. A domain scan does not count against the hourly host limit. The tab shows the current limits and, before a large check, how long it will take. A check that reaches the hourly limit carries on by itself while Burp is open.</p>
+</section>
+<section class="block">
+<h2><span class="ns-step">Install</span>Getting it into Burp</h2>
+<ol class="ns-steps">
+<li><b>Download the jar</b><span>Get hirdman-radar-0.1.0.jar from the <a href="https://github.com/grimnir/hirdman-radar-burp/releases/latest" target="_blank" rel="noopener">releases page</a>. The release lists its SHA-256.</span></li>
+<li><b>Add it to Burp</b><span>Open Extensions › Installed › Add, choose the extension type Java and select the jar. Burp Suite 2026.7 or later.</span></li>
+<li><b>Check a domain</b><span>Open the Hirdman Radar tab, type a domain and click Check for leaks.</span></li>
+</ol>
+<p>The source is published under PolyForm Shield 1.0.0: you can use the plugin on paid engagements, read the code and build the jar yourself.</p>
+</section>
+<section class="block ns-cta">
+<h2><span class="ns-step">Beyond the counts</span>When a number needs names behind it</h2>
+<p>The plugin runs a partial check, about a third of a full HIRDMAN review. It tells you how many records mention a host. A full review names the affected devices and employees, which sessions are still live and for which services, and what to close first.</p>
+<div class="btns">
+<a class="btn primary" href="https://github.com/grimnir/hirdman-radar-burp/releases/latest" target="_blank" rel="noopener">Download the plugin</a>
+<a class="btn ghost" href="https://hirdman.pro/contact" target="_blank" rel="noopener">Request a full review</a>
+<a class="btn ghost" href="https://scan.hirdman.pro/" target="_blank" rel="noopener">Scan a domain in the browser</a>
+</div>
+<p class="tags">#BurpSuite · #Pentest · #Recon · #Infostealers · #HirdmanRadar</p>
+</section>
+</div>
+</div>
